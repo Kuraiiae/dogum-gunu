@@ -320,6 +320,21 @@ body{
   box-shadow:0 0 0 2px #0c0d10, 0 18px 34px -18px rgba(0,0,0,.85);
 }
 .onizleme-iframe{display:block;width:100%;height:100%;border:0;background:#fff}
+.onizleme-phone{animation:oneGir .45s ease}
+@keyframes oneGir{from{opacity:0;transform:translateY(8px) scale(.985)}to{opacity:1;transform:none}}
+.onizleme-phone::after{content:"";position:absolute;top:0;left:0;right:0;height:32%;z-index:1;pointer-events:none;
+  background:linear-gradient(180deg,rgba(255,255,255,.13),rgba(255,255,255,0))}
+@media (min-width:1101px){.sag-panel{position:sticky;top:1.2rem;align-self:flex-start}}
+.sablon-sec-alan{margin-top:.4rem}
+.sablon-secim{display:grid;grid-template-columns:repeat(2,1fr);gap:.5rem}
+.sablon-sec{display:flex;align-items:center;gap:.45rem;min-height:44px;padding:.45rem .6rem;border-radius:10px;
+  border:1px solid var(--cizgi);background:transparent;cursor:pointer;font-family:var(--yazi-govde);
+  font-size:.78rem;font-weight:600;color:var(--murekkep);text-align:left;line-height:1.25;
+  transition:background .2s,border-color .2s,color .2s,transform .12s;touch-action:manipulation}
+.sablon-sec .ss-emoji{font-size:1.05rem;line-height:1;flex-shrink:0}
+.sablon-sec:hover{border-color:var(--murekkep)}
+.sablon-sec:active{transform:translateY(1px)}
+.sablon-sec.aktif{background:var(--murekkep);border-color:var(--murekkep);color:var(--kagit2)}
 .onizleme-baslik{display:flex;align-items:baseline;justify-content:space-between;gap:.6rem;width:100%;margin-bottom:.55rem;
   font-family:var(--yazi-govde);font-size:.66rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--murekkep-acik)}
 .onizleme-baslik .ob-sablon{font-family:var(--yazi-vurgu);font-style:normal;font-weight:600;letter-spacing:.02em;
@@ -458,7 +473,7 @@ body{
         <article class="sablon cerceve">
           <div class="telefon">
             <span class="canli">Canlı</span>
-            <iframe data-src="dogum-gunu-kiz.html?isim=Elif&amp;not=G%C3%BCl%C3%BC%C5%9F%C3%BCn%20en%20g%C3%BCzel%20hediye%2C%20iyi%20ki%20do%C4%9Fdun%21%20%F0%9F%8E%82" title="Kız çocuk şablonu canlı önizleme" loading="lazy"></iframe>
+            <iframe data-src="dogum-gunu-kiz.html?isim=Elif&amp;not=G%C3%BCl%C3%BC%C5%9F%C3%BCn%20en%20g%C3%BCzel%20hediye%2C%20iyi%20ki%20do%C4%9Fdun%21%20%F0%9F%8E%82&amp;zarf=0" title="Kız çocuk şablonu canlı önizleme" loading="lazy"></iframe>
             <div class="hazirlaniyor" aria-hidden="true">
               <span class="hz-sus">✦</span>
               <span class="hz-metin">Şablon hazırlanıyor…</span>
@@ -482,7 +497,7 @@ body{
         <article class="sablon cerceve">
           <div class="telefon">
             <span class="canli">Canlı</span>
-            <iframe data-src="dogum-gunu-kiz-genc.html?isim=Elif&amp;not=R%C3%BCya%20gibi%20lavanta%2C%20kelebekler%2E%20Do%C4%9Fum%20g%C3%BCn%C3%BCn%20kutlu%20olsun%21%20%F0%9F%A6%8B" title="Kız genç şablonu canlı önizleme" loading="lazy"></iframe>
+            <iframe data-src="dogum-gunu-kiz-genc.html?isim=Elif&amp;not=R%C3%BCya%20gibi%20lavanta%2C%20kelebekler%2E%20Do%C4%9Fum%20g%C3%BCn%C3%BCn%20kutlu%20olsun%21%20%F0%9F%A6%8B&amp;zarf=0" title="Kız genç şablonu canlı önizleme" loading="lazy"></iframe>
             <div class="hazirlaniyor" aria-hidden="true">
               <span class="hz-sus">✦</span>
               <span class="hz-metin">Şablon hazırlanıyor…</span>
@@ -506,7 +521,7 @@ body{
         <article class="sablon cerceve">
           <div class="telefon">
             <span class="canli">Canlı</span>
-            <iframe data-src="dogum-gunu-kiz-yetiskin.html?isim=Elif&amp;not=Zarif%20krem%20ve%20alt%C4%B1n%20gibi%20de%C4%9Ferlisin%2E%20Nice%20mutlu%20y%C4%B1llara%21%20%F0%9F%8C%B9" title="Kız yetişkin şablonu canlı önizleme" loading="lazy"></iframe>
+            <iframe data-src="dogum-gunu-kiz-yetiskin.html?isim=Elif&amp;not=Zarif%20krem%20ve%20alt%C4%B1n%20gibi%20de%C4%9Ferlisin%2E%20Nice%20mutlu%20y%C4%B1llara%21%20%F0%9F%8C%B9&amp;zarf=0" title="Kız yetişkin şablonu canlı önizleme" loading="lazy"></iframe>
             <div class="hazirlaniyor" aria-hidden="true">
               <span class="hz-sus">✦</span>
               <span class="hz-metin">Şablon hazırlanıyor…</span>
@@ -540,7 +555,7 @@ body{
         <article class="sablon cerceve">
           <div class="telefon">
             <span class="canli">Canlı</span>
-            <iframe data-src="dogum-gunu-erkek.html?isim=Ali&amp;not=S%C3%BCper%20g%C3%BC%C3%A7lerin%20hep%20seninle%20olsun%2C%20do%C4%9Fum%20g%C3%BCn%C3%BCn%20kutlu%20olsun%21%20%E2%9A%A1" title="Erkek çocuk şablonu canlı önizleme" loading="lazy"></iframe>
+            <iframe data-src="dogum-gunu-erkek.html?isim=Ali&amp;not=S%C3%BCper%20g%C3%BC%C3%A7lerin%20hep%20seninle%20olsun%2C%20do%C4%9Fum%20g%C3%BCn%C3%BCn%20kutlu%20olsun%21%20%E2%9A%A1&amp;zarf=0" title="Erkek çocuk şablonu canlı önizleme" loading="lazy"></iframe>
             <div class="hazirlaniyor" aria-hidden="true">
               <span class="hz-sus">✦</span>
               <span class="hz-metin">Şablon hazırlanıyor…</span>
@@ -564,7 +579,7 @@ body{
         <article class="sablon cerceve">
           <div class="telefon">
             <span class="canli">Canlı</span>
-            <iframe data-src="dogum-gunu-erkek-genc.html?isim=Ali&amp;not=Urban%20espor%20havas%C4%B1%2C%20neon%20%C4%B1zgaralar%2E%20Do%C4%9Fum%20g%C3%BCn%C3%BCn%20kutlu%20olsun%21%20%E2%9A%A1" title="Erkek genç şablonu canlı önizleme" loading="lazy"></iframe>
+            <iframe data-src="dogum-gunu-erkek-genc.html?isim=Ali&amp;not=Urban%20espor%20havas%C4%B1%2C%20neon%20%C4%B1zgaralar%2E%20Do%C4%9Fum%20g%C3%BCn%C3%BCn%20kutlu%20olsun%21%20%E2%9A%A1&amp;zarf=0" title="Erkek genç şablonu canlı önizleme" loading="lazy"></iframe>
             <div class="hazirlaniyor" aria-hidden="true">
               <span class="hz-sus">✦</span>
               <span class="hz-metin">Şablon hazırlanıyor…</span>
@@ -588,7 +603,7 @@ body{
         <article class="sablon cerceve">
           <div class="telefon">
             <span class="canli">Canlı</span>
-            <iframe data-src="dogum-gunu-erkek-yetiskin.html?isim=Ali&amp;not=Olgun%20lacivert%20ve%20alt%C4%B1n%20gibi%20zarif%20bir%20y%C4%B1l%2E%20Nice%20mutlu%20y%C4%B1llara%21%20%F0%9F%A5%82" title="Erkek yetişkin şablonu canlı önizleme" loading="lazy"></iframe>
+            <iframe data-src="dogum-gunu-erkek-yetiskin.html?isim=Ali&amp;not=Olgun%20lacivert%20ve%20alt%C4%B1n%20gibi%20zarif%20bir%20y%C4%B1l%2E%20Nice%20mutlu%20y%C4%B1llara%21%20%F0%9F%A5%82&amp;zarf=0" title="Erkek yetişkin şablonu canlı önizleme" loading="lazy"></iframe>
             <div class="hazirlaniyor" aria-hidden="true">
               <span class="hz-sus">✦</span>
               <span class="hz-metin">Şablon hazırlanıyor…</span>
@@ -644,6 +659,11 @@ body{
               <button class="yas-btn" type="button" data-yas="genc">Genç</button>
               <button class="yas-btn" type="button" data-yas="yetiskin">Yetişkin</button>
             </div>
+          </div>
+
+          <div class="sablon-sec-alan">
+            <span class="alan-etiket">Şablon <span class="kucuk-ipucu">(seçtiğin ön izlemede açılır)</span></span>
+            <div id="sablonSecim" class="sablon-secim" role="listbox" aria-label="Şablon seçimi"></div>
           </div>
 
           <div class="yas-sayialan">
@@ -1180,6 +1200,7 @@ function cinsiyetDegistir(yeni) {
   erkekBtn.setAttribute('aria-pressed', yeni === 'erkek');
   metaTema.setAttribute('content', yeni === 'kiz' ? '#F5EEDC' : '#EAEDF3');
   notKartlariniOlustur();
+  sablonSecimOlustur();
   onizlemeGuncelle();
   qrYenile(false);
 }
@@ -1195,6 +1216,8 @@ function yasDegistir(yeni) {
   for (var i = 0; i < yasButonlari.length; i++) {
     yasButonlari[i].classList.toggle('aktif', yasButonlari[i].getAttribute('data-yas') === yeni);
   }
+  sablonSecimOlustur();
+  onizlemeGuncelle();
   qrYenile(false);
 }
 for (var y = 0; y < yasButonlari.length; y++) {
@@ -1203,8 +1226,27 @@ for (var y = 0; y < yasButonlari.length; y++) {
   });
 }
 
-// --- Şablon kartlarından üreticiye geç (cinsiyet + yaş + dosya) ---
-var sablonButonlari = document.querySelectorAll('.sablon-cta');
+// --- Üretici + galeri şablon durumu (tek kaynak: seciliDosya) ---
+function sablonDurumuUygula(st) {
+  seciliDosya = st.dosya;
+  cinsiyet = st.cinsiyet;
+  suAnkiYas = st.yas;
+  document.body.dataset.cinsiyet = st.cinsiyet;
+  document.body.dataset.yas = st.yas;
+  cevir.classList.toggle('erkek', st.cinsiyet === 'erkek');
+  kizBtn.classList.toggle('aktif', st.cinsiyet === 'kiz');
+  erkekBtn.classList.toggle('aktif', st.cinsiyet === 'erkek');
+  kizBtn.setAttribute('aria-pressed', st.cinsiyet === 'kiz');
+  erkekBtn.setAttribute('aria-pressed', st.cinsiyet === 'erkek');
+  metaTema.setAttribute('content', st.cinsiyet === 'kiz' ? '#F5EEDC' : '#EAEDF3');
+  for (var i = 0; i < yasButonlari.length; i++) {
+    yasButonlari[i].classList.toggle('aktif', yasButonlari[i].getAttribute('data-yas') === st.yas);
+  }
+  notKartlariniOlustur();
+  sablonSecimOlustur();
+  onizlemeIframeKur(st.dosya);
+  qrYenile(false);
+}
 function ureticiyeKaydir() {
   var uretici = document.getElementById('uretici');
   var yK = uretici.getBoundingClientRect().top + (window.pageYOffset || document.documentElement.scrollTop) - 66;
@@ -1222,11 +1264,48 @@ function sablonParamUygula() {
   if (!ap) { return; }
   var st = sablonBul(ap);
   if (!st) { return; }
-  seciliDosya = st.dosya;
-  cinsiyetDegistir(st.cinsiyet);
-  yasDegistir(st.yas);
-  onizlemeIframeKur(st.dosya);
+  sablonDurumuUygula(st);
   setTimeout(ureticiyeKaydir, 60);
+}
+// --- Üretici şablon seçici: seçilen şablon ön izlemede açılır ---
+function sablonSecimOlustur() {
+  var kutu = document.getElementById('sablonSecim');
+  if (!kutu) { return; }
+  var grup = [];
+  for (var gi = 0; gi < SABLONLAR.length; gi++) {
+    if (SABLONLAR[gi].cinsiyet === cinsiyet && SABLONLAR[gi].yas === suAnkiYas) { grup.push(SABLONLAR[gi]); }
+  }
+  if (!grup.length) { return; }
+  // Seçili dosya bu grupta değilse grubun ilk şablonuna düş (QR da tutarlı kalır)
+  var grubda = false;
+  for (var gj = 0; gj < grup.length; gj++) { if (grup[gj].dosya === seciliDosya) { grubda = true; break; } }
+  if (!grubda) { seciliDosya = grup[0].dosya; }
+  kutu.innerHTML = '';
+  for (var ki = 0; ki < grup.length; ki++) {
+    (function (sb) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'sablon-sec' + (sb.dosya === seciliDosya ? ' aktif' : '');
+      b.setAttribute('data-dosya', sb.dosya);
+      b.setAttribute('role', 'option');
+      b.setAttribute('aria-selected', sb.dosya === seciliDosya ? 'true' : 'false');
+      b.innerHTML = '<span class="ss-emoji">' + sb.emoji + '</span><span>' + sb.ad + '</span>';
+      b.addEventListener('click', function () {
+        if (seciliDosya === sb.dosya) { return; }
+        seciliDosya = sb.dosya;
+        var chips = kutu.querySelectorAll('.sablon-sec');
+        for (var x = 0; x < chips.length; x++) {
+          var aktifMi = chips[x] === b;
+          chips[x].classList.toggle('aktif', aktifMi);
+          chips[x].setAttribute('aria-selected', aktifMi ? 'true' : 'false');
+        }
+        // Ön izlemede seçilen şablonu anında göster + QR hedefini güncelle
+        onizlemeIframeKur(sb.dosya);
+        qrYenile(false);
+      });
+      kutu.appendChild(b);
+    })(grup[ki]);
+  }
 }
 function onizlemeIframeKur(dosya) {
   var ozn = document.getElementById('onizleme');
@@ -1263,24 +1342,30 @@ function onizlemeIframeKur(dosya) {
     }, 150);
   });
 }
-for (var s = 0; s < sablonButonlari.length; s++) {
-  sablonButonlari[s].addEventListener('click', function () {
-    var dosya = this.getAttribute('data-dosya') || '';
-    if (!dosya) {
-      var cns = this.getAttribute('data-cinsiyet') || 'kiz';
-      var ys  = this.getAttribute('data-yas') || 'cocuk';
-      for (var di = 0; di < SABLONLAR.length; di++) {
-        if (SABLONLAR[di].cinsiyet === cns && SABLONLAR[di].yas === ys) {
-          dosya = SABLONLAR[di].dosya; break;
-        }
+// Butona tıklanan şablonu ÜRETİCİYE yükle (aynı sayfada) + oraya kaydır
+function sablonButonTikla(buton) {
+  var dosya = buton.getAttribute('data-dosya') || '';
+  var st = dosya ? sablonBul(dosya) : null;
+  if (!st) {
+    var cns = buton.getAttribute('data-cinsiyet') || 'kiz';
+    var ys  = buton.getAttribute('data-yas') || 'cocuk';
+    for (var di = 0; di < SABLONLAR.length; di++) {
+      if (SABLONLAR[di].cinsiyet === cns && SABLONLAR[di].yas === ys) {
+        st = SABLONLAR[di]; break;
       }
     }
-    if (!dosya) { return; }
-    // Yeni sekmede, önizlemeli kart üreticiyi aç
-    var adres = location.href.split('?')[0] + '?sablon=' + encodeURIComponent(dosya);
-    window.open(adres, '_blank');
-  });
+  }
+  if (!st) { return; }
+  sablonDurumuUygula(st);
+  ureticiyeKaydir();
 }
+// Statik + dinamik tüm kart butonları (olay yetkilendirme — tek dinleyici)
+document.addEventListener('click', function (e) {
+  var btn = e.target && e.target.closest ? e.target.closest('.sablon-cta') : null;
+  if (!btn) { return; }
+  e.preventDefault();
+  sablonButonTikla(btn);
+});
 
 // ============ GALERİYİ 24 ŞABLONLA DOLDUR ============
 // Mevcut statik kartlar korunur; eksik olan yeni 18 kart dinamik eklenir.
@@ -1321,7 +1406,7 @@ function galeriyiGuncelle() {
     art.innerHTML =
       '<div class="telefon">' +
         '<span class="canli">Yeni</span>' +
-        '<iframe data-src="' + sb.dosya + '?isim=Elif&not=' + encodeURIComponent('Bu kart tamamen animasyonlu! İyi ki doğdun!') + '" title="' + sb.ad + '" loading="lazy"></iframe>' +
+        '<iframe data-src="' + sb.dosya + '?isim=Elif&not=' + encodeURIComponent('Bu kart tamamen animasyonlu! İyi ki doğdun!') + '&zarf=0" title="' + sb.ad + '" loading="lazy"></iframe>' +
         '<div class="hazirlaniyor" aria-hidden="true"><span class="hz-sus">✦</span><span class="hz-metin">Şablon hazırlanıyor…</span><span class="hz-kucuk">BİRKAÇ SANİYE</span></div>' +
         '<span class="telefon-isim">' + sb.emoji + ' Elif</span>' +
       '</div>' +
@@ -1370,7 +1455,7 @@ function galeriLazyBaslat() {
         var kaynak = cf.getAttribute('data-src');
         if (kaynak) { cf.src = kaynak; cf.removeAttribute('data-src'); }
       }
-    }, { rootMargin: '350px 0px' });
+    }, { rootMargin: '600px 0px' });
   }
   for (var j = 0; j < list.length; j++) { galeriLazyBaslat._io.observe(list[j]); }
 }
@@ -1503,6 +1588,7 @@ notKartlariniOlustur();
 sablonParamUygula();
 // ?sablon= parametresi yoksa varsayılan şablonla ön izlemeyi baştan kur
 if (!document.querySelector('#onizleme iframe')) { onizlemeIframeKur(seciliDosya || dosyaAdiBul(cinsiyet, suAnkiYas)); }
+sablonSecimOlustur();
 onizlemeGuncelle();
 dilUygula();
 var dilBtn = document.getElementById('dilBtn');

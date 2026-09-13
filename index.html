@@ -298,9 +298,26 @@ body{
   padding:.9rem 1rem;font-family:var(--yazi-vurgu);font-style:italic;font-size:1rem;
   line-height:1.45;color:var(--vurgu-koyu);background:var(--kagit2);
   border:1px dashed var(--cizgi-koyu);border-radius:12px}
-.onizleme:has(iframe){display:block;padding:0;overflow:hidden;border-style:solid}
-.onizleme-iframe{display:block;width:100%;height:440px;border:0;background:#fff}
-@media (max-width:860px){.onizleme-iframe{height:380px}}
+/* Telefon çerçevesi (iframe geldiğinde) */
+.onizleme:has(iframe){
+  display:flex;align-items:center;justify-content:center;
+  padding:16px;overflow:hidden;border-style:solid;background:#14161a;
+  border-radius:42px;border-color:#2a2c31;
+  box-shadow:inset 0 0 0 2px #0c0d10, 0 22px 44px -22px rgba(20,22,26,.65);
+  position:relative;
+}
+.onizleme:has(iframe)::before{
+  content:"";position:absolute;top:26px;left:50%;transform:translateX(-50%);
+  width:86px;height:20px;background:#14161a;border-radius:12px;z-index:5;pointer-events:none;
+  box-shadow:0 0 0 2px #0c0d10;
+}
+.onizleme-phone{
+  width:min(310px,86%);
+  aspect-ratio:390/844;
+  background:#000;border-radius:34px;overflow:hidden;position:relative;
+  box-shadow:0 0 0 2px #0c0d10, 0 18px 34px -18px rgba(0,0,0,.85);
+}
+.onizleme-iframe{display:block;width:100%;height:100%;border:0;background:#fff}
 .butonlar{display:grid;grid-template-columns:1fr 1fr;gap:.7rem}
 .buton{min-height:56px;border-radius:10px;font-family:var(--yazi-govde);font-weight:700;
   font-size:.82rem;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;
@@ -313,28 +330,19 @@ body{
 .buton:active{transform:translateY(2px)}
 .buton:disabled{opacity:.4;cursor:not-allowed;background:transparent;border-color:var(--cizgi);color:var(--murekkep-acik)}
 
-/* --- QR sahnesi --- */
-.qr-kutu{display:flex;flex-direction:column;align-items:center;padding:1.5rem 1.2rem 1.6rem}
-.qr-sahne{position:relative;width:min(248px,74vw)}
-.qr-cerceve{position:relative;border:1px solid var(--cizgi);border-radius:18px;padding:13px;
-  background:#FFFEF8;box-shadow:inset 0 1px 0 rgba(255,255,255,.9),var(--golge-kucuk);
-  animation:yuz 6s ease-in-out infinite}
-@keyframes yuz{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
-.qr-halka{position:absolute;inset:-8px;border:1px solid rgba(156,122,60,.5);border-radius:24px;
-  pointer-events:none;animation:halkaAt 4.5s ease-in-out infinite}
-@keyframes halkaAt{0%,100%{opacity:.4}50%{opacity:.12}}
+/* --- QR sahnesi (minimal) --- */
+.qr-kutu{display:flex;flex-direction:column;align-items:center;padding:1.3rem 1.1rem 1.4rem}
+.qr-sahne{position:relative;width:min(224px,70vw)}
+.qr-cerceve{position:relative;border:1px solid var(--cizgi);border-radius:16px;padding:10px;
+  background:#fff;box-shadow:0 10px 26px -18px rgba(75,62,40,.28)}
+.qr-halka{display:none}
 .qr-kart{position:relative}
-.qr-kart canvas{display:block;width:100% !important;height:auto !important}
-.qr-emoji{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:46px;height:46px;
-  background:#FFFEF8;border-radius:50%;display:none;
-  align-items:center;justify-content:center;font-size:24px;line-height:1;
-  box-shadow:0 0 0 5px #FFFEF8, 0 3px 12px rgba(75,62,40,.24);pointer-events:none;z-index:3}
-.qr-logo-cat{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:64px;height:64px;
-  z-index:3;pointer-events:none;display:flex;align-items:center;justify-content:center}
-.qr-logo-halka{position:absolute;inset:0;border-radius:50%;
-  background:radial-gradient(circle,rgba(255,255,255,.98) 0%,rgba(255,255,255,.96) 100%);
-  box-shadow:0 2px 10px rgba(75,62,40,.28),0 0 0 1px rgba(75,62,40,.12)}
-.qr-logo-emoji{position:relative;font-size:30px;line-height:1;z-index:1}
+.qr-kart canvas{display:block;width:100% !important;height:auto !important;border-radius:6px}
+.qr-emoji{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:32px;height:32px;
+  background:#fff;border-radius:50%;display:none;
+  align-items:center;justify-content:center;font-size:16px;line-height:1;
+  box-shadow:0 0 0 3px #fff;pointer-events:none;z-index:3}
+.qr-logo-cat{display:none}
 .qr-yukleniyor{display:none;flex-direction:column;align-items:center;justify-content:center;gap:.9rem;
   padding:4.4rem 1rem;color:var(--murekkep-acik);font-family:var(--yazi-govde);font-weight:500;font-size:.9rem}
 .qr-yukleniyor::before{content:"";width:40px;height:40px;border-radius:50%;
@@ -1221,12 +1229,15 @@ function onizlemeIframeKur(dosya) {
   if (!ozn) { return; }
   var st = sablonBul(dosya);
   ozn.innerHTML = '';
+  var phone = document.createElement('div');
+  phone.className = 'onizleme-phone';
   var ifr = document.createElement('iframe');
   ifr.className = 'onizleme-iframe';
   ifr.src = dosya + '?isim=' + encodeURIComponent(isimInput.value.trim() || 'İSİM') + '&not=' + encodeURIComponent(seciliNot()) + '&zarf=0&dil=' + (navigator.language.indexOf('en') === 0 ? 'en' : 'tr');
   ifr.loading = 'lazy';
   ifr.title = st ? st.ad : 'Önizleme';
-  ozn.appendChild(ifr);
+  phone.appendChild(ifr);
+  ozn.appendChild(phone);
 }
 for (var s = 0; s < sablonButonlari.length; s++) {
   sablonButonlari[s].addEventListener('click', function () {

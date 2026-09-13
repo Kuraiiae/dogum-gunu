@@ -4,7 +4,7 @@
 
 ## 🔗 Canlı Site
 
-👉 **https://korkusuz4248-cloud.github.io/dogum-gunu/**
+👉 **https://Kuraiiae.github.io/dogum-gunu/**
 
 ## ✨ Özellikler
 

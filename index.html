@@ -4,7 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" id="metaTema" content="#ffd9ea">
-<title>Doğum Günü Kartı Üretici 🎉</title>
+<meta name="description" content="Sevdiklerin için QR ile animasyonlu doğum günü kartı oluştur. İki şablon, canlı önizleme, ücretsiz. İsmini yaz, QR'ı tara, kart açılır.">
+<title>Doğum Günü Kartı Üretici — doğumgünü.com</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Bangers&family=Baloo+2:wght@600;700;800&family=Oswald:wght@500;600&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
@@ -23,6 +24,7 @@
   --alan-bg:#ffffff; --alan-hat:#f3b3d2; --alan-yazi:#5c3a55;
   --odak:#e04d97; --odak-halka:rgba(224,77,151,.16);
   --secili-bg:#fff0f7;
+  --nav-bg:rgba(255,248,252,.9); --cizgi:rgba(209,77,143,.14);
   --yazi-vurgu:'Baloo 2','Trebuchet MS',system-ui,sans-serif;
   --yazi-govde:'Quicksand','Trebuchet MS','Segoe UI',system-ui,sans-serif;
 }
@@ -40,11 +42,13 @@ body[data-cinsiyet="erkek"]{
   --alan-bg:#161d42; --alan-hat:#343e6b; --alan-yazi:#eef1ff;
   --odak:#ffc933; --odak-halka:rgba(255,201,51,.18);
   --secili-bg:rgba(255,43,58,.1);
+  --nav-bg:rgba(11,15,36,.88); --cizgi:rgba(255,201,51,.16);
   --yazi-vurgu:'Anton','Arial Black',Impact,sans-serif;
   --yazi-govde:'Oswald','Trebuchet MS','Segoe UI',system-ui,sans-serif;
 }
 
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth;scroll-padding-top:78px}
 html,body{min-height:100%}
 body{
   font-family:var(--yazi-govde);
@@ -68,18 +72,121 @@ body::after{width:410px;height:410px;bottom:-160px;right:-140px;background:var(-
   background-image:radial-gradient(rgba(255,255,255,.05) 1.5px,transparent 1.6px);background-size:20px 20px}
 body[data-cinsiyet="erkek"] .noktalar{display:block}
 
-.kapsayici{position:relative;z-index:1;max-width:480px;margin:0 auto;
-  padding:calc(1.7rem + env(safe-area-inset-top)) 1.15rem calc(2rem + env(safe-area-inset-bottom))}
+/* ============ SİTE ÇATISI ============ */
+.site{position:relative;z-index:1;max-width:680px;margin:0 auto;padding:0 1.15rem}
 
-/* --- Başlık --- */
-.sinyal{display:inline-block;margin-bottom:.6rem;background:var(--kart);border:1px solid var(--kart-hat);
-  border-radius:999px;padding:.32rem .85rem;font-family:var(--yazi-vurgu);font-weight:700;
-  font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--vurgu-koyu);transition:background .4s,color .3s}
-body[data-cinsiyet="erkek"] .sinyal{letter-spacing:.12em}
-.baslik{font-family:var(--yazi-vurgu);font-weight:800;font-size:clamp(1.7rem,8.4vw,2.45rem);
-  line-height:1.14;letter-spacing:.015em;transition:font-family .3s}
-body[data-cinsiyet="erkek"] .baslik{text-transform:uppercase;font-weight:400}
-.alt-baslik{margin-top:.5rem;font-size:.96rem;font-weight:600;color:var(--metin-acik);line-height:1.5}
+/* --- Üst çubuk --- */
+.baslik-tur{position:sticky;top:0;z-index:60;background:var(--nav-bg);
+  -webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--cizgi);transition:background .5s,border-color .4s}
+.baslik-tur-ic{max-width:680px;margin:0 auto;padding:.62rem 1.15rem;display:flex;
+  align-items:center;justify-content:space-between;gap:1rem}
+.logo{font-family:var(--yazi-vurgu);font-weight:800;font-size:1.16rem;letter-spacing:.01em;
+  color:var(--metin);text-decoration:none;display:flex;align-items:center;gap:.45rem;
+  white-space:nowrap;transition:font-family .3s}
+.logo i{font-style:normal;color:var(--vurgu-koyu);transition:color .3s}
+.cat-navigasyon{display:flex;gap:.3rem;list-style:none}
+.cat-navigasyon a{font-family:var(--yazi-govde);font-weight:800;font-size:.84rem;letter-spacing:.03em;
+  color:var(--metin-acik);text-decoration:none;padding:.5rem .75rem;border-radius:999px;
+  transition:color .25s,background .25s;white-space:nowrap}
+.cat-navigasyon a:hover{color:var(--vurgu-koyu);background:var(--kart)}
+
+/* --- Kahraman bölümü --- */
+.kahraman{position:relative;text-align:center;padding:3.3rem 0 2.5rem;overflow:hidden}
+.dekor{position:absolute;inset:0;pointer-events:none;z-index:0}
+.dekor span{position:absolute;opacity:.42;display:none;animation:dekorYuz 7s ease-in-out infinite}
+body[data-cinsiyet="kiz"]   .dekor span.kiz{display:block}
+body[data-cinsiyet="erkek"] .dekor span.erkek{display:block}
+.dekor span:nth-child(1){top:14%;left:4%;font-size:2rem;animation-duration:7.5s}
+.dekor span:nth-child(2){top:24%;right:5%;font-size:1.6rem;animation-duration:9s;animation-delay:.7s}
+.dekor span:nth-child(3){bottom:22%;left:8%;font-size:1.6rem;animation-duration:8.2s;animation-delay:1.3s}
+.dekor span:nth-child(4){bottom:16%;right:5%;font-size:2rem;animation-duration:9.4s;animation-delay:.3s}
+@keyframes dekorYuz{0%,100%{transform:translateY(0) rotate(-7deg)}50%{transform:translateY(-15px) rotate(9deg)}}
+.kahraman-ic{position:relative;z-index:1;max-width:560px;margin:0 auto}
+.kahraman h1{font-family:var(--yazi-vurgu);font-weight:800;font-size:clamp(1.9rem,9.6vw,2.95rem);
+  line-height:1.16;letter-spacing:.012em;margin-top:1.05rem;transition:font-family .3s}
+body[data-cinsiyet="erkek"] .kahraman h1{text-transform:uppercase;font-weight:400}
+.alt-baslik{margin-top:.75rem;font-size:.97rem;font-weight:600;color:var(--metin-acik);line-height:1.55}
+.adimlar{display:flex;flex-wrap:wrap;justify-content:center;gap:.5rem;margin-top:1.5rem}
+.adim{background:var(--kart);border:1px solid var(--kart-hat);border-radius:999px;
+  padding:.5rem .95rem;font-size:.8rem;font-weight:700;color:var(--metin);
+  box-shadow:0 6px 16px -10px rgba(0,0,0,.25);display:flex;align-items:center;gap:.35rem}
+.adim b{color:var(--vurgu-koyu);font-weight:800}
+.cta-satir{margin-top:1.7rem;display:flex;flex-direction:column;align-items:center;gap:.8rem}
+.cta-bir{min-height:60px;min-width:min(280px,86%);border:0;border-radius:999px;cursor:pointer;
+  background:var(--btn-grad);color:#fff;font-family:var(--yazi-govde);font-weight:800;
+  font-size:1.05rem;letter-spacing:.02em;padding:.95rem 1.9rem;
+  box-shadow:0 14px 32px -12px var(--vurgu),inset 0 2px 0 rgba(255,255,255,.32),inset 0 -3px 0 rgba(0,0,0,.14);
+  transition:transform .15s,box-shadow .25s;touch-action:manipulation}
+.cta-bir:active{transform:translateY(3px) scale(.98)}
+.cta-iki{background:none;border:0;cursor:pointer;color:var(--vurgu-koyu);font-family:var(--yazi-govde);
+  font-weight:800;font-size:.92rem;padding:.55rem .8rem;text-decoration:none;
+  border-bottom:2px dotted var(--vurgu-acik);transition:color .25s}
+
+/* --- Bölüm başlıkları --- */
+.bolum{padding:2.3rem 0 .5rem}
+.bolum-baslik{text-align:center;margin-bottom:1.6rem}
+.bolum-baslik h2{font-family:var(--yazi-vurgu);font-weight:800;font-size:clamp(1.42rem,6.8vw,1.95rem);
+  line-height:1.2;transition:font-family .3s}
+body[data-cinsiyet="erkek"] .bolum-baslik h2{text-transform:uppercase;font-weight:400}
+.bolum-baslik p{margin-top:.5rem;color:var(--metin-acik);font-weight:600;font-size:.95rem;line-height:1.55}
+
+/* --- Şablon kartları --- */
+.sekmeler-grid{display:grid;gap:1.7rem}
+@media (min-width:900px){.sekmeler-grid{grid-template-columns:1fr 1fr;align-items:start}}
+.sablon{position:relative;background:var(--kart);border:1px solid var(--kart-hat);border-radius:30px;
+  padding:1.5rem 1.15rem 1.35rem;display:flex;flex-direction:column;align-items:center;gap:1.15rem;
+  box-shadow:0 22px 48px -20px rgba(0,0,0,.34);overflow:hidden;
+  transition:transform .25s,box-shadow .25s}
+.sablon:hover{transform:translateY(-4px);box-shadow:0 30px 58px -22px rgba(0,0,0,.4)}
+.sablon::before{content:"";position:absolute;top:0;left:0;right:0;height:6px}
+.sablon-kiz::before{background:linear-gradient(92deg,#ffb6d9,#e86aa8 55%,#b26ce0)}
+.sablon-erkek::before{background:linear-gradient(92deg,#ff2b3a,#ffc933 80%)}
+
+.telefon{position:relative;width:min(262px,76vw);aspect-ratio:9/19.4;border-radius:34px;
+  overflow:hidden;background:#0b0f24;border:3px solid var(--kart-hat);
+  box-shadow:inset 0 0 0 1px rgba(0,0,0,.25),0 20px 42px -14px rgba(0,0,0,.5)}
+.telefon iframe{position:absolute;top:0;left:0;border:0;width:480px;height:1035px;
+  transform:scale(.54583);transform-origin:0 0}
+@media (max-width:349px){
+  .telefon{width:224px}
+  .telefon iframe{transform:scale(.46667)}
+}
+.canli{position:absolute;top:.6rem;left:.6rem;z-index:2;display:flex;align-items:center;gap:.35rem;
+  background:rgba(255,255,255,.93);color:#137a48;border-radius:999px;padding:.24rem .62rem;
+  font-size:.66rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;
+  font-family:var(--yazi-govde);box-shadow:0 3px 10px rgba(0,0,0,.18)}
+.canli::before{content:"";width:7px;height:7px;border-radius:50%;background:#22c55e;
+  animation:canliAt 1.6s ease-in-out infinite}
+@keyframes canliAt{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(.7)}}
+.telefon-isim{position:absolute;bottom:.6rem;left:50%;transform:translateX(-50%);z-index:2;
+  background:rgba(10,14,32,.62);color:#fff;border-radius:999px;padding:.3rem .8rem;
+  font-size:.72rem;font-weight:800;font-family:var(--yazi-govde);white-space:nowrap;
+  -webkit-backdrop-filter:blur(5px);backdrop-filter:blur(5px);
+  box-shadow:0 3px 12px rgba(0,0,0,.25)}
+
+.sablon-bilgi{text-align:center;width:100%;display:flex;flex-direction:column;align-items:center}
+.sablon-bilgi h3{font-family:var(--yazi-vurgu);font-weight:800;font-size:1.2rem;letter-spacing:.01em}
+.sablon-tanim{font-size:.78rem;font-weight:800;color:var(--vurgu-koyu);letter-spacing:.1em;
+  text-transform:uppercase;margin-top:.3rem}
+.ozellikler{list-style:none;display:flex;flex-wrap:wrap;justify-content:center;gap:.42rem;margin-top:.85rem}
+.ozellikler li{background:var(--alan-bg);border:1px solid var(--cizgi);border-radius:999px;
+  padding:.32rem .72rem;font-size:.76rem;font-weight:700;color:var(--alan-yazi)}
+.sablon-cta{min-height:54px;width:100%;max-width:300px;margin-top:1.05rem;display:flex;
+  align-items:center;justify-content:center;gap:.4rem;cursor:pointer;touch-action:manipulation;
+  transition:transform .15s,box-shadow .2s}
+.sablon-cta:active{transform:translateY(2px) scale(.98)}
+.sablon-cta-kiz{background:linear-gradient(92deg,#ff8fc0,#e86aa8 52%,#c86adf);color:#fff;border:0;
+  border-radius:999px;font-family:var(--yazi-govde);font-weight:800;font-size:.96rem;
+  box-shadow:0 10px 24px -10px #e86aa8,inset 0 2px 0 rgba(255,255,255,.32)}
+.sablon-cta-erkek{background:linear-gradient(180deg,#ff4754,#d3132a);color:#fff;
+  border:3px solid #10142e;border-radius:14px;
+  font-family:'Bangers','Impact',sans-serif;font-size:1.1rem;letter-spacing:.06em;
+  box-shadow:4px 4px 0 #10142e,0 0 22px rgba(255,43,58,.35);transform:rotate(-1deg)}
+.sablon-cta-erkek:active{transform:translate(3px,3px) rotate(-1deg);box-shadow:1px 1px 0 #10142e}
+
+/* ============ ÜRETİCİ (kart oluşturucu) ============ */
+.uretici-ic{position:relative;max-width:480px;margin:0 auto}
 
 /* --- Cinsiyet değiştirici --- */
 .cevir{position:relative;display:flex;margin:1.25rem 0;background:var(--kart);
@@ -191,12 +298,17 @@ body[data-cinsiyet="erkek"] .baslik{text-transform:uppercase;font-weight:400}
 .qr-not{margin-top:1.2rem;font-size:.86rem;font-weight:600;color:var(--metin-acik);text-align:center;line-height:1.5}
 .qr-ipucu{margin-top:.5rem;font-size:.74rem;font-weight:500;color:var(--metin-acik);opacity:.85;text-align:center}
 
-/* --- Alt not --- */
-.alt-not{margin-top:2.2rem;text-align:center;font-size:.86rem;font-weight:600;color:var(--metin-acik)}
+/* --- Site altı --- */
+.site-alt{margin-top:3.2rem;padding:1.7rem 1.15rem calc(1.9rem + env(safe-area-inset-bottom));
+  text-align:center;border-top:1px solid var(--cizgi);transition:border-color .4s}
+.site-alt .m-adi{font-family:var(--yazi-vurgu);font-weight:800;font-size:1.02rem;color:var(--metin)}
+.site-alt .m-adi i{font-style:normal;color:var(--vurgu-koyu)}
+.site-alt p{font-size:.82rem;color:var(--metin-acik);font-weight:600;margin-top:.4rem;line-height:1.6}
 .kalpAt{display:inline-block;animation:kalpAt 1.5s ease-in-out infinite}
 @keyframes kalpAt{0%,100%{transform:scale(1)}25%{transform:scale(1.28)}40%{transform:scale(1)}}
 
 @media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
   *{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition:none !important}
 }
 </style>
@@ -205,67 +317,157 @@ body[data-cinsiyet="erkek"] .baslik{text-transform:uppercase;font-weight:400}
 
 <div class="noktalar" aria-hidden="true"></div>
 
-<main class="kapsayici">
-
-  <header>
-    <span class="sinyal">QR Kart Stüdyosu</span>
-    <h1 class="baslik">Doğum Günü<br>Kartı Üretici</h1>
-    <p class="alt-baslik">İsmini ve notunu yaz, çıkan QR'ı telefonla tarat — kart anında açılır. 💌</p>
-  </header>
-
-  <div class="cevir" id="cevir" role="group" aria-label="Kart cinsiyeti">
-    <div class="cevir-gostergesi" aria-hidden="true"></div>
-    <button class="cevir-buton aktif" id="kizBtn" type="button" aria-pressed="true">👧 KIZ</button>
-    <button class="cevir-buton" id="erkekBtn" type="button" aria-pressed="false">👦 ERKEK</button>
+<header class="baslik-tur">
+  <div class="baslik-tur-ic">
+    <a class="logo" href="#uretici">🎂 doğumgünü<i>.com</i></a>
+    <nav aria-label="Ana gezinti">
+      <ul class="cat-navigasyon">
+        <li><a href="#sekmeler">Şablonlar</a></li>
+        <li><a href="#uretici">Kart Üretici</a></li>
+      </ul>
+    </nav>
   </div>
+</header>
 
-  <form id="form" onsubmit="return false">
-    <div class="form-kart">
+<main class="site">
 
-      <label class="alan-etiket" for="isimInput">İsim <span id="karSayac">0/30</span></label>
-      <input class="girdi" id="isimInput" type="text" placeholder="Örn: Elif" maxlength="30" autocomplete="off" spellcheck="false">
-
-      <div class="not-alan">
-        <span class="alan-etiket">Karta hangi not yazılsın?</span>
-        <div id="notKartlari"></div>
-        <div id="ozelKutu">
-          <textarea class="ozel-not" id="ozelNot" maxlength="160" placeholder="Kendi notunu yaz... (boş bırakırsan 1. örnek kullanılır)"></textarea>
-        </div>
-      </div>
-
+  <!-- ==================== KAHRAMAN ==================== -->
+  <section class="kahraman" aria-label="Tanıtım">
+    <div class="dekor" aria-hidden="true">
+      <span class="kiz">🎈</span><span class="kiz">🌸</span><span class="kiz">💗</span><span class="kiz">🎂</span>
+      <span class="erkek">⚡</span><span class="erkek">🏁</span><span class="erkek">🦸</span><span class="erkek">🚀</span>
     </div>
-  </form>
-
-  <div class="onizleme" id="onizleme" aria-live="polite"></div>
-
-  <div class="butonlar">
-    <button class="buton buton-bir" id="indirBtn" type="button" disabled>⬇️ QR'ı İndir (PNG)</button>
-    <button class="buton buton-iki" id="kopyalaBtn" type="button">🔗 Linki Kopyala</button>
-  </div>
-
-  <section class="qr-kutu" id="qrKutu" aria-live="polite">
-    <div class="qr-sahne">
-      <div class="qr-hale" aria-hidden="true"></div>
-      <div class="qr-cerceve">
-        <div class="qr-halka" aria-hidden="true"></div>
-        <div class="qr-kart bekliyor" id="qrAlan">
-          <div class="qr-yukleniyor">QR yükleniyor...</div>
-        </div>
-        <div class="qr-emoji" id="qrEmoji" aria-hidden="true">🎂</div>
-        <div class="qr-parilti" aria-hidden="true"></div>
+    <div class="kahraman-ic">
+      <span class="sinyal-logo" style="display:block;margin:0 auto">
+        <span style="display:inline-block;background:var(--kart);border:1px solid var(--kart-hat);border-radius:999px;padding:.34rem .9rem;font-family:var(--yazi-vurgu);font-weight:700;font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--vurgu-koyu)">Ücretsiz · QR ile kutlama</span>
+      </span>
+      <h1>Sevdiklerin için animasyonlu doğum günü kartı</h1>
+      <p class="alt-baslik">İsmini yaz, beğendiğin şablonu seç, çıkan QR'ı telefonla tara — kart, hazırladığın haliyle karşında açılır.</p>
+      <div class="adimlar" aria-label="Kullanım adımları">
+        <span class="adim">1️⃣ <b>İsim</b></span>
+        <span class="adim">2️⃣ <b>Şablon</b></span>
+        <span class="adim">3️⃣ <b>QR tara</b></span>
+        <span class="adim">4️⃣ <b>Kart açılır</b> 🎉</span>
+      </div>
+      <div class="cta-satir">
+        <a class="cta-bir" href="#uretici">Kartını Oluştur 🎂</a>
+        <a class="cta-iki" href="#sekmeler">Şablonlara göz at 👀</a>
       </div>
     </div>
-    <div class="qr-hata" id="qrHata">
-      <div>😔 QR kütüphanesi yüklenemedi. Bağlantını kontrol edip sayfayı yenile.</div>
-      <div class="qr-hata-adres" id="qrHataAdres"></div>
-    </div>
-    <p class="qr-not">QR'ı telefonunla tarat, kartın açılır 🎉</p>
-    <p class="qr-ipucu" id="qrIpucu"></p>
   </section>
 
-  <footer class="alt-not"><span class="kalpAt" aria-hidden="true">❤️</span> QR ile gönderildi</footer>
+  <!-- ==================== ŞABLONLAR ==================== -->
+  <section class="bolum" id="sekmeler" aria-label="Şablonlar">
+    <div class="bolum-baslik">
+      <h2>Şablonlar</h2>
+      <p>İkisi de canlı önizleme — sayfa açılır açılmaz animasyonlar başlar.</p>
+    </div>
+
+    <div class="sekmeler-grid">
+
+      <article class="sablon sablon-kiz">
+        <div class="telefon">
+          <span class="canli">Canlı</span>
+          <iframe src="dogum-gunu-kiz.html?isim=Elif&amp;not=G%C3%BCl%C3%BC%C5%9F%C3%BCn%20en%20g%C3%BCzel%20hediye%2C%20iyi%20ki%20do%C4%9Fdun%21%20%F0%9F%8E%82" title="Kız şablonu canlı önizleme" loading="lazy"></iframe>
+          <span class="telefon-isim">🌸 Elif</span>
+        </div>
+        <div class="sablon-bilgi">
+          <h3>Kız Şablonu 🌸</h3>
+          <p class="sablon-tanim">Tatlı &amp; Pastel</p>
+          <ul class="ozellikler">
+            <li>🎈 Balonlar</li><li>💗 Kalpler</li><li>✨ Parıltılar</li><li>🎊 Konfeti</li>
+          </ul>
+          <button class="sablon-cta sablon-cta-kiz" type="button" data-sablon="kiz">Bu şablonla kart oluştur →</button>
+        </div>
+      </article>
+
+      <article class="sablon sablon-erkek">
+        <div class="telefon">
+          <span class="canli">Canlı</span>
+          <iframe src="dogum-gunu-erkek.html?isim=Ali&amp;not=S%C3%BCper%20g%C3%BC%C3%A7lerin%20hep%20seninle%20olsun%2C%20do%C4%9Fum%20g%C3%BCn%C3%BCn%20kutlu%20olsun%21%20%E2%9A%A1" title="Erkek şablonu canlı önizleme" loading="lazy"></iframe>
+          <span class="telefon-isim">⚡ Ali</span>
+        </div>
+        <div class="sablon-bilgi">
+          <h3>Erkek Şablonu ⚡</h3>
+          <p class="sablon-tanim">Aksiyon &amp; Çizgi Roman</p>
+          <ul class="ozellikler">
+            <li>⚡ Şimşekler</li><li>🛡️ Dönüşüm kalkanı</li><li>🏁 Yarış arabası</li><li>🎊 Konfeti</li>
+          </ul>
+          <button class="sablon-cta sablon-cta-erkek" type="button" data-sablon="erkek">Bu şablonla kart oluştur →</button>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ==================== KART ÜRETİCİ ==================== -->
+  <section class="bolum" id="uretici" aria-label="Kart üretici">
+    <div class="bolum-baslik">
+      <h2>Kartını Oluştur</h2>
+      <p>İsmini ve notunu seç, QR'ı indir ya da paylaş. Kart, telefonunda kendini açar.</p>
+    </div>
+
+    <div class="uretici-ic">
+
+      <div class="cevir" id="cevir" role="group" aria-label="Kart cinsiyeti">
+        <div class="cevir-gostergesi" aria-hidden="true"></div>
+        <button class="cevir-buton aktif" id="kizBtn" type="button" aria-pressed="true">👧 KIZ</button>
+        <button class="cevir-buton" id="erkekBtn" type="button" aria-pressed="false">👦 ERKEK</button>
+      </div>
+
+      <form id="form" onsubmit="return false">
+        <div class="form-kart">
+
+          <label class="alan-etiket" for="isimInput">İsim <span id="karSayac">0/30</span></label>
+          <input class="girdi" id="isimInput" type="text" placeholder="Örn: Elif" maxlength="30" autocomplete="off" spellcheck="false">
+
+          <div class="not-alan">
+            <span class="alan-etiket">Karta hangi not yazılsın?</span>
+            <div id="notKartlari"></div>
+            <div id="ozelKutu">
+              <textarea class="ozel-not" id="ozelNot" maxlength="160" placeholder="Kendi notunu yaz... (boş bırakırsan 1. örnek kullanılır)"></textarea>
+            </div>
+          </div>
+
+        </div>
+      </form>
+
+      <div class="onizleme" id="onizleme" aria-live="polite"></div>
+
+      <div class="butonlar">
+        <button class="buton buton-bir" id="indirBtn" type="button" disabled>⬇️ QR'ı İndir (PNG)</button>
+        <button class="buton buton-iki" id="kopyalaBtn" type="button">🔗 Linki Kopyala</button>
+      </div>
+
+      <section class="qr-kutu" id="qrKutu" aria-live="polite">
+        <div class="qr-sahne">
+          <div class="qr-hale" aria-hidden="true"></div>
+          <div class="qr-cerceve">
+            <div class="qr-halka" aria-hidden="true"></div>
+            <div class="qr-kart bekliyor" id="qrAlan">
+              <div class="qr-yukleniyor">QR yükleniyor...</div>
+            </div>
+            <div class="qr-emoji" id="qrEmoji" aria-hidden="true">🎂</div>
+            <div class="qr-parilti" aria-hidden="true"></div>
+          </div>
+        </div>
+        <div class="qr-hata" id="qrHata">
+          <div>😔 QR kütüphanesi yüklenemedi. Bağlantını kontrol edip sayfayı yenile.</div>
+          <div class="qr-hata-adres" id="qrHataAdres"></div>
+        </div>
+        <p class="qr-not">QR'ı telefonunla tarat, kartın açılır 🎉</p>
+        <p class="qr-ipucu" id="qrIpucu"></p>
+      </section>
+
+    </div>
+  </section>
 
 </main>
+
+<footer class="site-alt">
+  <div class="m-adi">🎂 doğumgünü<i>.com</i></div>
+  <p>© doğumgünü.com — QR ile doğum günü kutlaması <span class="kalpAt" aria-hidden="true">❤️</span></p>
+</footer>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" defer></script>
 <script>
@@ -477,6 +679,20 @@ function cinsiyetDegistir(yeni) {
 }
 kizBtn.addEventListener('click', function () { cinsiyetDegistir('kiz'); });
 erkekBtn.addEventListener('click', function () { cinsiyetDegistir('erkek'); });
+
+// --- Şablon kartlarından üreticiye geç ---
+var sablonButonlari = document.querySelectorAll('.sablon-cta');
+function ureticiyeKaydir() {
+  var uretici = document.getElementById('uretici');
+  var y = uretici.getBoundingClientRect().top + (window.pageYOffset || document.documentElement.scrollTop) - 66;
+  window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
+}
+for (var s = 0; s < sablonButonlari.length; s++) {
+  sablonButonlari[s].addEventListener('click', function () {
+    cinsiyetDegistir(this.getAttribute('data-sablon'));
+    ureticiyeKaydir();
+  });
+}
 
 // --- İndir (PNG) ---
 indirBtn.addEventListener('click', function () {

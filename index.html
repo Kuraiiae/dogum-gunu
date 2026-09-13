@@ -335,14 +335,8 @@ body{
 .qr-sahne{position:relative;width:min(224px,70vw)}
 .qr-cerceve{position:relative;border:1px solid var(--cizgi);border-radius:16px;padding:10px;
   background:#fff;box-shadow:0 10px 26px -18px rgba(75,62,40,.28)}
-.qr-halka{display:none}
 .qr-kart{position:relative}
 .qr-kart canvas{display:block;width:100% !important;height:auto !important;border-radius:6px}
-.qr-emoji{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:32px;height:32px;
-  background:#fff;border-radius:50%;display:none;
-  align-items:center;justify-content:center;font-size:16px;line-height:1;
-  box-shadow:0 0 0 3px #fff;pointer-events:none;z-index:3}
-.qr-logo-cat{display:none}
 .qr-yukleniyor{display:none;flex-direction:column;align-items:center;justify-content:center;gap:.9rem;
   padding:4.4rem 1rem;color:var(--murekkep-acik);font-family:var(--yazi-govde);font-weight:500;font-size:.9rem}
 .qr-yukleniyor::before{content:"";width:40px;height:40px;border-radius:50%;
@@ -699,11 +693,9 @@ body{
         <section class="qr-kutu cerceve" id="qrKutu" aria-live="polite">
           <div class="qr-sahne">
             <div class="qr-cerceve">
-              <div class="qr-halka" aria-hidden="true"></div>
               <div class="qr-kart bekliyor" id="qrAlan">
                 <div class="qr-yukleniyor">QR hazırlanıyor...</div>
               </div>
-              <div class="qr-emoji" id="qrEmoji" aria-hidden="true">🎂</div>
             </div>
           </div>
           <div class="qr-hata" id="qrHata">
@@ -914,7 +906,6 @@ var indirBtn   = document.getElementById('indirBtn');
 var kopyalaBtn = document.getElementById('kopyalaBtn');
 var qrKutu     = document.getElementById('qrKutu');
 var qrAlan     = document.getElementById('qrAlan');
-var qrEmoji    = document.getElementById('qrEmoji');
 var qrHata     = document.getElementById('qrHata');
 var qrHataAdres= document.getElementById('qrHataAdres');
 var cevir      = document.getElementById('cevir');
@@ -1059,15 +1050,6 @@ function qrRengi() {
   return getComputedStyle(document.body).getPropertyValue('--qr-renk').trim() || '#A84F35';
 }
 
-// ============ LOGOLU QR (merkezde doğum günü logosu) ============
-function qrLogoEkle() {
-  // Emoji zaten HTML'de (#qrEmoji) QR'ın tam merkezinde durur.
-  // Sadece görünür yapalım; eski ekstra katmanları temizle.
-  var eski = qrAlan.querySelector('.qr-logo-cat');
-  if (eski) { eski.remove(); }
-  qrEmoji.style.display = 'flex';
-}
-
 // ============ ÖNİZLEME ============
 function onizlemeGuncelle() {
   var isim = isimInput.value.trim();
@@ -1118,9 +1100,7 @@ async function qrOlustur() {
     });
     qrAlan.classList.remove('bekliyor');
     qrKutu.classList.remove('hata');
-    qrEmoji.style.display = 'flex';
     indirBtn.disabled = false;
-    qrLogoEkle(); // merkezde doğum günü logosu
   } catch (e) {
     hataGoster(url);
   }

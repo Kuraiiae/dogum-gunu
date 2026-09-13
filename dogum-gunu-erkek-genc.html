@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b0e14">
+<title>DOĞUM GÜNÜN KUTLU OLSUN</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Oswald:wght@500;600&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+/* ============ BURAYA RENKLERİ DEĞİŞTİREBİLİRSİN ============ */
+:root{
+  --karbon:#0b0e14;
+  --karbon-2:#12161f;
+  --panel:#0d111a;
+  --neon-mavi:#00e5ff;
+  --mor-neon:#9d4dff;
+  --mor-neon-2:#b44dff;
+  --sihirli-pembe:#ff2fd6;
+  --beyaz:#f4f8ff;
+  --hud-mavi:rgba(0,229,255,.62);
+  --hud-mor:rgba(157,77,255,.7);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{
+  font-family:'Oswald','Trebuchet MS','Segoe UI',system-ui,sans-serif;
+  color:var(--beyaz);
+  background:linear-gradient(180deg,#07090f 0%,#0b0e14 55%,#10141d 100%);
+  background-attachment:fixed;
+  overflow-x:hidden;
+  min-height:100vh;min-height:100dvh;
+  padding-bottom:env(safe-area-inset-bottom);
+  user-select:none;-webkit-user-select:none;touch-action:manipulation;
+}
+
+/* --- Siber ızgara (perspektif) --- */
+.siber-izgara{
+  position:fixed;left:-12%;right:-12%;bottom:-8%;height:46vh;z-index:0;pointer-events:none;
+  background-image:linear-gradient(rgba(0,229,255,.16) 1.5px,transparent 1.5px),linear-gradient(90deg,rgba(157,77,255,.16) 1.5px,transparent 1.5px);
+  background-size:46px 46px;
+  transform:perspective(430px) rotateX(62deg);
+  transform-origin:top center;
+  animation:izgaraKay 3.2s linear infinite;
+  mask-image:linear-gradient(180deg,transparent,#000 30%);
+  -webkit-mask-image:linear-gradient(180deg,transparent,#000 30%);
+}
+@keyframes izgaraKay{to{background-position-y:46px,46px}}
+
+/* --- Tarama çizgileri --- */
+.tarama{
+  position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.5;
+  background:repeating-linear-gradient(0deg,rgba(255,255,255,.028) 0 1px,transparent 1px 4px);
+}
+
+/* --- Neon parlamalar + vinyet --- */
+.parlama{position:fixed;border-radius:50%;z-index:0;pointer-events:none;filter:blur(70px)}
+.parlama-neon{width:420px;height:420px;background:radial-gradient(closest-side,rgba(0,229,255,.34),transparent 72%);top:-140px;right:-120px;animation:neonAt 5s ease-in-out infinite alternate}
+.parlama-mor{width:460px;height:460px;background:radial-gradient(closest-side,rgba(157,77,255,.38),transparent 72%);bottom:-160px;left:-140px;animation:neonAt 6.5s ease-in-out infinite alternate-reverse}
+@keyframes neonAt{from{opacity:.7}to{opacity:1}}
+.vinyet{position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse at 50% 40%,transparent 50%,rgba(0,0,0,.6) 100%)}
+
+/* --- Hız çizgileri (JS üretiyor) --- */
+.iz{position:fixed;left:0;height:2px;border-radius:2px;z-index:2;pointer-events:none;opacity:0;background:linear-gradient(90deg,transparent,rgba(0,229,255,.75),rgba(255,255,255,.9));animation:izKay 2.1s linear infinite}
+@keyframes izKay{0%{transform:translateX(120px);opacity:0}18%{opacity:.8}100%{transform:translateX(-16px);opacity:0}}
+
+/* --- Üst HUD etiketleri --- */
+.hud-sol{
+  position:fixed;top:calc(.95rem + env(safe-area-inset-top));left:1rem;z-index:5;
+  font-family:'Share Tech Mono',Consolas,monospace;font-size:1rem;letter-spacing:.16em;
+  color:var(--hud-mavi);text-shadow:0 0 10px rgba(0,229,255,.45);
+  pointer-events:none;animation:hudIspil 3.2s steps(2) infinite;
+}
+.hud-sol::after{content:"▌";margin-left:2px;animation:imlec 1.1s steps(1) infinite}
+.hud-sag{
+  position:fixed;top:calc(.95rem + env(safe-area-inset-top));right:1rem;z-index:5;
+  font-family:'Share Tech Mono',Consolas,monospace;font-size:1rem;letter-spacing:.14em;
+  color:var(--hud-mor);text-shadow:0 0 10px rgba(157,77,255,.5);
+  pointer-events:none;text-align:right;
+}
+@keyframes hudIspil{0%,100%{opacity:1}50%{opacity:.5}}
+@keyframes imlec{0%,49%{opacity:1}50%,100%{opacity:0}}
+
+/* --- Sahne --- */
+main{position:relative;z-index:10;max-width:480px;margin:0 auto;padding:calc(5.6rem + env(safe-area-inset-top)) 1.15rem 10rem;text-align:center}
+
+/* --- Kart --- */
+.kart{
+  position:relative;background:rgba(13,17,26,.78);
+  border:1px solid rgba(0,229,255,.35);border-radius:14px;
+  padding:2.2rem 1.4rem 2.3rem;
+  box-shadow:0 0 0 1px rgba(157,77,255,.18), 0 0 34px -8px rgba(0,229,255,.25), inset 0 0 22px rgba(0,229,255,.05);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  animation:kartIn .75s cubic-bezier(.2,1,.3,1) .08s both;
+}
+@keyframes kartIn{from{opacity:0;transform:translateY(30px) scale(.97)}to{opacity:1;transform:none}}
+.kose{position:absolute;width:22px;height:22px;border:0 solid var(--neon-mavi);pointer-events:none;filter:drop-shadow(0 0 6px rgba(0,229,255,.8));opacity:.85}
+.kose-1{top:-1px;left:-1px;border-top-width:2px;border-left-width:2px;border-top-left-radius:8px}
+.kose-2{top:-1px;right:-1px;border-top-width:2px;border-right-width:2px;border-top-right-radius:8px}
+.kose-3{bottom:-1px;left:-1px;border-bottom-width:2px;border-left-width:2px;border-bottom-left-radius:8px}
+.kose-4{bottom:-1px;right:-1px;border-bottom-width:2px;border-right-width:2px;border-bottom-right-radius:8px}
+
+/* --- HUD şeritleri --- */
+.hud-saridi{
+  position:relative;background:rgba(0,229,255,.07);border:1px solid rgba(0,229,255,.28);
+  margin-bottom:1.15rem;padding:.5rem 1rem;text-align:left;
+  font-family:'Share Tech Mono',Consolas,monospace;font-size:.92rem;letter-spacing:.16em;
+  color:var(--neon-mavi);
+  clip-path:polygon(0 0,calc(100% - 14px) 0,100% 50%,calc(100% - 14px) 100%,0 100%);
+}
+.hud-saridi-alt{
+  position:relative;background:rgba(157,77,255,.08);border:1px solid rgba(157,77,255,.35);
+  margin-top:1.6rem;padding:.5rem 1rem;text-align:right;
+  font-family:'Share Tech Mono',Consolas,monospace;font-size:.92rem;letter-spacing:.16em;
+  color:#d9a6ff;
+  clip-path:polygon(14px 0,100% 0,100% 100%,14px 100%,0 50%);
+}
+
+/* --- Amblem: altıgen çekirdek + puls halkaları --- */
+.amblem{position:relative;width:120px;height:120px;margin:0 auto 1.1rem}
+.halka-puls{position:absolute;left:50%;top:50%;width:70px;height:70px;border:1.5px solid rgba(0,229,255,.5);border-radius:50%;transform:translate(-50%,-50%);animation:pulsHalka 2.6s ease-out infinite}
+.halka-puls.p2{border-color:rgba(157,77,255,.5);animation-delay:1.3s}
+@keyframes pulsHalka{0%{width:70px;height:70px;opacity:1}100%{width:132px;height:132px;opacity:0}}
+.amblem-svg{
+  position:relative;z-index:1;
+  filter:drop-shadow(0 0 14px rgba(0,229,255,.45));
+  animation:emblemAc 1.1s cubic-bezier(.3,1.4,.5,1) .12s both;
+}
+@keyframes emblemAc{0%{opacity:0;transform:scale(.4) rotate(-120deg)}60%{opacity:1;transform:scale(1.12) rotate(8deg)}100%{transform:scale(1) rotate(0)}}
+.cekirdek{transform-box:fill-box;transform-origin:center;animation:cekirdekAt 1.8s ease-in-out infinite}
+@keyframes cekirdekAt{0%,100%{transform:scale(.85)}50%{transform:scale(1.15)}}
+.dairesel{transform-box:fill-box;transform-origin:center;animation:spinR 6s linear infinite}
+@keyframes spinR{to{transform:rotate(-360deg)}}
+
+/* --- Başlık --- */
+.baslik{
+  font-family:'Anton','Arial Black',Impact,sans-serif;
+  font-size:clamp(1.7rem,8.4vw,2.6rem);line-height:1.16;letter-spacing:.05em;color:var(--beyaz);
+  text-shadow:0 0 18px rgba(0,229,255,.35), 3px 3px 0 rgba(157,77,255,.8);
+  animation:baslikGir .7s cubic-bezier(.2,1.2,.4,1) .3s backwards;
+}
+@keyframes baslikGir{from{opacity:0;transform:translateX(-26px)}to{opacity:1;transform:none}}
+
+/* --- İsim: neon gradyan + glitch --- */
+.isim{
+  font-family:'Anton','Arial Black',Impact,sans-serif;
+  font-size:clamp(2.5rem,14vw,4.2rem);line-height:1.04;letter-spacing:.04em;
+  background:linear-gradient(93deg,#00e5ff 0%,#9d4dff 45%,#ff2fd6 100%);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;
+  filter:drop-shadow(0 0 14px rgba(0,229,255,.4));
+  animation:isimGir .8s cubic-bezier(.3,1.5,.4,1) .55s backwards, isimGlitch 4.6s steps(2) 2.4s infinite;
+}
+@keyframes isimGir{from{opacity:0;transform:scale(.2) rotate(-9deg)}60%{opacity:1;transform:scale(1.12) rotate(3deg)}100%{opacity:1;transform:scale(1) rotate(0)}}
+@keyframes isimGlitch{
+  0%,89%,93%,100%{transform:none;filter:drop-shadow(0 0 14px rgba(0,229,255,.4))}
+  90%{transform:translateX(-3px) skewX(-4deg);filter:drop-shadow(0 0 20px rgba(255,47,214,.8))}
+  91%{transform:translateX(3px) skewX(3deg);filter:drop-shadow(0 0 22px rgba(0,229,255,.9))}
+}
+
+/* --- Dilek paneli --- */
+.not{
+  position:relative;text-align:left;
+  background:rgba(13,17,26,.9);border:1px solid rgba(0,229,255,.3);border-radius:8px;
+  padding:1rem 1.15rem;
+  font-weight:500;font-size:1.05rem;line-height:1.7;color:#cfd8ec;
+  box-shadow:inset 0 0 18px rgba(0,229,255,.06);
+}
+.not::before{
+  content:"▸";position:absolute;top:-.55rem;left:1.1rem;
+  color:var(--neon-mavi);background:#0d111a;padding:0 .35rem;
+  font-family:'Share Tech Mono',monospace;text-shadow:0 0 8px rgba(0,229,255,.8);
+}
+
+/* --- Buton --- */
+.btn{
+  display:block;width:min(300px,88%);margin:1.7rem auto 0;
+  font-family:'Oswald',sans-serif;font-weight:600;font-size:1.18rem;letter-spacing:.14em;text-transform:uppercase;
+  color:#05070c;
+  background:linear-gradient(93deg,#00e5ff 0%,#37f3ff 30%,#9d4dff 100%);
+  border:none;border-radius:8px;padding:1.02rem 1.2rem;min-height:56px;cursor:pointer;
+  clip-path:polygon(12px 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%,0 12px);
+  box-shadow:0 0 26px -4px rgba(0,229,255,.55), inset 0 -3px 0 rgba(0,0,0,.3);
+  transition:transform .15s ease;
+  animation:btnGel .7s cubic-bezier(.3,1.5,.4,1) .9s backwards, butonNeon 2.6s ease-in-out 2s infinite;
+  touch-action:manipulation;
+}
+.btn:active{transform:scale(.96)}
+@keyframes btnGel{from{opacity:0;transform:scale(.1) rotate(8deg)}60%{opacity:1;transform:scale(1.14) rotate(-2deg)}to{opacity:1;transform:scale(1) rotate(0)}}
+@keyframes butonNeon{
+  0%,100%{box-shadow:0 0 20px -4px rgba(0,229,255,.55), inset 0 -3px 0 rgba(0,0,0,.3)}
+  50%{box-shadow:0 0 36px -2px rgba(157,77,255,.75), inset 0 -3px 0 rgba(0,0,0,.3)}
+}
+
+/* --- Giriş animasyonu (kademeli) --- */
+.ent{opacity:0;animation:entGel .65s cubic-bezier(.22,.9,.28,1) backwards}
+.ent-0{animation-delay:.16s}
+.ent-1{animation-delay:.32s}
+.ent-2{animation-delay:.46s}
+@keyframes entGel{from{opacity:0;transform:translateY(22px) scale(.97)}to{opacity:1;transform:none}}
+
+/* --- Tam ekran flaş --- */
+.flas{position:fixed;inset:0;z-index:30;pointer-events:none;opacity:0;background:linear-gradient(140deg,rgba(0,229,255,.35),rgba(157,77,255,.35))}
+.flas.go{animation:flasGit .7s ease-out forwards}
+@keyframes flasGit{0%{opacity:0}12%{opacity:.5}35%{opacity:.12}100%{opacity:0}}
+
+/* --- Alt not --- */
+.altnot{
+  position:fixed;left:0;right:0;bottom:0;z-index:12;text-align:center;
+  padding:.55rem 1rem calc(.62rem + env(safe-area-inset-bottom));
+  font-weight:500;font-size:.88rem;letter-spacing:.06em;
+  color:rgba(244,248,255,.66);
+  background:linear-gradient(0deg,rgba(11,14,20,.92),rgba(11,14,20,0));
+  pointer-events:none;
+}
+.kalpAt{display:inline-block;animation:kalpAt 1.5s ease-in-out infinite}
+@keyframes kalpAt{0%,100%{transform:scale(1)}25%{transform:scale(1.28)}40%{transform:scale(1)}}
+
+#konfeti{position:fixed;inset:0;width:100%;height:100%;z-index:40;pointer-events:none}
+
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition:none !important}
+}
+</style>
+</head>
+<body>
+
+<div class="siber-izgara" aria-hidden="true"></div>
+<div class="tarama" aria-hidden="true"></div>
+<div class="parlama parlama-neon" aria-hidden="true"></div>
+<div class="parlama parlama-mor" aria-hidden="true"></div>
+<div class="vinyet" aria-hidden="true"></div>
+
+<span class="hud-sol" aria-hidden="true">SYS://KUTLAMA.PROTOKOLÜ</span>
+<span class="hud-sag" aria-hidden="true">CAN ▸ %100 ▸ HAZIR</span>
+
+<div class="flas" id="flas" aria-hidden="true"></div>
+<canvas id="konfeti" aria-hidden="true"></canvas>
+
+<main>
+  <section class="kart">
+
+    <span class="kose kose-1" aria-hidden="true"></span>
+    <span class="kose kose-2" aria-hidden="true"></span>
+    <span class="kose kose-3" aria-hidden="true"></span>
+    <span class="kose kose-4" aria-hidden="true"></span>
+
+    <div class="hud-saridi ent ent-0" aria-hidden="true">» KUTLAMA PROTOKOLÜ BAŞLATILDI_</div>
+
+    <div class="amblem" aria-hidden="true">
+      <span class="halka-puls"></span>
+      <span class="halka-puls p2"></span>
+      <svg class="amblem-svg" viewBox="0 0 120 110" width="116" height="107">
+        <polygon points="60 6 104 32 104 78 60 104 16 78 16 32" fill="#0d111a" stroke="#00e5ff" stroke-width="3"/>
+        <polygon points="60 15 96 37 96 73 60 95 24 73 24 37" fill="none" stroke="rgba(157,77,255,.65)" stroke-width="1.4"/>
+        <g stroke="#00e5ff" stroke-width="1.1" opacity=".75">
+          <path d="M60 24 L60 33"/><path d="M60 77 L60 86"/><path d="M30 40 L37 44"/><path d="M83 66 L90 70"/><path d="M90 40 L83 44"/><path d="M37 66 L30 70"/>
+        </g>
+        <circle class="dairesel" cx="60" cy="55" r="13" fill="none" stroke="#00e5ff" stroke-width="1.6" stroke-dasharray="7 6"/>
+        <circle class="cekirdek" cx="60" cy="55" r="7" fill="#9d4dff"/>
+        <circle cx="60" cy="55" r="21" fill="none" stroke="rgba(0,229,255,.35)" stroke-width="1"/>
+        <circle cx="60" cy="55" r="2" fill="#00e5ff"/>
+      </svg>
+    </div>
+
+    <h1 class="baslik">DOĞUM GÜNÜN<br>KUTLU OLSUN</h1>
+
+    <h2 class="isim" id="isimYazisi">İSİM</h2>
+
+    <div class="not ent ent-1">
+      <p id="notYazisi">Senin için en güzel dileklerimle...</p>
+    </div>
+
+    <div class="hud-saridi-alt ent ent-2" aria-hidden="true">GÜÇ ▸ %100 · NİVEL ▸ EPİK_</div>
+
+    <button class="btn" id="buton" type="button">🎉 KUTLAMAYI BAŞLAT</button>
+
+  </section>
+</main>
+
+<footer class="altnot"><span class="kalpAt" aria-hidden="true">❤️</span> QR ile gönderildi</footer>
+
+<script>
+// === GİZLİLİK KATMANI: Kilit ekranı ===
+(function(){
+var _p=new URLSearchParams(location.search),_a=_p.get('anahtar'),_sH=_p.get('sifre'),_sD=_p.get('sifreDuz');
+if(!_a||!_sH){return}
+document.documentElement.classList.add('kilitli');
+var _st=document.createElement('style');
+_st.textContent='html.kilitli body>*:not(#pgKilit){visibility:hidden!important}';
+document.head.appendChild(_st);
+var _ov=document.createElement('div');
+_ov.id='pgKilit';
+_ov.style.cssText='position:fixed;inset:0;z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:linear-gradient(160deg,#1f2537,#2c3146);color:#f2ead8;font-family:system-ui,sans-serif;text-align:center;padding:24px';
+_ov.innerHTML='<div style="font-size:3rem">\uD83D\uDD12</div><h2 style="font-size:1.5rem;font-weight:700;margin:0">Kart Kilitli</h2><p style="font-size:.95rem;opacity:.85;margin:0">Do\u011Fum g\u00FCn\u00FCn\u00FC a\u00E7mak i\u00E7in PIN kodunu gir:</p><input id="pgPin" type="password" inputmode="numeric" maxlength="8" autocomplete="off" style="font-size:22px;letter-spacing:6px;text-align:center;padding:10px 14px;border-radius:10px;border:1px solid #c9a86a;background:rgba(255,255,255,.08);color:#fff;outline:none"><button id="pgAc" style="background:#c9a86a;color:#1f2537;font-weight:700;border-radius:999px;padding:10px 22px;border:none;cursor:pointer;font-size:1rem">\uD83D\uDD25 Kart\u0131 A\u00E7</button><p id="pgHata" style="display:none;color:#ff6b6b;font-size:.88rem;margin:0">PIN yanl\u0131\u015F, tekrar dene.</p>';
+document.body.appendChild(_ov);
+var _sk=document.createElement('style');
+_sk.textContent='@keyframes pgShake{0%,100%{transform:translateX(0)}20%{transform:translateX(-8px)}40%{transform:translateX(8px)}60%{transform:translateX(-5px)}80%{transform:translateX(5px)}}';
+document.head.appendChild(_sk);
+var _pinI=document.getElementById('pgPin'),_btn=document.getElementById('pgAc'),_err=document.getElementById('pgHata');
+function _h(d){if(typeof crypto!=='undefined'&&crypto.subtle){return crypto.subtle.digest('SHA-256',new TextEncoder().encode(d)).then(function(b){return Array.from(new Uint8Array(b)).map(function(x){return x.toString(16).padStart(2,'0')}).join('')})}return Promise.resolve(null)}
+async function _ac(){var g=_pinI.value.trim();if(!g)return;var ok=false;if(_sH){var h=await _h(_a+'|'+g);if(h){ok=(h===_sH)}}if(!ok&&_sD){ok=(g===_sD)}if(ok){document.documentElement.classList.remove('kilitli');_ov.style.transition='opacity .4s';_ov.style.opacity='0';setTimeout(function(){_ov.remove()},420);document.querySelectorAll('*').forEach(function(el){var n=getComputedStyle(el).animationName;if(n&&n!=='none'){el.style.animation='none';void el.offsetWidth;el.style.animation=''}})}else{_err.style.display='block';_pinI.value='';_ov.style.animation='none';void _ov.offsetWidth;_ov.style.animation='pgShake .4s ease'}}
+_btn.addEventListener('click',_ac);
+_pinI.addEventListener('keydown',function(e){if(e.key==='Enter')_ac()});
+})();
+
+// ==================== BURAYA İSMİ VE NOTU YAZ ====================
+const VARSAYILAN_ISIM = "İSİM";
+const VARSAYILAN_NOT  = "Senin için en güzel dileklerimle...";
+// =================================================================
+
+// --- URL parametrelerinden isim ve notu oku (yoksa varsayılan) ---
+var params = new URLSearchParams(location.search);
+var ISIM = (params.get('isim') || '').trim() || VARSAYILAN_ISIM;
+var NOT  = (params.get('not')  || '').trim() || VARSAYILAN_NOT;
+
+// --- İsim ve notu yazdır ---
+document.getElementById('isimYazisi').textContent = ISIM;
+document.getElementById('notYazisi').textContent  = NOT;
+document.title = 'Doğum günün kutlu olsun, ' + ISIM + '!';
+
+// --- Hız çizgileri ---
+var i;
+for (i = 0; i < 9; i++) {
+  var z = document.createElement('span');
+  z.className = 'iz';
+  z.style.width = (90 + Math.random() * 130) + 'px';
+  z.style.top = (8 + Math.random() * 72) + '%';
+  z.style.left = (4 + Math.random() * 88) + '%';
+  z.style.animationDuration = (1.4 + Math.random() * 1.2) + 's';
+  z.style.animationDelay = (Math.random() * 2.4) + 's';
+  document.body.appendChild(z);
+}
+
+// --- Konfeti motoru ---
+var cv = document.getElementById('konfeti');
+var cx = cv.getContext('2d');
+var renkler = ['#00e5ff', '#9d4dff', '#ff2fd6', '#ffffff', '#37f3ff', '#ffd94d'];
+var DPR = Math.max(1, Math.min(2.5, window.devicePixelRatio || 1));
+function boyutla() {
+  cv.width = Math.floor(innerWidth * DPR);
+  cv.height = Math.floor(innerHeight * DPR);
+  cx.setTransform(DPR, 0, 0, DPR, 0, 0);
+}
+boyutla();
+window.addEventListener('resize', boyutla);
+var azHareket = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+var parcaciklar = [];
+
+function patlat(x, y, adet) {
+  for (var t = 0; t < adet; t++) {
+    var aci = Math.random() * Math.PI * 2;
+    var hiz = 2.5 + Math.random() * 6;
+    parcaciklar.push({
+      x: x, y: y,
+      vx: Math.cos(aci) * hiz,
+      vy: Math.sin(aci) * hiz - 3.6,
+      rot: Math.random() * Math.PI * 2,
+      vr: (Math.random() - 0.5) * 0.34,
+      boy: 5 + Math.random() * 8,
+      renk: renkler[(Math.random() * renkler.length) | 0],
+      sekil: Math.random() < 0.3 ? 2 : (Math.random() < 0.5 ? 0 : 1),
+      omur: 100 + Math.random() * 70,
+      op: 1
+    });
+  }
+}
+function yagmur() {
+  parcaciklar.push({
+    x: Math.random() * innerWidth, y: -10,
+    vx: (Math.random() - 0.5) * 0.7,
+    vy: 0.6 + Math.random() * 1.3,
+    rot: Math.random() * 6.28, vr: 0.02,
+    boy: 4 + Math.random() * 6,
+    renk: renkler[(Math.random() * renkler.length) | 0],
+    sekil: Math.random() < 0.5 ? 0 : 1,
+    omur: 300, op: 1
+  });
+}
+var son = 0;
+function dongu(zaman) {
+  requestAnimationFrame(dongu);
+  cx.clearRect(0, 0, innerWidth, innerHeight);
+  if (!azHareket && zaman - son > 480 && parcaciklar.length < 150) {
+    son = zaman;
+    yagmur();
+  }
+  for (var t = parcaciklar.length - 1; t >= 0; t--) {
+    var p = parcaciklar[t];
+    p.vy += 0.1; p.x += p.vx; p.y += p.vy; p.rot += p.vr; p.omur--;
+    p.op = Math.min(1, p.omur / 70);
+    if (p.y > innerHeight + 30 || p.omur <= 0) { parcaciklar.splice(t, 1); continue; }
+    cx.save();
+    cx.translate(p.x, p.y); cx.rotate(p.rot);
+    cx.globalAlpha = Math.max(0, p.op);
+    cx.fillStyle = p.renk;
+    if (p.sekil === 2) {
+      cx.beginPath();
+      cx.moveTo(0, -p.boy / 2);
+      cx.lineTo(p.boy / 2, p.boy / 2);
+      cx.lineTo(-p.boy / 2, p.boy / 2);
+      cx.closePath();
+      cx.fill();
+    }
+    else if (p.sekil === 0) { cx.fillRect(-p.boy / 2, -p.boy / 2, p.boy, p.boy * 0.6); }
+    else { cx.beginPath(); cx.arc(0, 0, p.boy / 2, 0, 6.283); cx.fill(); }
+    cx.restore();
+  }
+}
+requestAnimationFrame(dongu);
+
+// --- Ekran flaşı ---
+var flas = document.getElementById('flas');
+function flasYap() {
+  flas.classList.remove('go');
+  void flas.offsetWidth;
+  flas.classList.add('go');
+}
+
+// --- Açılışta kutlama patlaması ---
+setTimeout(function () { flasYap(); }, 260);
+setTimeout(function () {
+  patlat(innerWidth * 0.5, innerHeight * 0.45, 120);
+  setTimeout(function () { patlat(innerWidth * 0.2, innerHeight * 0.6, 70); }, 180);
+  setTimeout(function () { patlat(innerWidth * 0.8, innerHeight * 0.52, 70); }, 360);
+}, 420);
+
+// --- Buton: büyük kutlama ---
+var buton = document.getElementById('buton');
+buton.addEventListener('click', function () {
+  flasYap();
+  patlat(innerWidth * 0.5, innerHeight * 0.42, 160);
+  setTimeout(function () { patlat(innerWidth * 0.16, innerHeight * 0.6, 85); }, 150);
+  setTimeout(function () { patlat(innerWidth * 0.84, innerHeight * 0.5, 85); }, 300);
+  buton.textContent = '🎉 TEKRAR KUTLA!';
+});
+</script>
+</body>
+</html>

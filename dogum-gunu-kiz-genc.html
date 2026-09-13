@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#5b3a9e">
+<title>Doğum Günün Kutlu Olsun ✨</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============ BURAYA RENKLERİ DEĞİŞTİREBİLİRSİN ============ */
+:root{
+  --mor-koyu:#2a1650;
+  --mor:#5b3a9e;
+  --mor-orta:#7c58c4;
+  --lavanta-acik:#e6dcff;
+  --lavanta:#b9a3e8;
+  --mercankor:#ff7e9d;
+  --mercankor-koyu:#f25b86;
+  --seftali:#ffb9a5;
+  --aydinlik:#fff1ee;
+  --altin-yumusak:#ffd9a0;
+  --murekkep:#3a2456;
+  --murekkep-acik:#6d568a;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{
+  font-family:'Quicksand','Trebuchet MS','Segoe UI',system-ui,-apple-system,sans-serif;
+  color:var(--murekkep);
+  background:linear-gradient(180deg,#241543 0%,#4a2d86 30%,#7c58c4 55%,#c87ba5 78%,#f2a9a2 100%);
+  background-attachment:fixed;
+  overflow-x:hidden;
+  min-height:100vh;min-height:100dvh;
+  padding-bottom:env(safe-area-inset-bottom);
+  user-select:none;-webkit-user-select:none;touch-action:manipulation;
+}
+
+/* --- Alacakaranlık ışık küreleri --- */
+.blob{position:fixed;border-radius:50%;filter:blur(56px);opacity:.6;z-index:0;pointer-events:none}
+.blob.b1{width:360px;height:360px;background:#8a63d9;top:-130px;left:-120px;animation:drift1 16s ease-in-out infinite alternate}
+.blob.b2{width:330px;height:330px;background:#ff86a8;bottom:-120px;right:-110px;animation:drift2 20s ease-in-out infinite alternate}
+.blob.b3{width:240px;height:240px;background:#b78bf0;top:38%;left:58%;animation:drift1 18s ease-in-out infinite alternate-reverse}
+@keyframes drift1{from{transform:translate(0,0) scale(1)}to{transform:translate(48px,34px) scale(1.14)}}
+@keyframes drift2{from{transform:translate(0,0) scale(1)}to{transform:translate(-42px,-28px) scale(1.08)}}
+
+/* --- Süzülen kalpler, kelebekler ve parıltılar --- */
+#ortam{position:fixed;inset:0;z-index:1;pointer-events:none;overflow:hidden}
+.kalp{position:absolute;bottom:-50px;opacity:0;will-change:transform;animation-name:kalpYuksel;animation-timing-function:linear;animation-iteration-count:infinite}
+@keyframes kalpYuksel{
+  0%  {transform:translate3d(0,0,0) rotate(-7deg) scale(.8);opacity:0}
+  10% {opacity:.95}
+  50% {transform:translate3d(-24px,-48vh,0) rotate(8deg) scale(1)}
+  100%{transform:translate3d(16px,-112vh,0) rotate(-6deg) scale(.9);opacity:.75}
+}
+.kelebek{position:absolute;bottom:-60px;opacity:0;will-change:transform;animation-name:kelebekYuksel;animation-timing-function:linear;animation-iteration-count:infinite}
+@keyframes kelebekYuksel{
+  0%  {transform:translate3d(0,0,0) rotate(4deg);opacity:0}
+  10% {opacity:.95}
+  30% {transform:translate3d(46px,-32vh,0) rotate(-8deg)}
+  55% {transform:translate3d(-30px,-60vh,0) rotate(10deg)}
+  80% {transform:translate3d(34px,-88vh,0) rotate(-6deg)}
+  100%{transform:translate3d(-14px,-114vh,0) rotate(4deg);opacity:.7}
+}
+.kanat-sol,.kanat-sag{transform-box:fill-box;animation:kanatCal .5s ease-in-out infinite alternate}
+.kanat-sol{transform-origin:right center}
+.kanat-sag{transform-origin:left center}
+@keyframes kanatCal{from{transform:scaleX(1)}to{transform:scaleX(.3)}}
+.parilti{position:absolute;opacity:0;animation-name:parla;animation-iteration-count:infinite;animation-timing-function:ease-in-out}
+@keyframes parla{
+  0%,100%{opacity:.1;transform:scale(.5) rotate(0deg)}
+  50%{opacity:1;transform:scale(1.15) rotate(35deg)}
+}
+
+/* --- Kart --- */
+main{position:relative;z-index:10;max-width:480px;margin:0 auto;padding:calc(2rem + env(safe-area-inset-top)) 1.15rem 7.5rem;text-align:center}
+.kart{
+  position:relative;
+  background:rgba(255,251,252,.84);
+  border:1px solid rgba(255,255,255,.95);
+  border-radius:36px;
+  padding:2.2rem 1.35rem 2.4rem;
+  box-shadow:0 30px 70px -22px rgba(42,22,80,.5), inset 0 0 0 1px rgba(255,255,255,.5);
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+}
+.polaroid{
+  position:absolute;top:-36px;right:-8px;width:108px;padding:.55rem .55rem 1.4rem;
+  background:#fffdfb;border-radius:6px;
+  box-shadow:0 14px 30px -10px rgba(42,22,80,.45);
+  opacity:0;
+  animation:polaroidGel .8s ease-out .35s forwards, polaroidSal 5.5s ease-in-out 1.4s infinite;
+}
+.polaroid::before{
+  content:"";position:absolute;top:-9px;left:36px;width:34px;height:14px;
+  background:rgba(233,214,255,.9);border-left:1px solid #d8c4f2;border-right:1px solid #d8c4f2;
+  transform:rotate(-6deg);box-shadow:0 2px 4px rgba(60,35,90,.15);
+}
+@keyframes polaroidGel{from{opacity:0;transform:translateY(-18px) rotate(-4deg)}to{opacity:1;transform:translateY(0) rotate(7deg)}}
+@keyframes polaroidSal{0%,100%{transform:rotate(7deg) translateY(0)}50%{transform:rotate(9deg) translateY(-6px)}}
+.rozet{
+  display:inline-block;background:rgba(255,241,238,.9);border:1.5px solid rgba(255,126,157,.55);
+  border-radius:999px;padding:.42rem 1.05rem;margin-bottom:1rem;
+  font-weight:700;font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;color:var(--mercankor-koyu);
+  box-shadow:0 6px 16px -6px rgba(242,91,134,.4);
+}
+.baslik{
+  font-family:'Fredoka','Trebuchet MS',system-ui,sans-serif;font-weight:700;
+  font-size:clamp(1.5rem,7.4vw,2.25rem);line-height:1.18;letter-spacing:.02em;
+  background:linear-gradient(94deg,#7c3fae 8%,#c6548d 55%,#ff8a7a 96%);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;
+  filter:drop-shadow(0 3px 12px rgba(200,90,160,.28));
+}
+.ayrac{color:var(--mercankor);font-size:.95rem;letter-spacing:.5em;margin:.5rem 0 .7rem;text-indent:.5em}
+.isim{
+  font-family:'Fredoka','Trebuchet MS',system-ui,sans-serif;font-weight:600;
+  font-size:clamp(2.5rem,14vw,3.9rem);line-height:1.08;letter-spacing:.01em;
+  background:linear-gradient(96deg,#ff8a6e 4%,#ff4f8b 45%,#8b5cf6 92%);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;
+  background-size:230% 100%;
+  transform:rotate(-1.5deg);
+  filter:drop-shadow(0 6px 18px rgba(255,79,139,.3));
+  animation:isimGel .95s cubic-bezier(.3,1.5,.4,1) .55s backwards, isimParla 5.5s ease-in-out 1.9s infinite;
+}
+@keyframes isimGel{
+  from{opacity:0;transform:scale(.35) rotate(9deg)}
+  60%{transform:scale(1.14) rotate(-4deg)}
+  to{opacity:1;transform:scale(1) rotate(-1.5deg)}
+}
+@keyframes isimParla{0%,100%{background-position:0% 0}50%{background-position:100% 0}}
+.imza-cizgi{margin:.35rem auto .9rem}
+.not{
+  font-weight:600;font-size:1rem;line-height:1.7;color:var(--murekkep);
+  background:rgba(255,255,255,.82);
+  border:2px dashed rgba(185,163,232,.85);border-radius:22px;
+  padding:1.05rem 1.15rem;text-align:left;position:relative;
+  box-shadow:inset 0 0 0 4px rgba(230,220,255,.5);
+}
+.not::before{
+  content:"✿";position:absolute;top:-.68rem;left:1rem;
+  font-size:1rem;line-height:1.5rem;width:1.55rem;height:1.55rem;
+  text-align:center;color:var(--mercankor-koyu);background:var(--aydinlik);
+  border-radius:50%;border:1.5px solid rgba(255,126,157,.55);
+}
+.btn{
+  display:block;width:min(300px,88%);margin:1.5rem auto 0;
+  font-family:'Fredoka','Trebuchet MS',system-ui,sans-serif;font-weight:700;font-size:1.12rem;
+  color:#fff;letter-spacing:.02em;
+  background:linear-gradient(94deg,#ff8a6e 0%,#ff4f8b 55%,#a05ff0 100%);
+  border:none;border-radius:999px;padding:1rem 1.2rem;min-height:56px;cursor:pointer;
+  box-shadow:0 12px 30px -10px rgba(255,79,139,.7), inset 0 -3px 0 rgba(0,0,0,.14), inset 0 2px 0 rgba(255,255,255,.4);
+  transition:transform .15s ease;
+  animation:btnGel .8s cubic-bezier(.22,.9,.28,1) .95s backwards, filtrePuls 2.8s ease-in-out 2s infinite;
+  touch-action:manipulation;
+}
+.btn:active{transform:translateY(3px) scale(.98);box-shadow:0 6px 16px -8px rgba(255,79,139,.6)}
+@keyframes btnGel{from{opacity:0;transform:translateY(26px) scale(.94)}to{opacity:1;transform:none}}
+@keyframes filtrePuls{0%,100%{filter:brightness(1)}50%{filter:brightness(1.07) saturate(1.12)}}
+
+/* --- Giriş animasyonu (kademeli) --- */
+.ent{opacity:0;animation:entGel .85s cubic-bezier(.22,.9,.28,1) backwards}
+.ent-0{animation-delay:.05s}
+.ent-1{animation-delay:.16s}
+.ent-2{animation-delay:.28s}
+.ent-3{animation-delay:.4s}
+.ent-4{animation-delay:.52s}
+.ent-5{animation-delay:.64s}
+@keyframes entGel{from{opacity:0;transform:translateY(26px) scale(.96)}to{opacity:1;transform:none}}
+
+.hop{animation:hop .6s ease-in-out}
+@keyframes hop{0%{transform:scale(1) rotate(-1.5deg)}35%{transform:scale(1.16) rotate(2deg)}70%{transform:scale(.95)}100%{transform:scale(1) rotate(-1.5deg)}}
+
+/* --- Alt not --- */
+.altnot{
+  position:fixed;left:0;right:0;bottom:0;z-index:12;text-align:center;
+  padding:1rem 1rem calc(.9rem + env(safe-area-inset-bottom));
+  font-weight:600;font-size:.86rem;
+  color:rgba(58,36,86,.75);
+  background:linear-gradient(0deg,rgba(244,205,205,.9),rgba(244,205,205,0));
+  pointer-events:none;
+}
+.kalpAt{display:inline-block;animation:kalpAt 1.5s ease-in-out infinite}
+@keyframes kalpAt{0%,100%{transform:scale(1)}25%{transform:scale(1.28)}40%{transform:scale(1)}}
+
+#konfeti{position:fixed;inset:0;width:100%;height:100%;z-index:40;pointer-events:none}
+
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition:none !important}
+}
+</style>
+</head>
+<body>
+
+<div class="blob b1" aria-hidden="true"></div>
+<div class="blob b2" aria-hidden="true"></div>
+<div class="blob b3" aria-hidden="true"></div>
+<div id="ortam" aria-hidden="true"></div>
+<canvas id="konfeti" aria-hidden="true"></canvas>
+
+<main>
+  <section class="kart ent ent-0">
+
+    <div class="polaroid" aria-hidden="true">
+      <svg viewBox="0 0 96 96" width="104">
+        <defs>
+          <linearGradient id="gokK" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#5b3a9e"/>
+            <stop offset=".55" stop-color="#c87ba5"/>
+            <stop offset="1" stop-color="#ffc2a1"/>
+          </linearGradient>
+        </defs>
+        <rect width="96" height="96" rx="4" fill="url(#gokK)"/>
+        <circle cx="48" cy="52" r="17" fill="#ffd9a0" opacity=".9"/>
+        <circle cx="48" cy="52" r="25" fill="#ffd9a0" opacity=".22"/>
+        <path d="M0 76 Q 26 64 50 72 T 96 68 V96 H0 Z" fill="#4a2d86" opacity=".7"/>
+        <path d="M0 84 Q 32 73 60 81 T 96 79 V96 H0 Z" fill="#2a1650" opacity=".85"/>
+        <g fill="#fff">
+          <circle cx="16" cy="20" r="1.6"/><circle cx="40" cy="12" r="1.1"/><circle cx="68" cy="24" r="1.4"/><circle cx="84" cy="10" r="1.1"/><circle cx="28" cy="36" r="1.2"/>
+        </g>
+        <path d="M48 63 C 40 55.5 34 51 34 44.6 C 34 39.5 38 36.6 42 36.6 C 45.2 36.6 47.2 38.8 48 41.4 C 48.8 38.8 50.8 36.6 54 36.6 C 58 36.6 62 39.5 62 44.6 C 62 51 56 55.5 48 63 Z" fill="#ff7e9d"/>
+      </svg>
+    </div>
+
+    <span class="rozet ent ent-1">✨ bugün senin günün ✨</span>
+
+    <h1 class="baslik ent ent-2">DOĞUM GÜNÜN<br>KUTLU OLSUN</h1>
+    <div class="ayrac ent ent-3" aria-hidden="true">✦ ❀ ✦</div>
+
+    <h2 class="isim" id="isimYazisi">İSİM</h2>
+    <div class="imza-cizgi ent ent-4" aria-hidden="true">
+      <svg viewBox="0 0 120 14" width="126" height="15">
+        <path d="M4 9 Q 16 2 28 9 T 52 9 T 76 9 T 100 9 T 116 7" fill="none" stroke="#c9a3f0" stroke-width="2.8" stroke-linecap="round"/>
+      </svg>
+    </div>
+
+    <div class="not ent ent-5">
+      <p id="notYazisi">Senin için en güzel dileklerimle...</p>
+    </div>
+
+    <button class="btn" id="buton" type="button">🎉 Kutlamayı Başlat</button>
+
+  </section>
+</main>
+
+<footer class="altnot"><span class="kalpAt" aria-hidden="true">❤️</span> QR ile gönderildi</footer>
+
+<script>
+// === GİZLİLİK KATMANI: Kilit ekranı ===
+(function(){
+var _p=new URLSearchParams(location.search),_a=_p.get('anahtar'),_sH=_p.get('sifre'),_sD=_p.get('sifreDuz');
+if(!_a||!_sH){return}
+document.documentElement.classList.add('kilitli');
+var _st=document.createElement('style');
+_st.textContent='html.kilitli body>*:not(#pgKilit){visibility:hidden!important}';
+document.head.appendChild(_st);
+var _ov=document.createElement('div');
+_ov.id='pgKilit';
+_ov.style.cssText='position:fixed;inset:0;z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:linear-gradient(160deg,#1f2537,#2c3146);color:#f2ead8;font-family:system-ui,sans-serif;text-align:center;padding:24px';
+_ov.innerHTML='<div style="font-size:3rem">\uD83D\uDD12</div><h2 style="font-size:1.5rem;font-weight:700;margin:0">Kart Kilitli</h2><p style="font-size:.95rem;opacity:.85;margin:0">Do\u011Fum g\u00FCn\u00FCn\u00FC a\u00E7mak i\u00E7in PIN kodunu gir:</p><input id="pgPin" type="password" inputmode="numeric" maxlength="8" autocomplete="off" style="font-size:22px;letter-spacing:6px;text-align:center;padding:10px 14px;border-radius:10px;border:1px solid #c9a86a;background:rgba(255,255,255,.08);color:#fff;outline:none"><button id="pgAc" style="background:#c9a86a;color:#1f2537;font-weight:700;border-radius:999px;padding:10px 22px;border:none;cursor:pointer;font-size:1rem">\uD83D\uDD25 Kart\u0131 A\u00E7</button><p id="pgHata" style="display:none;color:#ff6b6b;font-size:.88rem;margin:0">PIN yanl\u0131\u015F, tekrar dene.</p>';
+document.body.appendChild(_ov);
+var _sk=document.createElement('style');
+_sk.textContent='@keyframes pgShake{0%,100%{transform:translateX(0)}20%{transform:translateX(-8px)}40%{transform:translateX(8px)}60%{transform:translateX(-5px)}80%{transform:translateX(5px)}}';
+document.head.appendChild(_sk);
+var _pinI=document.getElementById('pgPin'),_btn=document.getElementById('pgAc'),_err=document.getElementById('pgHata');
+function _h(d){if(typeof crypto!=='undefined'&&crypto.subtle){return crypto.subtle.digest('SHA-256',new TextEncoder().encode(d)).then(function(b){return Array.from(new Uint8Array(b)).map(function(x){return x.toString(16).padStart(2,'0')}).join('')})}return Promise.resolve(null)}
+async function _ac(){var g=_pinI.value.trim();if(!g)return;var ok=false;if(_sH){var h=await _h(_a+'|'+g);if(h){ok=(h===_sH)}}if(!ok&&_sD){ok=(g===_sD)}if(ok){document.documentElement.classList.remove('kilitli');_ov.style.transition='opacity .4s';_ov.style.opacity='0';setTimeout(function(){_ov.remove()},420);document.querySelectorAll('*').forEach(function(el){var n=getComputedStyle(el).animationName;if(n&&n!=='none'){el.style.animation='none';void el.offsetWidth;el.style.animation=''}})}else{_err.style.display='block';_pinI.value='';_ov.style.animation='none';void _ov.offsetWidth;_ov.style.animation='pgShake .4s ease'}}
+_btn.addEventListener('click',_ac);
+_pinI.addEventListener('keydown',function(e){if(e.key==='Enter')_ac()});
+})();
+
+// ==================== BURAYA İSMİ VE NOTU YAZ ====================
+const VARSAYILAN_ISIM = "İSİM";
+const VARSAYILAN_NOT  = "Senin için en güzel dileklerimle...";
+// =================================================================
+
+// --- URL parametrelerinden isim ve notu oku (yoksa varsayılan) ---
+var params = new URLSearchParams(location.search);
+var ISIM = (params.get('isim') || '').trim() || VARSAYILAN_ISIM;
+var NOT  = (params.get('not')  || '').trim() || VARSAYILAN_NOT;
+
+// --- İsim ve notu yazdır ---
+document.getElementById('isimYazisi').textContent = ISIM;
+document.getElementById('notYazisi').textContent  = NOT;
+document.title = 'Doğum günün kutlu olsun, ' + ISIM + '! ✨';
+
+// --- Kalpler, kelebekler ve parıltılar ---
+var ortam = document.getElementById('ortam');
+var kalpRenkleri = ['#ff7e9d', '#ff9aa8', '#c79aff', '#b9a3e8', '#ff8fb0'];
+var i;
+for (i = 0; i < 7; i++) {
+  var k = document.createElement('div');
+  k.className = 'kalp';
+  var s = 14 + Math.random() * 13;
+  k.style.left = (3 + Math.random() * 90) + '%';
+  k.style.animationDuration = (11 + Math.random() * 9) + 's';
+  k.style.animationDelay = (Math.random() * 11) + 's';
+  k.innerHTML = '<svg viewBox="0 0 40 36" width="' + s + '" height="' + Math.round(s * 0.92) + '">' +
+    '<path d="M20 32 C 8 23.5 2.5 17 2.5 10.5 C 2.5 5 6.5 2 10.5 2 C 14.5 2 18 4.5 20 8 C 22 4.5 25.5 2 29.5 2 C 33.5 2 37.5 5 37.5 10.5 C 37.5 17 32 23.5 20 32 Z" fill="' + kalpRenkleri[i % kalpRenkleri.length] + '"/>' +
+    '</svg>';
+  ortam.appendChild(k);
+}
+var kelebekRenkleri = [['#ff7e9d', '#ffd9a0'], ['#b48cff', '#e6dcff'], ['#ff9ec4', '#ffd9a0'], ['#8fc7ff', '#ffd9a0'], ['#c79aff', '#fff1ee']];
+for (i = 0; i < 6; i++) {
+  var kb = document.createElement('div');
+  kb.className = 'kelebek';
+  var s2 = 16 + Math.random() * 14;
+  var r = kelebekRenkleri[i % kelebekRenkleri.length];
+  kb.style.left = (3 + Math.random() * 90) + '%';
+  kb.style.animationDuration = (16 + Math.random() * 10) + 's';
+  kb.style.animationDelay = (Math.random() * 14) + 's';
+  kb.innerHTML = '<svg viewBox="0 0 40 34" width="' + s2 + '" height="' + Math.round(s2 * 0.85) + '">' +
+    '<g class="kanat-sol"><path d="M19 17 C 10 8.5 1 10.5 2.5 19 C 3.5 26.5 11 26.5 19 23 Z" fill="' + r[0] + '"/><circle cx="9" cy="16" r="2.6" fill="' + r[1] + '" opacity=".85"/></g>' +
+    '<g class="kanat-sag"><path d="M21 17 C 30 8.5 39 10.5 37.5 19 C 36.5 26.5 29 26.5 21 23 Z" fill="' + r[0] + '"/><circle cx="31" cy="16" r="2.6" fill="' + r[1] + '" opacity=".85"/></g>' +
+    '<ellipse cx="20" cy="18" rx="1.7" ry="6.4" fill="#5b3a9e"/>' +
+    '<circle cx="20" cy="11.6" r="1.5" fill="#5b3a9e"/>' +
+    '</svg>';
+  ortam.appendChild(kb);
+}
+var pariltiRengi = ['#ffd9a0', '#fff1ee', '#e6dcff', '#ff9aa8'];
+for (i = 0; i < 16; i++) {
+  var p = document.createElement('div');
+  p.className = 'parilti';
+  var s3 = 9 + Math.random() * 9;
+  p.style.left = (3 + Math.random() * 92) + '%';
+  p.style.top = (6 + Math.random() * 82) + '%';
+  p.style.animationDuration = (2 + Math.random() * 1.8) + 's';
+  p.style.animationDelay = (Math.random() * 2.8) + 's';
+  p.innerHTML = '<svg viewBox="0 0 24 24" width="' + s3 + '" height="' + s3 + '">' +
+    '<path d="M12 0 C13.2 6.8 17.2 10.8 24 12 C17.2 13.2 13.2 17.2 12 24 C10.8 17.2 6.8 13.2 0 12 C6.8 10.8 10.8 6.8 12 0 Z" fill="' + pariltiRengi[i % pariltiRengi.length] + '" stroke="rgba(255,255,255,.9)" stroke-width=".8"/>' +
+    '</svg>';
+  ortam.appendChild(p);
+}
+
+// --- Konfeti motoru ---
+var cv = document.getElementById('konfeti');
+var cx = cv.getContext('2d');
+var renkler = ['#ff7e9d', '#ff9aa8', '#c79aff', '#b48cff', '#ffd9a0', '#fff1ee', '#8fc7ff'];
+var DPR = Math.max(1, Math.min(2.5, window.devicePixelRatio || 1));
+function boyutla() {
+  cv.width = Math.floor(innerWidth * DPR);
+  cv.height = Math.floor(innerHeight * DPR);
+  cx.setTransform(DPR, 0, 0, DPR, 0, 0);
+}
+boyutla();
+window.addEventListener('resize', boyutla);
+var azHareket = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+var parcaciklar = [];
+
+function patlat(x, y, adet) {
+  for (var t = 0; t < adet; t++) {
+    var aci = Math.random() * Math.PI * 2;
+    var hiz = 2 + Math.random() * 5;
+    parcaciklar.push({
+      x: x, y: y,
+      vx: Math.cos(aci) * hiz,
+      vy: Math.sin(aci) * hiz - 3.2,
+      rot: Math.random() * Math.PI * 2,
+      vr: (Math.random() - 0.5) * 0.3,
+      boy: 5 + Math.random() * 7,
+      renk: renkler[(Math.random() * renkler.length) | 0],
+      sekil: Math.random() < 0.35 ? 2 : (Math.random() < 0.5 ? 0 : 1),
+      omur: 100 + Math.random() * 70,
+      op: 1
+    });
+  }
+}
+function yagmur() {
+  parcaciklar.push({
+    x: Math.random() * innerWidth, y: -10,
+    vx: (Math.random() - 0.5) * 0.6,
+    vy: 0.5 + Math.random() * 1.1,
+    rot: Math.random() * 6.28, vr: 0.02,
+    boy: 4 + Math.random() * 6,
+    renk: renkler[(Math.random() * renkler.length) | 0],
+    sekil: Math.random() < 0.5 ? 0 : 1,
+    omur: 320, op: 1
+  });
+}
+function kalpCiz(x, y, b) {
+  cx.save();
+  cx.translate(x, y);
+  cx.scale(b / 18, b / 18);
+  cx.beginPath();
+  cx.moveTo(0, 6);
+  cx.bezierCurveTo(-9, -1, -7, -9, 0, -3);
+  cx.bezierCurveTo(7, -9, 9, -1, 0, 6);
+  cx.fill();
+  cx.restore();
+}
+var son = 0;
+function dongu(zaman) {
+  requestAnimationFrame(dongu);
+  cx.clearRect(0, 0, innerWidth, innerHeight);
+  if (!azHareket && zaman - son > 500 && parcaciklar.length < 150) {
+    son = zaman;
+    yagmur();
+  }
+  for (var t = parcaciklar.length - 1; t >= 0; t--) {
+    var p = parcaciklar[t];
+    p.vy += 0.1; p.x += p.vx; p.y += p.vy; p.rot += p.vr; p.omur--;
+    p.op = Math.min(1, p.omur / 70);
+    if (p.y > innerHeight + 30 || p.omur <= 0) { parcaciklar.splice(t, 1); continue; }
+    cx.save();
+    cx.translate(p.x, p.y); cx.rotate(p.rot);
+    cx.globalAlpha = Math.max(0, p.op);
+    cx.fillStyle = p.renk;
+    if (p.sekil === 2) { kalpCiz(0, 0, p.boy * 1.6); }
+    else if (p.sekil === 0) { cx.fillRect(-p.boy / 2, -p.boy / 2, p.boy, p.boy * 0.6); }
+    else { cx.beginPath(); cx.arc(0, 0, p.boy / 2, 0, 6.283); cx.fill(); }
+    cx.restore();
+  }
+}
+requestAnimationFrame(dongu);
+
+// --- Açılışta kutlama patlaması ---
+setTimeout(function () {
+  patlat(innerWidth * 0.5, innerHeight * 0.5, 110);
+  setTimeout(function () { patlat(innerWidth * 0.22, innerHeight * 0.68, 60); }, 200);
+  setTimeout(function () { patlat(innerWidth * 0.78, innerHeight * 0.62, 65); }, 400);
+}, 400);
+
+// --- Buton: büyük kutlama ---
+var buton = document.getElementById('buton');
+var isimEl = document.getElementById('isimYazisi');
+buton.addEventListener('click', function () {
+  patlat(innerWidth * 0.5, innerHeight * 0.45, 150);
+  setTimeout(function () { patlat(innerWidth * 0.18, innerHeight * 0.62, 80); }, 160);
+  setTimeout(function () { patlat(innerWidth * 0.82, innerHeight * 0.5, 80); }, 320);
+  isimEl.classList.remove('hop');
+  void isimEl.offsetWidth;
+  isimEl.classList.add('hop');
+  buton.textContent = '🎊 Tekrar Kutla!';
+});
+</script>
+</body>
+</html>

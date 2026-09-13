@@ -363,6 +363,29 @@ body{
 <footer class="altnot"><span class="kalpAt" aria-hidden="true">❤️</span> QR ile gönderildi</footer>
 
 <script>
+// === GİZLİLİK KATMANI: Kilit ekranı ===
+(function(){
+var _p=new URLSearchParams(location.search),_a=_p.get('anahtar'),_sH=_p.get('sifre'),_sD=_p.get('sifreDuz');
+if(!_a||!_sH){return}
+document.documentElement.classList.add('kilitli');
+var _st=document.createElement('style');
+_st.textContent='html.kilitli body>*:not(#pgKilit){visibility:hidden!important}';
+document.head.appendChild(_st);
+var _ov=document.createElement('div');
+_ov.id='pgKilit';
+_ov.style.cssText='position:fixed;inset:0;z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:linear-gradient(160deg,#1f2537,#2c3146);color:#f2ead8;font-family:system-ui,sans-serif;text-align:center;padding:24px';
+_ov.innerHTML='<div style="font-size:3rem">\uD83D\uDD12</div><h2 style="font-size:1.5rem;font-weight:700;margin:0">Kart Kilitli</h2><p style="font-size:.95rem;opacity:.85;margin:0">Do\u011Fum g\u00FCn\u00FCn\u00FC a\u00E7mak i\u00E7in PIN kodunu gir:</p><input id="pgPin" type="password" inputmode="numeric" maxlength="8" autocomplete="off" style="font-size:22px;letter-spacing:6px;text-align:center;padding:10px 14px;border-radius:10px;border:1px solid #c9a86a;background:rgba(255,255,255,.08);color:#fff;outline:none"><button id="pgAc" style="background:#c9a86a;color:#1f2537;font-weight:700;border-radius:999px;padding:10px 22px;border:none;cursor:pointer;font-size:1rem">\uD83D\uDD25 Kart\u0131 A\u00E7</button><p id="pgHata" style="display:none;color:#ff6b6b;font-size:.88rem;margin:0">PIN yanl\u0131\u015F, tekrar dene.</p>';
+document.body.appendChild(_ov);
+var _sk=document.createElement('style');
+_sk.textContent='@keyframes pgShake{0%,100%{transform:translateX(0)}20%{transform:translateX(-8px)}40%{transform:translateX(8px)}60%{transform:translateX(-5px)}80%{transform:translateX(5px)}}';
+document.head.appendChild(_sk);
+var _pinI=document.getElementById('pgPin'),_btn=document.getElementById('pgAc'),_err=document.getElementById('pgHata');
+function _h(d){if(typeof crypto!=='undefined'&&crypto.subtle){return crypto.subtle.digest('SHA-256',new TextEncoder().encode(d)).then(function(b){return Array.from(new Uint8Array(b)).map(function(x){return x.toString(16).padStart(2,'0')}).join('')})}return Promise.resolve(null)}
+async function _ac(){var g=_pinI.value.trim();if(!g)return;var ok=false;if(_sH){var h=await _h(_a+'|'+g);if(h){ok=(h===_sH)}}if(!ok&&_sD){ok=(g===_sD)}if(ok){document.documentElement.classList.remove('kilitli');_ov.style.transition='opacity .4s';_ov.style.opacity='0';setTimeout(function(){_ov.remove()},420);document.querySelectorAll('*').forEach(function(el){var n=getComputedStyle(el).animationName;if(n&&n!=='none'){el.style.animation='none';void el.offsetWidth;el.style.animation=''}})}else{_err.style.display='block';_pinI.value='';_ov.style.animation='none';void _ov.offsetWidth;_ov.style.animation='pgShake .4s ease'}}
+_btn.addEventListener('click',_ac);
+_pinI.addEventListener('keydown',function(e){if(e.key==='Enter')_ac()});
+})();
+
 // ==================== BURAYA İSMİ VE NOTU YAZ ====================
 const VARSAYILAN_ISIM = "İSİM";
 const VARSAYILAN_NOT  = "Senin için en güzel dileklerimle...";

@@ -64,6 +64,9 @@
 .zf-kaydir .zf-ok{font-size:1.7rem;line-height:1}
 /* ===== Hediye kutusu (kartın altında) ===== */
 .hediye-bolum{position:relative;z-index:12;max-width:520px;margin:2rem auto 3rem;padding:0 1.1rem;text-align:center}
+/* Hediye paketi alttan süzülerek gelir */
+.hediye-bolum{animation:hediyeGel .9s cubic-bezier(.2,1.2,.4,1) both}
+@keyframes hediyeGel{from{opacity:0;transform:translateY(90px) scale(.92)}to{opacity:1;transform:none}}
 .hediye-kutu{
   position:relative;margin:0 auto;width:min(210px,66vw);aspect-ratio:1;
   background:linear-gradient(150deg,var(--zf-bir,#ff9ec7),var(--zf-iki,#e86aa8));

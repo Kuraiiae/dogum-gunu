@@ -51,10 +51,14 @@
     kaydir: EN ? 'Swipe down' : 'Aşağı kaydır',
     devam: EN ? 'Open' : 'Aç',
     kartBaslik: EN ? 'Happy Birthday!' : 'İyi ki Doğdun!',
+    kutlama: EN ? 'Happy Birthday to You!' : 'Doğum günün kutlu olsun!',
+    kutlamaAlt: EN ? 'Happy birthday' : 'İyi ki doğdun',
+    niceSenelere: EN ? 'Many more happy years ahead! 🥳' : 'Nice senelere! 🥳',
     hedBaslik: EN ? 'A Gift For You' : 'Sana Bir Hediye',
     hedAc: EN ? 'Tap to open the gift' : 'Hediyeyi açmak için dokun',
     hedLink: EN ? 'Open Link' : 'Bağlantıyı Aç',
     hedResim: EN ? 'Gift Image' : 'Hediye Resmi',
+    hedMuzik: EN ? 'Gift Music' : 'Hediye Müziği',
     hedSoz: EN ? 'A Word From Heart' : 'Kalpten Bir Söz',
     yaSiz: EN
       ? ['The best age is the one you feel...',
@@ -92,6 +96,8 @@
     '<div class="zf-sus" style="left:72%;top:66%">⭐</div>' +
     '<div class="zarf-gorsel">' +
       '<div class="zf-ic">' +
+        '<div class="zf-kutlama">' + cevir('kutlama') + '</div>' +
+        '<div class="zf-kutlama-alt">' + cevir('kutlamaAlt') + ' 🎉</div>' +
         '<div class="zf-davet">' + cevir('davet') + '</div>' +
         '<div class="zf-isim">' + (ISIM || (EN ? 'Dear friend' : 'Sevgili dostum')) + '</div>' +
       '</div>' +
@@ -130,12 +136,22 @@
     setTimeout(function () {
       var genislik = innerWidth || document.documentElement.clientWidth;
       var yk = innerHeight || document.documentElement.clientHeight;
-      for (i = 0; i < 22; i++) {
-        patikVer((genislik * (0.15 + Math.random() * 0.7)) | 0,
-                 (yk * (0.2 + Math.random() * 0.45)) | 0,
+      for (i = 0; i < 40; i++) {
+        patikVer((genislik * (0.08 + Math.random() * 0.84)) | 0,
+                 (yk * (0.12 + Math.random() * 0.55)) | 0,
                  balonIkon[(Math.random() * balonIkon.length) | 0]);
       }
-    }, 350);
+    }, 250);
+    // Konfeti yağmuru: zarf ekranda kaldığı sürece periyodik patlar
+    var konfetiDongu = setInterval(function () {
+      if (!sahne.parentNode || sahne.hasAttribute('data-acildi')) { clearInterval(konfetiDongu); return; }
+      var genislik = innerWidth || document.documentElement.clientWidth;
+      var yk = innerHeight || document.documentElement.clientHeight;
+      for (var k = 0; k < 8; k++) {
+        patikVer((genislik * Math.random()) | 0, (yk * Math.random() * 0.5) | 0,
+                 balonIkon[(Math.random() * balonIkon.length) | 0]);
+      }
+    }, 1400);
   }
 
   // Zarf açılış sahneleri
@@ -200,6 +216,17 @@
       notEl.setAttribute('data-son', orijinal);
       notEl.innerHTML = '';
       cumleCumleYaz(notEl, NOT);
+      // Not bitince "Nice senelere!" mesajı
+      if (notEl.parentNode) {
+        var niceSatir = elYap('div', 'nice-senelere', cevir('niceSenelere'));
+        notEl.parentNode.appendChild(niceSatir);
+      }
+    } else {
+      // Not yoksa da "Nice senelere!" görünsün
+      var hedef2 = notEl || mainKart || document.body;
+      var niceSatir2 = elYap('div', 'nice-senelere', cevir('niceSenelere'));
+      if (notEl) { notEl.parentNode.appendChild(niceSatir2); }
+      else { hedef2.appendChild(niceSatir2); }
     }
 
     // Yaş bilgisi: dinamik yazı (not üzerinde veya ek bir satırda)
@@ -300,6 +327,23 @@
         kutu.classList.add('acik', 'acilacak');
         kutu.classList.remove('kapak-once');
         setTimeout(function () { ic.classList.add('acik'); }, 350);
+      });
+    } else if (GIFT.turd === 'muzik' || GIFT.turd === 'müzik' || GIFT.turd === 'audio' || GIFT.turd === 'music') {
+      // Hediye müziği: tıklayınca kutu açılır ve ses oynatıcı belirir
+      var muzik = elYap('audio', 'muzik-hediye');
+      muzik.controls = true;
+      muzik.preload = 'none';
+      muzik.src = GIFT.deger;
+      muzik.style.display = 'none';
+      ic.appendChild(muzik);
+      kutu.addEventListener('click', function () {
+        kutu.classList.add('acik', 'acilacak');
+        kutu.classList.remove('kapak-once');
+        setTimeout(function () {
+          ic.classList.add('acik');
+          muzik.style.display = 'block';
+          muzik.play().catch(function () { /* otomatik oynatma engellenebilir */ });
+        }, 350);
       });
     } else { // link
       var linkText = elYap('a', 'link-hediye', cevir('hedLink') + ' 🔗');

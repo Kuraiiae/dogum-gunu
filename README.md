@@ -1,6 +1,6 @@
 # 🎂 doğumgünü.com
 
-**QR ile animasyonlu doğum günü kartı üretici** — ismini, şablonunu ve notunu seç; çıkan QR'ı telefonla tarat, kart anında açılır.
+**QR ile animasyonlu doğum günü kartı üretici** — ismini, şablonunu, notunu ve hediyeni seç; çıkan QR'ı telefonla tarat, **kart zarf gibi açılır** 🎉.
 
 ## 🔗 Canlı Site
 
@@ -8,29 +8,31 @@
 
 ## ✨ Özellikler
 
-- 👧👦 **Kız ve erkek temaları** — tatlı/pastelden çizgi roman aksiyonuna
-- 🎂 **Yaş kategorileri**: Çocuk · Genç · Yetişkin (yetişkinler için olgun ve zarif temalar)
-- 📝 **Örnek notlar + özel not** (kopyala, düzenle)
-- 🔒 **Kişiye özel QR**: her kart tahmin edilemez gizli bağlantıyla üretilir, isteğe bağlı 4-6 haneli PIN kilidi
-- 🎉 **Animasyonlu kartlar**: balonlar, kalpler, konfeti, şimşekler, yarış arabası, dönüşüm kalkanı
+- 🧧👦 **24 şablon** — Kız & Erkek × Çocuk · Genç · Yetişkin (her kategoride 4 tasarım)
+- 💌 **Zarf açılışı**: QR okutulunca konfeti + balonlarla zarf açılır, *"aşağı kaydır"* ile kart içinden çıkar
+- 📜 **Cümle cümle not**: mesaj satır satır yazılır (typewriter animasyonu)
+- 🎂 **Dinamik yaş yazısı**: yaş girilmezse her açılışta farklı zarif bir cümle
+- 🎁 **Hediye kutusu**: tıklayınca açılan kutuda *söz / link / resim* gösterilir (resim URL'si yüklenemezse söz olarak düşer)
+- 🌐 **TR / EN dil desteği** (sağ üstten değiştirilir, tercih hatırlanır)
+- 🖼️ **Canlı önizleme**: şablona tıklayınca kart üreticide anında görünür
+- 🔍 **Logolu QR**: QR'ın tam ortasında doğum günü logosu
+- 🔒 **Kişiye özel QR**: tahmin edilemez gizli bağlantı + isteğe bağlı 4-6 haneli PIN kilidi
+- 🎉 **Animasyonlu kartlar**: balonlar, kalpler, konfeti, şimşekler, yarış arabası, uzay, müzik…
 - ⬇️ QR PNG indir + bağlantı kopyala
-- 📱 Mobil öncelikli, sıfır bağımlılık (sadece istemci)
+- 📱 Mobil öncelikli, `prefers-reduced-motion` uyumlu, sıfır bağımlılık (sadece istemci)
 
 ## 📁 Dosyalar
 
 | Dosya | İçerik |
 |---|---|
-| `index.html` | Ana site: şablon galerisi + kart üretici (QR motoru) |
-| `dogum-gunu-kiz.html` | Kız şablonu — Çocuk (pastel, balon, kalp) |
-| `dogum-gunu-erkek.html` | Erkek şablonu — Çocuk (çizgi roman, şimşek, yarış arabası) |
-| `dogum-gunu-kiz-genc.html` | Kız şablonu — Genç (rüya gibi lavanta) |
-| `dogum-gunu-kiz-yetiskin.html` | Kız şablonu — Yetişkin (zarif, krem + altın) |
-| `dogum-gunu-erkek-genc.html` | Erkek şablonu — Genç (urban/espor, neon) |
-| `dogum-gunu-erkek-yetiskin.html` | Erkek şablonu — Yetişkin (olgun, lacivert + altın) |
+| `index.html` | Ana site: şablon galerisi + kart üretici (QR motoru, TR/EN) |
+| `zarf-motoru.js` / `zarf-motoru.css` | Tüm şablonlarda ortak çalışan zarf → kaydır → hediye akışı |
+| `dogum-gunu-kiz*.html` | Kız şablonları — Çocuk/Genç/Yetişkin (4'er tasarım) |
+| `dogum-gunu-erkek*.html` | Erkek şablonları — Çocuk/Genç/Yetişkin (4'er tasarım) |
 
 ## 🛠️ Şablonları Özelleştirme
 
-Her kart dosyası tek başına çalışır. Başında şu sabitler bulunur:
+Her kart dosyası tek başına çalışır ve `zarf-motoru.js`'i bağlar. Başında şu sabitler bulunur:
 
 ```html
 <script>

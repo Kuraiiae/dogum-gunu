@@ -75,6 +75,11 @@ body{
   padding:.45rem .6rem;border-bottom:1px solid transparent;transition:color .25s,border-color .25s;
   white-space:nowrap}
 .cat-navigasyon a:hover{color:var(--murekkep);border-bottom-color:var(--altin)}
+.ust-sag{display:flex;align-items:center;gap:.8rem}
+.dil-btn{min-height:36px;padding:.4rem .85rem;border-radius:999px;border:1px solid var(--cizgi);
+  background:var(--kagit2);color:var(--murekkep);font-family:var(--yazi-govde);font-weight:700;
+  font-size:.8rem;letter-spacing:.06em;cursor:pointer;transition:all .25s;touch-action:manipulation}
+.dil-btn:hover{border-color:var(--altin);color:var(--altin)}
 
 /* --- Kahraman --- */
 .kahraman{padding:3rem 0 1.6rem}
@@ -254,6 +259,19 @@ body{
   resize:vertical;transition:border-color .2s}
 .ozel-not:focus{border-color:var(--odak);box-shadow:0 0 0 3px var(--odak-halka)}
 
+/* --- Yaş sayı alanı + hediye --- */
+.yas-sayialan{margin:1.15rem 0 0}
+.kucuk-ipucu{float:none!important;display:inline;font-weight:500;font-size:.72rem;color:var(--murekkep-acik);letter-spacing:.02em;text-transform:none}
+.hediye-alan{margin-top:1.35rem;border-top:1px solid var(--cizgi);padding-top:.6rem}
+.hediye-satir{display:flex;gap:.5rem;flex-wrap:wrap;margin:.55rem 0}
+.hediye-btn{min-height:38px;padding:.42rem 1rem;border-radius:999px;cursor:pointer;
+  font-family:var(--yazi-govde);font-weight:700;font-size:.78rem;letter-spacing:.06em;
+  background:transparent;color:var(--murekkep-acik);border:1px solid var(--cizgi);
+  transition:background .25s,color .25s,border-color .25s;touch-action:manipulation}
+.hediye-btn:hover{border-color:var(--cizgi-koyu);color:var(--murekkep)}
+.hediye-btn.aktif{background:var(--vurgu);border-color:var(--vurgu);color:#FFFDF6}
+.hediye-girdi-kutu{margin-top:.4rem}
+
 /* --- PIN kilidi (markup/stil; gerçek mantık sonraki görevde) --- */
 .pin-kutu{border-top:1px solid var(--cizgi);margin:1.35rem 0 .2rem;padding-top:1.15rem}
 .pin-baslik{display:flex;align-items:center;justify-content:space-between;gap:1rem}
@@ -304,10 +322,16 @@ body{
 @keyframes halkaAt{0%,100%{opacity:.4}50%{opacity:.12}}
 .qr-kart{position:relative}
 .qr-kart canvas{display:block;width:100%;height:auto}
-.qr-emoji{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:44px;height:44px;
-  background:#FFFEF8;border:1px solid var(--cizgi);border-radius:12px;display:none;
-  align-items:center;justify-content:center;font-size:24px;line-height:1;
-  box-shadow:0 4px 12px rgba(75,62,40,.18);pointer-events:none}
+.qr-emoji{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:48px;height:48px;
+  background:#FFFEF8;border:1px solid var(--cizgi);border-radius:50%;display:none;
+  align-items:center;justify-content:center;font-size:26px;line-height:1;
+  box-shadow:0 4px 14px rgba(75,62,40,.22),0 0 0 4px #FFFEF8;pointer-events:none;z-index:2}
+.qr-logo-cat{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:64px;height:64px;
+  z-index:3;pointer-events:none;display:flex;align-items:center;justify-content:center}
+.qr-logo-halka{position:absolute;inset:0;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,255,255,.98) 0%,rgba(255,255,255,.96) 100%);
+  box-shadow:0 2px 10px rgba(75,62,40,.28),0 0 0 1px rgba(75,62,40,.12)}
+.qr-logo-emoji{position:relative;font-size:30px;line-height:1;z-index:1}
 .qr-yukleniyor{display:none;flex-direction:column;align-items:center;justify-content:center;gap:.9rem;
   padding:4.4rem 1rem;color:var(--murekkep-acik);font-family:var(--yazi-govde);font-weight:500;font-size:.9rem}
 .qr-yukleniyor::before{content:"";width:40px;height:40px;border-radius:50%;
@@ -364,13 +388,16 @@ body{
 <header class="baslik-tur">
   <div class="baslik-tur-ic">
     <a class="logo" href="#uretici">doğumgünü<i>.com</i></a>
-    <nav aria-label="Ana gezinti">
-      <ul class="cat-navigasyon">
-        <li><a href="#sekmeler">Şablonlar</a></li>
-        <li><a href="#uretici">Kart Üretici</a></li>
-        <li><a href="#sss">S.S.S.</a></li>
-      </ul>
-    </nav>
+    <div class="ust-sag">
+      <nav aria-label="Ana gezinti">
+        <ul class="cat-navigasyon">
+          <li><a href="#sekmeler" data-i18n="navSekmeler">Şablonlar</a></li>
+          <li><a href="#uretici" data-i18n="navUretici">Kart Üretici</a></li>
+          <li><a href="#sss" data-i18n="navSss">S.S.S.</a></li>
+        </ul>
+      </nav>
+      <button class="dil-btn" id="dilBtn" type="button" aria-label="Dili değiştir">🌐 EN</button>
+    </div>
   </div>
 </header>
 
@@ -603,11 +630,30 @@ body{
             </div>
           </div>
 
+          <div class="yas-sayialan">
+            <label class="alan-etiket" for="yasInput">Kaç yaşına giriyor? <span class="kucuk-ipucu">(boş bırakılırsa dinamik yazı)</span></label>
+            <input class="girdi" id="yasInput" type="number" inputmode="numeric" min="1" max="120" placeholder="Örn: 7" autocomplete="off">
+          </div>
+
           <div class="not-alan">
             <span class="alan-etiket">Karta hangi not yazılsın?</span>
             <div id="notKartlari"></div>
             <div id="ozelKutu">
               <textarea class="ozel-not" id="ozelNot" maxlength="160" placeholder="Kendi notunu yaz... (boş bırakırsan 1. örnek kullanılır)"></textarea>
+            </div>
+          </div>
+
+          <div class="hediye-alan">
+            <span class="alan-etiket" data-i18n="hedBaslik">🎁 Hediye bölmesi (isteğe bağlı)</span>
+            <div class="hediye-satir" role="group" aria-label="Hediye türü">
+              <button class="hediye-btn" type="button" data-hed="none">Yok</button>
+              <button class="hediye-btn aktif" type="button" data-hed="soz">Söz</button>
+              <button class="hediye-btn" type="button" data-hed="link">Link</button>
+              <button class="hediye-btn" type="button" data-hed="resim">Resim</button>
+            </div>
+            <div class="hediye-girdi-kutu">
+              <input class="girdi" id="hediyeDeger" type="text" placeholder="Örn: Her zaman yanındayım 💛" maxlength="300">
+              <p class="pin-yardim" id="hediyeYardim">Hediye kutusunun içinde söz/resim/link olarak görünür. Resim için görsel URL'si yapıştır (örn: https://.../resim.png), yüklenemezse söz olarak gösterilir.</p>
             </div>
           </div>
 
@@ -705,6 +751,90 @@ body{
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" defer></script>
 <script>
+// ============ DİL (TR/EN) ============
+var DIL = (localStorage.getItem('dogumgunu-dil') || '');
+if (DIL !== 'tr' && DIL !== 'en') { DIL = navigator.language.toLowerCase().indexOf('en') === 0 ? 'en' : 'tr'; }
+var I18N = {
+  tr: {
+    navSekmeler:'Şablonlar', navUretici:'Kart Üretici', navSss:'S.S.S.',
+    galeri:'Galeri', sablonlar:'Şablonlar',
+    galeriAlt:'24 tasarım, üç yaş grubu, kız & erkek. Hepsi animasyonlu — QR ile zarf açılışına sahip.',
+    uretici:'Üretici', kartUret:'Kartını Oluştur',
+    ureticiAlt:'İsmini ve notunu seç, QR\'ı indir ya da paylaş. Kart, telefonunda zarf gibi açılır.',
+    isim:'İsim', ornekIsim:'Örn: Elif', kiz:'🌸 KIZ', erkek:'⚡ ERKEK',
+    yasGrubu:'Yaş grubu', cocuk:'Çocuk', genc:'Genç', yetiskin:'Yetişkin',
+    kacYas:'Kaç yaşına giriyor?', yasIpu:'(boş bırakılırsa dinamik yazı)', ornekYas:'Örn: 7',
+    notSoru:'Karta hangi not yazılsın?', ozelNotYaz:'Özel not yaz',
+    ozelNotPh:'Kendi notunu yaz... (boş bırakırsan 1. örnek kullanılır)',
+    hedBaslik:'🎁 Hediye bölmesi (isteğe bağlı)', hedYok:'Yok', hedSoz:'Söz', hedLink:'Link', hedResim:'Resim',
+    hedPh1:'Örn: Her zaman yanındayım 💛', hedPh2:'Örn: https://sarkim.com', hedPh3:'Örn: https://resim.com/kek.png (URL); yüklenemezse söz gösterilir',
+    hedYardim:'Hediye kutusunun içinde söz/resim/link olarak görünür. Resim için görsel URL\'si yapıştır, yüklenemezse söz olarak gösterilir.',
+    pinEtiket:'🔒 PIN Kilidi (isteğe bağlı)', pinKucuk:'Kartı yalnızca PIN bilen açabilsin',
+    pinPh:'4-6 rakam (örn: 2580)', pinYardim:'QR\'ı tarayan kişi kartı açmak için PIN girecek. PIN\'i ayrı kanaldan paylaş.',
+    onizleme:'Canlı Önizleme', kartOlustur:'Kart oluştur', qrIndir:'⬇️ QR\'ı İndir (PNG)', linkKopyala:'🔗 Linki Kopyala',
+    kartBaslik:'Mutlu Yıllar', dogumGunu:'Doğum Günün Kutlu Olsun', iyikiDogdun:'İyi ki doğdun',
+    butonKutla:'🎉 Kutlamayı Başlat', butonTekrar:'🎊 Tekrar Kutla!',
+    kopyalandi:'Kopyalandı ✓', qrIpucu:'QR\'ı telefonunla tarat, kartın zarf gibi açılır 🎉',
+    sss:'S.S.S.', altSoz:'Sevgiyle hazırlanmış kartlar', copyright:'© doğumgünü.com — QR ile doğum günü kutlaması',
+    sablonlarLink:'Şablonlar', altUretici:'Kart Üretici'
+  },
+  en: {
+    navSekmeler:'Templates', navUretici:'Card Maker', navSss:'F.A.Q.',
+    galeri:'Gallery', sablonlar:'Templates',
+    galeriAlt:'24 designs, three age groups, girl & boy. All animated — QR opens a gift envelope.',
+    uretici:'Maker', kartUret:'Build Your Card',
+    ureticiAlt:'Pick a name and message, download or share the QR. The card opens like an envelope.',
+    isim:'Name', ornekIsim:'e.g. Amy', kiz:'🌸 GIRL', erkek:'⚡ BOY',
+    yasGrubu:'Age group', cocuk:'Kid', genc:'Teen', yetiskin:'Adult',
+    kacYas:'How old will they be?', yasIpu:'(leave empty for dynamic text)', ornekYas:'e.g. 7',
+    notSoru:'Which message goes on the card?', ozelNotYaz:'Write custom message',
+    ozelNotPh:'Write your own message... (empty = use sample 1)',
+    hedBaslik:'🎁 Gift box (optional)', hedYok:'None', hedSoz:'Quote', hedLink:'Link', hedResim:'Image',
+    hedPh1:'e.g. Always by your side 💛', hedPh2:'e.g. https://my.song.com', hedPh3:'e.g. https://img.com/cake.png (URL); falls back to quote',
+    hedYardim:'Shown inside the gift box as quote/image/link. For image paste an image URL; if it fails, shows as quote.',
+    pinEtiket:'🔒 PIN Lock (optional)', pinKucuk:'Only someone with the PIN opens the card',
+    pinPh:'4-6 digits (e.g. 2580)', pinYardim:'The person scanning the QR will enter the PIN to open. Share the PIN separately.',
+    onizleme:'Live Preview', kartOlustur:'Create card', qrIndir:'⬇️ Download QR (PNG)', linkKopyala:'🔗 Copy Link',
+    kartBaslik:'Happy Birthday', dogumGunu:'Happy Birthday', iyikiDogdun:'So glad you were born',
+    butonKutla:'🎉 Start Celebration', butonTekrar:'🎊 Celebrate Again!',
+    kopyalandi:'Copied ✓', qrIpucu:'Scan the QR with your phone — the card opens like an envelope 🎉',
+    sss:'F.A.Q.', altSoz:'Cards made with love', copyright:'© dogumgunu.com — QR birthday celebration',
+    sablonlarLink:'Templates', altUretici:'Card Maker'
+  }
+};
+function dilUygula() {
+  var paket = I18N[DIL] || I18N.tr;
+  var elems = document.querySelectorAll('[data-i18n]');
+  for (var e = 0; e < elems.length; e++) {
+    var k = elems[e].getAttribute('data-i18n');
+    if (k && paket[k]) { elems[e].textContent = paket[k]; }
+  }
+  // Dinamik öğeler
+  var dilBtn = document.getElementById('dilBtn');
+  if (dilBtn) { dilBtn.textContent = DIL === 'tr' ? '🌐 EN' : '🌐 TR'; }
+  // form etiketleri
+  var isimLbl = document.querySelector('label[for="isimInput"]');
+  if (isimLbl) { isimLbl.firstChild.textContent = paket.isim + ' '; }
+  // placeholders
+  var pIsim = document.getElementById('isimInput');
+  if (pIsim) { pIsim.placeholder = paket.ornekIsim; }
+  var pYas = document.getElementById('yasInput');
+  if (pYas) { pYas.placeholder = paket.ornekYas; }
+  var yasLbl = document.querySelector('label[for="yasInput"]');
+  if (yasLbl) { yasLbl.innerHTML = paket.kacYas + ' <span class="kucuk-ipucu">(' + paket.yasIpu + ')</span>'; }
+  var pNot = document.getElementById('ozelNot');
+  if (pNot) { pNot.placeholder = paket.ozelNotPh; }
+  var pHed = document.getElementById('hediyeDeger');
+  if (pHed) { pHed.placeholder = paket.hedPh1; }
+  var hedYard = document.getElementById('hediyeYardim');
+  if (hedYard) { hedYard.textContent = paket.hedYardim; }
+  // butonlar
+  var indirB = document.getElementById('indirBtn');
+  if (indirB) { indirB.textContent = paket.qrIndir; }
+  var kopyB = document.getElementById('kopyalaBtn');
+  if (kopyB) { kopyB.textContent = paket.linkKopyala; }
+}
+
 // ============ ÖRNEK NOTLAR ============
 var KIZ_NOTLARI = [
   "Gülüşün en güzel hediye, iyi ki doğdun! 🎂",
@@ -724,8 +854,44 @@ var cinsiyet = 'kiz';
 var suAnkiYas = 'cocuk';   // 'cocuk' | 'genc' | 'yetiskin'
 var seciliTip = 'ornek';   // 'ornek' | 'ozel'
 var seciliIndex = 0;
+var seciliDosya = '';      // boşsa kategoriye göre klasik dosya seçilir
+var hediyeTipi = 'soz';    // 'none' | 'soz' | 'link' | 'resim'
 var qrLibYok = false;
 var zamanlayici = null;
+
+// ============ 24 ŞABLON KATALOĞU (parça 1) ============
+var SABLONLAR = [
+  // ---- KIZ ÇOCUK ----
+  {dosya:'dogum-gunu-kiz.html',             cinsiyet:'kiz',    yas:'cocuk',    ad:'Pastel Balon',   emoji:'🎀', aciklama:'İlk doğum günü kartlarının klasiği',   ozellik:['Yumuşak pastel tonlar','Balonlar & kalpler','Neşeli yazı']},
+  {dosya:'dogum-gunu-kiz-oyuncak.html',     cinsiyet:'kiz',    yas:'cocuk',    ad:'Oyuncak Dostu',  emoji:'🧸', aciklama:'Oyuncak dolu neşeli kutlama',         ozellik:['Oyuncak ayı partisi','Süzülen konfetiler','Pembe-mor palet']},
+  {dosya:'dogum-gunu-kiz-cicek.html',       cinsiyet:'kiz',    yas:'cocuk',    ad:'Çiçek Bahçesi',  emoji:'🌸', aciklama:'Çiçekler kadar tatlı bir sayfa',       ozellik:['Çiçek temalı ikonlar','Yumuşak pastel zemin','Bahar enerjisi']},
+  {dosya:'dogum-gunu-kiz-ruya.html',        cinsiyet:'kiz',    yas:'cocuk',    ad:'Rüya Bulutları', emoji:'☁️', aciklama:'Hayal dünyasına yolculuk',             ozellik:['Bulut & yıldız','Huzurlu pastel mavi','Rüya gibi atmosfer']},
+  // ---- ERKEK ÇOCUK ----
+  {dosya:'dogum-gunu-erkek.html',           cinsiyet:'erkek',  yas:'cocuk',    ad:'Çizgi Roman',    emoji:'⚡', aciklama:'Aksiyon dolu kutlama',                  ozellik:['Comic çizgiler','Süper kahraman enerjisi','Konfeti patlaması']},
+  {dosya:'dogum-gunu-erkek-uzay.html',      cinsiyet:'erkek',  yas:'cocuk',    ad:'Uzay Macerası',  emoji:'🚀', aciklama:'Yıldızlara doğru macera',               ozellik:['Roket & gezegenler','Karanlık gökyüzü','Keşif ruhu']},
+  {dosya:'dogum-gunu-erkek-araba.html',     cinsiyet:'erkek',  yas:'cocuk',    ad:'Hız Tutkunu',    emoji:'🏎️', aciklama:'Yarış pisti temalı kutlama',            ozellik:['Yarış bayrakları','Hızlı çizgiler','Kırmızı-mavi palet']},
+  {dosya:'dogum-gunu-erkek-dinozor.html',   cinsiyet:'erkek',  yas:'cocuk',    ad:'Dinozor Vadisi', emoji:'🦖', aciklama:'Kretase dönemine yolculuk',            ozellik:['Dinozor ikonları','Yeşil orman','Macera dolu']},
+  // ---- KIZ GENÇ ----
+  {dosya:'dogum-gunu-kiz-genc.html',        cinsiyet:'kiz',    yas:'genc',     ad:'Lavanta Rüyası', emoji:'🦋', aciklama:'Hayallere yakışan bir sayfa',           ozellik:['Lavanta','Kelebekler','Yıldızlar']},
+  {dosya:'dogum-gunu-kiz-genc-yildiz.html', cinsiyet:'kiz',    yas:'genc',     ad:'Yıldız Işığı',   emoji:'✨', aciklama:'Gece göğü temalı kart',                ozellik:['Yıldız & hilal','Mor-gök mavisi','Işıltılı süsler']},
+  {dosya:'dogum-gunu-kiz-genc-muzik.html',  cinsiyet:'kiz',    yas:'genc',     ad:'Melodi',         emoji:'🎵', aciklama:'Müzik tutkusuyla kutlama',             ozellik:['Nota & mikrofon','Pembe-neon','Ritmik animasyonlar']},
+  {dosya:'dogum-gunu-kiz-genc-sehir.html',  cinsiyet:'kiz',    yas:'genc',     ad:'Gece Şehri',     emoji:'🌆', aciklama:'Şehir ışıklarıyla modern tasarım',       ozellik:['Gökdelen siluetleri','Sıcak neon tonlar','Dinamik ışıklar']},
+  // ---- ERKEK GENÇ ----
+  {dosya:'dogum-gunu-erkek-genc.html',      cinsiyet:'erkek',  yas:'genc',    ad:'Neon Urban',     emoji:'⚡', aciklama:'Esport ekranından fırlamış gibi',      ozellik:['Urban/espor neon','Oyun estetiği','Elektrikli vurgular']},
+  {dosya:'dogum-gunu-erkek-genc-futbol.html',cinsiyet:'erkek', yas:'genc',    ad:'Saha Yıldızı',   emoji:'⚽', aciklama:'Kupa hayali kuranlar için',           ozellik:['Futbol temalı grafikler','Saha yeşili','Zafer enerjisi']},
+  {dosya:'dogum-gunu-erkek-genc-oyun.html', cinsiyet:'erkek',  yas:'genc',    ad:'Oyun Odası',     emoji:'🎮', aciklama:'Game over yok, kutlama var',            ozellik:['Retro oyun ikonları','Siber neon','Piksel dokunuşlar']},
+  {dosya:'dogum-gunu-erkek-genc-sokak.html',cinsiyet:'erkek',  yas:'genc',    ad:'Sokak Sanatı',   emoji:'🛹', aciklama:'Kaykay ve graffiti kültürü',           ozellik:['Kaykay temaları','Grafiti renkleri','Sokak hızı']},
+  // ---- KIZ YETİŞKİN ----
+  {dosya:'dogum-gunu-kiz-yetiskin.html',    cinsiyet:'kiz',    yas:'yetiskin', ad:'Krem & Altın',   emoji:'🌹', aciklama:'Sadelik ve zerafet bir arada',          ozellik:['Zarif krem + altın','Gül yaprakları','Sıcak ve olgun his']},
+  {dosya:'dogum-gunu-kiz-yetiskin-rose.html',cinsiyet:'kiz',   yas:'yetiskin', ad:'Rose Gold',      emoji:'🌹', aciklama:'Pembe altının zarafeti',              ozellik:['Rose tonları','Yumuşak ışık oyunları','Şık tipografi']},
+  {dosya:'dogum-gunu-kiz-yetiskin-zumrut.html',cinsiyet:'kiz', yas:'yetiskin', ad:'Zümrüt',        emoji:'💚', aciklama:'Derin yeşilin huzuru',                 ozellik:['Zümrüt yeşili','Altın detaylar','Sakin lüks']},
+  {dosya:'dogum-gunu-kiz-yetiskin-gece.html',cinsiyet:'kiz',   yas:'yetiskin', ad:'Yıldızlı Gece',  emoji:'🌙', aciklama:'Gece ve ihtişam bir arada',            ozellik:['Lacivert - altın','Ay & yıldız','Göz alıcı parlaklık']},
+  // ---- ERKEK YETİŞKİN ----
+  {dosya:'dogum-gunu-erkek-yetiskin.html',  cinsiyet:'erkek',  yas:'yetiskin', ad:'Lacivert & Altın', emoji:'🏅', aciklama:'Dur durak bilmeyen bir zarafet',        ozellik:['Olgun lacivert + altın','Minimal tipografi','Dengeli şıklık']},
+  {dosya:'dogum-gunu-erkek-yetiskin-deniz.html',cinsiyet:'erkek', yas:'yetiskin', ad:'Okyanus',     emoji:'⚓', aciklama:'Denizin sakin gücü',                  ozellik:['Lacivert - turkuaz','Deniz teması','Olgun duruş']},
+  {dosya:'dogum-gunu-erkek-yetiskin-orman.html',cinsiyet:'erkek', yas:'yetiskin', ad:'Orman',       emoji:'🌲', aciklama:'Doğanın sade asaleti',                ozellik:['Orman yeşili','Odunsu tonlar','Huzurlu minimalizm']},
+  {dosya:'dogum-gunu-erkek-yetiskin-modern.html',cinsiyet:'erkek', yas:'yetiskin', ad:'Modern Siyah',emoji:'🖤', aciklama:'Kontrast ve cesaret',                   ozellik:['Siyah - gri - altın','Geometrik şıklık','Minimal duruş']},
+];
 
 var isimInput  = document.getElementById('isimInput');
 var notKartlari = document.getElementById('notKartlari');
@@ -747,6 +913,8 @@ var metaTema   = document.getElementById('metaTema');
 var pinAcik    = document.getElementById('pinAcik');
 var pinKodu    = document.getElementById('pinKodu');
 var pinAlan    = document.getElementById('pinAlan');
+var yasInput   = document.getElementById('yasInput');
+var hediyeDeger = document.getElementById('hediyeDeger');
 
 // ============ GİZLİLİK ============
 function sha256hex(data) {
@@ -765,9 +933,22 @@ function gizliAnahtarUret() {
   return Array.from(r, function(b) { return b.toString(16).padStart(2, '0'); }).join('');
 }
 
-async function kartBaglantisiUret(isim, not, dosyaAdi, pin) {
+async function kartBaglantisiUret(isim, not, dosyaAdi, pin, yas, hediye, dil) {
   var anahtar = gizliAnahtarUret();
-  var url = new URL('.', location.href).href + dosyaAdi + '?isim=' + encodeURIComponent(isim) + '&not=' + encodeURIComponent(not) + '&anahtar=' + anahtar;
+  var url = new URL('.', location.href).href + dosyaAdi +
+    '?isim=' + encodeURIComponent(isim) +
+    '&not=' + encodeURIComponent(not) +
+    '&zarf=1' +
+    '&anahtar=' + anahtar;
+  if (yas && /^\d{1,3}$/.test('' + yas)) { url += '&yas=' + encodeURIComponent(yas); }
+  if (hediye && hediye.tur !== 'none' && hediye.deger) {
+    url += '&hediye=' + encodeURIComponent(JSON.stringify({ t: hediye.tur, v: hediye.deger }));
+  }
+  if (dil && (dil === 'tr' || dil === 'en')) { url += '&dil=' + dil; }
+  else {
+    var tarDili = (navigator.language || 'tr').toLowerCase();
+    url += '&dil=' + (tarDili.indexOf('en') === 0 ? 'en' : 'tr');
+  }
   if (pin && /^\d{4,6}$/.test(pin)) {
     var sifre = await sha256hex(anahtar + '|' + pin);
     if (sifre) { url += '&sifre=' + sifre; }
@@ -848,9 +1029,18 @@ function seciliNot() {
 
 // ============ QR ADRESİ (tek kaynak: kartBaglantisiUret) ============
 var sonBaglanti = '';
+function seciliYas() {
+  var d = yasInput ? (yasInput.value || '').trim() : '';
+  return /^\d{1,3}$/.test(d) ? d : '';
+}
+function seciliHediye() {
+  var d = hediyeDeger ? (hediyeDeger.value || '').trim() : '';
+  return { tur: hediyeTipi, deger: d };
+}
 async function qrAdresi() {
   var isim = isimInput.value.trim() || 'İSİM';
-  sonBaglanti = await kartBaglantisiUret(isim, seciliNot(), dosyaAdiBul(cinsiyet, suAnkiYas), pinDegeri());
+  var dosya = seciliDosya || dosyaAdiBul(cinsiyet, suAnkiYas);
+  sonBaglanti = await kartBaglantisiUret(isim, seciliNot(), dosya, pinDegeri(), seciliYas(), seciliHediye(), null);
   return sonBaglanti;
 }
 
@@ -858,9 +1048,35 @@ function qrRengi() {
   return getComputedStyle(document.body).getPropertyValue('--qr-renk').trim() || '#A84F35';
 }
 
+// ============ LOGOLU QR (merkezde doğum günü logosu) ============
+function qrLogoEkle() {
+  // qrcodejs canvas üretir; üzerine refah modunda logo bindirme yapıyoruz
+  var albüm = qrAlan.querySelector('canvas') || qrAlan.querySelector('img');
+  if (!albüm) { return; }
+  // Logo katmanı zaten varsa temizle
+  var eski = qrAlan.querySelector('.qr-logo-cat');
+  if (eski) { eski.remove(); }
+  var cat = document.createElement('div');
+  cat.className = 'qr-logo-cat';
+  cat.innerHTML = '<span class="qr-logo-halka"></span><span class="qr-logo-emoji">' + qrEmoji.textContent.trim() + '</span>';
+  qrAlan.appendChild(cat);
+}
+
 // ============ ÖNİZLEME ============
 function onizlemeGuncelle() {
   var isim = isimInput.value.trim();
+  var secilen = sablonBul(seciliDosya) ||
+    (function () { for (var x = 0; x < SABLONLAR.length; x++) { if (SABLONLAR[x].cinsiyet === cinsiyet && SABLONLAR[x].yas === suAnkiYas) { return SABLONLAR[x]; } } return null; })();
+  var dosyaAd = secilen ? secilen.dosya : dosyaAdiBul(cinsiyet, suAnkiYas);
+  var mevcutIframe = onizleme.querySelector('iframe');
+  if (mevcutIframe) {
+    // Canlı önizleme: isim/not/yaş girdikçe iframe'ı güncelle
+    var yeniSrc = dosyaAd + '?isim=' + encodeURIComponent(isim || 'İsim') +
+      '&not=' + encodeURIComponent(seciliNot()) +
+      '&zarf=0&dil=' + (navigator.language.indexOf('en') === 0 ? 'en' : 'tr');
+    if (mevcutIframe.getAttribute('src') !== yeniSrc) { mevcutIframe.setAttribute('src', yeniSrc); }
+    return;
+  }
   var ifade;
   if (!isim) {
     ifade = cinsiyet === 'kiz' ? '🌸 İsmini yaz, kartın seni bekliyor ✍️' : '⚡ İsmini yaz, macera hazır ✍️';
@@ -898,6 +1114,7 @@ async function qrOlustur() {
     qrKutu.classList.remove('hata');
     qrEmoji.style.display = 'flex';
     indirBtn.disabled = false;
+    qrLogoEkle(); // merkezde doğum günü logosu
   } catch (e) {
     hataGoster(url);
   }
@@ -976,19 +1193,121 @@ for (var y = 0; y < yasButonlari.length; y++) {
   });
 }
 
-// --- Şablon kartlarından üreticiye geç (cinsiyet + yaş birlikte) ---
+// --- Şablon kartlarından üreticiye geç (cinsiyet + yaş + dosya) ---
 var sablonButonlari = document.querySelectorAll('.sablon-cta');
 function ureticiyeKaydir() {
   var uretici = document.getElementById('uretici');
   var yK = uretici.getBoundingClientRect().top + (window.pageYOffset || document.documentElement.scrollTop) - 66;
   window.scrollTo({ top: Math.max(0, yK), behavior: 'smooth' });
 }
+function sablonBul(dosya) {
+  for (var si = 0; si < SABLONLAR.length; si++) {
+    if (SABLONLAR[si].dosya === dosya) { return SABLONLAR[si]; }
+  }
+  return null;
+}
 for (var s = 0; s < sablonButonlari.length; s++) {
   sablonButonlari[s].addEventListener('click', function () {
-    cinsiyetDegistir(this.getAttribute('data-cinsiyet'));
-    yasDegistir(this.getAttribute('data-yas'));
+    var dosya = this.getAttribute('data-dosya') || '';
+    var cns = this.getAttribute('data-cinsiyet') || 'kiz';
+    var ys  = this.getAttribute('data-yas') || 'cocuk';
+    if (!dosya) {
+      // eski butonlar: katalogdan eşleştir (cinsiyet-yaş ilk şablonu)
+      dosya = SABLONLAR.length ? SABLONLAR[0].dosya : '';
+      for (var di = 0; di < SABLONLAR.length; di++) {
+        if (SABLONLAR[di].cinsiyet === cns && SABLONLAR[di].yas === ys) {
+          dosya = SABLONLAR[di].dosya; break;
+        }
+      }
+    }
+    seciliDosya = dosya;
+    cinsiyetDegistir(cns);
+    yasDegistir(ys);
     ureticiyeKaydir();
+    // önizleme iframe'ini seçilen şablona çevir
+    var ozn = document.getElementById('onizleme');
+    if (ozn) {
+      var st = sablonBul(dosya);
+      ozn.innerHTML = '';
+      var ifr = document.createElement('iframe');
+      ifr.className = 'onizleme-iframe';
+      ifr.src = dosya + '?isim=' + encodeURIComponent(isimInput.value.trim() || 'İSİM') + '&not=' + encodeURIComponent(seciliNot()) + '&dil=' + (navigator.language.indexOf('en') === 0 ? 'en' : 'tr');
+      ifr.loading = 'lazy';
+      ifr.title = st ? st.ad : 'Önizleme';
+      ozn.appendChild(ifr);
+    }
   });
+}
+
+// ============ GALERİYİ 24 ŞABLONLA DOLDUR ============
+// Mevcut statik kartlar korunur; eksik olan yeni 18 kart dinamik eklenir.
+function galeriyiGuncelle() {
+  // Mevcut statik kartlara data-dosya ata
+  var statikBtnlar = document.querySelectorAll('.sablon-cta');
+  for (var bi = 0; bi < statikBtnlar.length; bi++) {
+    var b = statikBtnlar[bi];
+    if (!b.getAttribute('data-dosya')) {
+      var c2 = b.getAttribute('data-cinsiyet') || 'kiz';
+      var y2 = b.getAttribute('data-yas') || 'cocuk';
+      for (var ki = 0; ki < SABLONLAR.length; ki++) {
+        if (SABLONLAR[ki].cinsiyet === c2 && SABLONLAR[ki].yas === y2) {
+          b.setAttribute('data-dosya', SABLONLAR[ki].dosya); break;
+        }
+      }
+    }
+  }
+  // Grupları bul
+  var kizGrubu = document.getElementById('kiz-serisi');
+  var erkekGrubu = document.getElementById('erkek-serisi');
+  if (!kizGrubu || !erkekGrubu) { return; }
+  var grupIciK = kizGrubu.querySelector('.grup-ici');
+  var grupIciE = erkekGrubu.querySelector('.grup-ici');
+  // Dosya adı zaten DOM'da var mı?
+  function dosyaVar(mi, dosyaAdi) {
+    var btns = mi.querySelectorAll('.sablon-cta');
+    for (var i2 = 0; i2 < btns.length; i2++) {
+      if (btns[i2].getAttribute('data-dosya') === dosyaAdi) { return true; }
+    }
+    return false;
+  }
+  function kartYap(sb) {
+    var art = document.createElement('article');
+    art.className = 'sablon cerceve';
+    var ozell = '';
+    for (var oi = 0; oi < sb.ozellik.length; oi++) { ozell += '<li>' + sb.ozellik[oi] + '</li>'; }
+    art.innerHTML =
+      '<div class="telefon">' +
+        '<span class="canli">Yeni</span>' +
+        '<iframe src="' + sb.dosya + '?isim=Elif&not=' + encodeURIComponent('Bu kart tamamen animasyonlu! İyi ki doğdun!') + '" title="' + sb.ad + '" loading="lazy"></iframe>' +
+        '<div class="hazirlaniyor" aria-hidden="true"><span class="hz-sus">✦</span><span class="hz-metin">Şablon hazırlanıyor…</span><span class="hz-kucuk">BİRKAÇ SANİYE</span></div>' +
+        '<span class="telefon-isim">' + sb.emoji + ' Elif</span>' +
+      '</div>' +
+      '<div class="sablon-bilgi">' +
+        '<span class="yasetiketi">Yeni</span>' +
+        '<h3>' + sb.ad + '</h3>' +
+        '<p class="sablon-aciklama">' + sb.aciklama + '</p>' +
+        '<ul class="ozellikler">' + ozell + '</ul>' +
+        '<button class="sablon-cta" type="button" data-cinsiyet="' + sb.cinsiyet + '" data-yas="' + sb.yas + '" data-dosya="' + sb.dosya + '">Bu şablonla kart oluştur →</button>' +
+      '</div>';
+    return art;
+  }
+  // Eksikleri ekle
+  var eklenecekK = document.createDocumentFragment();
+  var eklenecekE = document.createDocumentFragment();
+  for (var t2 = 0; t2 < SABLONLAR.length; t2++) {
+    var sb2 = SABLONLAR[t2];
+    var hedef = sb2.cinsiyet === 'kiz' ? kizGrubu : erkekGrubu;
+    var hedefIci = sb2.cinsiyet === 'kiz' ? grupIciK : grupIciE;
+    if (dosyaVar(hedef, sb2.dosya)) { continue; }
+    var kart = kartYap(sb2);
+    if (sb2.cinsiyet === 'kiz') { eklenecekK.appendChild(kart); }
+    else { eklenecekE.appendChild(kart); }
+  }
+  if (grupIciK) { grupIciK.appendChild(eklenecekK); }
+  if (grupIciE) { grupIciE.appendChild(eklenecekE); }
+  // Başlık güncelle
+  var altAciklama = document.querySelector('#sekmeler .bolum-baslik p');
+  if (altAciklama) { altAciklama.textContent = '24 tasarım, üç yaş grubu, kız & erkek. Hepsi animasyonlu — her biri QR ile zarf açılışına sahip.'; }
 }
 // Aynı cinsiyet+yaş seçilirse durum değişmez ama üreticiye yine de kaydırılır
 // (cinsiyetDegistir / yasDegistir erken döner, kaydırma her zaman çalışır)
@@ -1031,6 +1350,31 @@ for (var t = 0; t < telefonlar.length; t++) {
     // 400ms sonra hâlâ bilinmiyorsa "hazırlanıyor" görünsün (yüklendiyse loadSonrasi gizler)
     setTimeout(goster, 400);
   })(telefonlar[t]);
+}
+
+// --- Yaş input & hediye ---
+if (yasInput) {
+  yasInput.addEventListener('input', function () { qrYenile(false); onizlemeGuncelle(); });
+}
+if (hediyeDeger) {
+  hediyeDeger.addEventListener('input', function () { qrYenile(false); });
+}
+var hediyeBtnlar = document.querySelectorAll('.hediye-btn');
+for (var hb = 0; hb < hediyeBtnlar.length; hb++) {
+  hediyeBtnlar[hb].addEventListener('click', function () {
+    hediyeTipi = this.getAttribute('data-hed') || 'none';
+    for (var hb2 = 0; hb2 < hediyeBtnlar.length; hb2++) {
+      hediyeBtnlar[hb2].classList.toggle('aktif', hediyeBtnlar[hb2] === this);
+    }
+    var yer = document.getElementById('hediyeDeger');
+    if (yer) {
+      if (hediyeTipi === 'none') { yer.placeholder = 'Hediye kapalı'; }
+      else if (hediyeTipi === 'soz') { yer.placeholder = 'Örn: Her zaman yanındayım 💛'; }
+      else if (hediyeTipi === 'link') { yer.placeholder = 'Örn: https://sarkim.com'; }
+      else { yer.placeholder = 'Örn: https://resim.com/kek.png (URL); yüklenemezse söz gösterilir'; }
+    }
+    qrYenile(false);
+  });
 }
 
 // --- PIN kilidi (yalnızca görünürlük; mantık sonraki görevde) ---
@@ -1089,8 +1433,19 @@ if (location.protocol === 'file:') {
   document.getElementById('qrIpucu').textContent = 'ℹ️ Kart sayfası da QR ile aynı sunucuda olmalı: bu klasörü bir sunucuya yükleyip oradan açmalısın.';
 }
 
+galeriyiGuncelle();
 notKartlariniOlustur();
 onizlemeGuncelle();
+dilUygula();
+var dilBtn = document.getElementById('dilBtn');
+if (dilBtn) {
+  dilBtn.addEventListener('click', function () {
+    DIL = DIL === 'tr' ? 'en' : 'tr';
+    try { localStorage.setItem('dogumgunu-dil', DIL); } catch (e) {}
+    dilUygula();
+    galeriyiGuncelle();
+  });
+}
 bekleyipOlustur();
 </script>
 </body>

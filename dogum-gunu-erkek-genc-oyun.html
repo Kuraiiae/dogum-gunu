@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#150f2e">
+<title>DOĞUM GÜNÜN KUTLU OLSUN 🎮</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="zarf-motoru.css">
+<style>
+:root{
+  --oyuncak-pembe:#221a45; --oyuncak-gul:#00e5ff; --oyuncak-mor:#9d4dff;
+  --oyuncak-sari:#ffe58a; --oyuncak-turkuaz:#ff2fd6; --oyuncak-krem:#0d0a1e;
+  --oyuncak-murekkep:#eef6ff; --zf-bir:#00e5ff; --zf-iki:#9d4dff;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{
+  font-family:'Quicksand','Trebuchet MS','Segoe UI',system-ui,sans-serif;
+  color:var(--oyuncak-murekkep);
+  background:linear-gradient(170deg,#0d0a1e 0%,#221a45 55%,#1b1240 100%);
+  background-attachment:fixed;overflow-x:hidden;
+  min-height:100vh;min-height:100dvh;user-select:none;-webkit-user-select:none;
+}
+.blob{position:fixed;border-radius:50%;filter:blur(42px);opacity:.5;z-index:0;pointer-events:none}
+.blob.b1{width:330px;height:330px;background:var(--oyuncak-pembe);top:-120px;left:-110px;animation:zip 12s ease-in-out infinite alternate}
+.blob.b2{width:300px;height:300px;background:#b8e6ff;bottom:-110px;right:-100px;animation:zip2 16s ease-in-out infinite alternate}
+@keyframes zip{to{transform:translate(42px,30px) scale(1.1)}}
+@keyframes zip2{to{transform:translate(-36px,-24px) scale(1.06)}}
+#ortam{position:fixed;inset:0;z-index:1;pointer-events:none;overflow:hidden}
+.balon-mini{position:absolute;bottom:-60px;opacity:0;animation:yuz 7s linear infinite}
+.tsk{position:absolute;bottom:-50px;animation:dog 5.5s linear infinite;opacity:0}
+@keyframes yuz{0%{transform:translate3d(0,0,0) rotate(-6deg);opacity:0}12%{opacity:.95}100%{transform:translate3d(-22px,-108vh,0) rotate(7deg);opacity:.6}}
+@keyframes dog{0%{transform:translate3d(0,0,0) scale(.6) rotate(-14deg);opacity:0}12%{opacity:1}100%{transform:translate3d(20px,-106vh,0) scale(1.15) rotate(12deg)}}
+main{position:relative;z-index:10;max-width:480px;margin:0 auto;padding:calc(2rem + env(safe-area-inset-top)) 1.1rem 8rem;text-align:center}
+.kart{background:#fff;border:3px solid var(--oyuncak-gul);border-radius:26px;padding:2.2rem 1.2rem;box-shadow:0 22px 44px -18px rgba(107,74,104,.35);position:relative}
+.kart:before{content:"";position:absolute;inset:9px;border:2px dashed var(--oyuncak-pembe);border-radius:18px;pointer-events:none}
+.kart>*{position:relative;z-index:1}
+.rozet{display:inline-block;background:linear-gradient(90deg,var(--oyuncak-sari),#ffd27a);color:#8a5a2b;font-weight:800;border-radius:999px;padding:.35rem 1rem;font-size:.82rem;letter-spacing:.06em;box-shadow:0 6px 14px -6px rgba(0,0,0,.25);margin-bottom:1rem}
+.baslik{font-family:'Baloo 2',sans-serif;font-size:clamp(1.5rem,7vw,2.1rem);line-height:1.2;color:var(--oyuncak-mor);text-shadow:2px 2px 0 rgba(185,138,232,.2)}
+.isim{font-family:'Baloo 2',sans-serif;font-size:clamp(2.2rem,11vw,3.2rem);background:linear-gradient(92deg,var(--oyuncak-gul),var(--oyuncak-mor));-webkit-background-clip:text;background-clip:text;color:transparent;margin:.6rem 0 .9rem}
+.not{background:var(--oyuncak-krem);border:2px dashed var(--oyuncak-pembe);border-radius:16px;padding:1rem 1.05rem;text-align:left;font-weight:600;line-height:1.65;color:#7a5a78}
+.btn{display:block;width:min(290px,86%);margin:1.4rem auto 0;font-family:inherit;font-weight:800;font-size:1.05rem;color:#fff;border:none;border-radius:999px;padding:1rem 1.1rem;cursor:pointer;background:linear-gradient(92deg,var(--oyuncak-gul),var(--oyuncak-mor));box-shadow:0 10px 22px -8px rgba(185,138,232,.6);animation:nabiz 2.2s infinite;touch-action:manipulation}
+@keyframes nabiz{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
+.ent{opacity:0;animation:ent .85s cubic-bezier(.22,.9,.28,1) forwards}
+.ent-0{animation-delay:.08s}.ent-1{animation-delay:.2s}.ent-2{animation-delay:.34s}.ent-3{animation-delay:.48s}
+@keyframes ent{from{opacity:0;transform:translateY(22px) scale(.96)}to{opacity:1;transform:none}}
+.altnot{position:fixed;bottom:0;left:0;right:0;z-index:12;text-align:center;padding:1rem 1rem calc(.9rem + env(safe-area-inset-bottom));font-weight:600;font-size:.86rem;color:rgba(107,74,104,.55);pointer-events:none;background:linear-gradient(0deg,#fff,transparent)}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition:none !important}}
+</style>
+</head>
+<body>
+<div class="blob b1" aria-hidden="true"></div>
+<div class="blob b2" aria-hidden="true"></div>
+<div id="ortam" aria-hidden="true"></div>
+<main>
+  <section class="kart ent ent-0">
+    <div class="rozet ent ent-1">🎮 İyi ki doğdun</div>
+    <h1 class="baslik ent ent-2">DOĞUM GÜNÜN<br>KUTLU OLSUN</h1>
+    <div class="ayrac" style="font-size:1.4rem;color:var(--oyuncak-gul);margin:.4rem 0">🎮🕹️👾</div>
+    <h2 class="isim" id="isimYazisi">İSİM</h2>
+    <div class="not ent ent-3">
+      <p id="notYazisi">Senin için en güzel dileklerimle...</p>
+    </div>
+    <button class="btn" id="buton" type="button">🎉 Kutlamayı Başlat</button>
+  </section>
+</main>
+<footer class="altnot"><span aria-hidden="true">🧸</span> QR ile gönderildi</footer>
+<script>
+var P1=new URLSearchParams(location.search);
+var I1=(P1.get('isim')||'').trim()||'İSİM';
+var N1=(P1.get('not')||'').trim()||'Senin için en güzel dileklerimle...';
+document.getElementById('isimYazisi').textContent=I1;
+document.getElementById('notYazisi').textContent=N1;
+document.title='Doğum günün kutlu olsun, '+I1+'! 🧸';
+var ortam=document.getElementById('ortam');
+var bal=['🎮','🕹️','👾','💾','📱','🏆','💥'];
+for(var i=0;i<14;i++){
+  var b=document.createElement('div');
+  b.style.left=(3+Math.random()*90)+'%';
+  b.style.animationDelay=(Math.random()*4)+'s';
+  if(i%2===0){b.className='balon-mini';b.textContent=bal[i%bal.length];}
+  else{b.className='tsk';b.textContent=['🎁','🍭','🧨','🎪'][i%4];}
+  ortam.appendChild(b);
+}
+var btn=document.getElementById('buton');
+btn.addEventListener('click',function(){ btn.textContent='🎊 Tekrar Kutla!'; });
+</script>
+<script src="zarf-motoru.js"></script>
+</body>
+</html>

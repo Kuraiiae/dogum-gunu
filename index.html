@@ -298,6 +298,9 @@ body{
   padding:.9rem 1rem;font-family:var(--yazi-vurgu);font-style:italic;font-size:1rem;
   line-height:1.45;color:var(--vurgu-koyu);background:var(--kagit2);
   border:1px dashed var(--cizgi-koyu);border-radius:12px}
+.onizleme:has(iframe){display:block;padding:0;overflow:hidden;border-style:solid}
+.onizleme-iframe{display:block;width:100%;height:440px;border:0;background:#fff}
+@media (max-width:860px){.onizleme-iframe{height:380px}}
 .butonlar{display:grid;grid-template-columns:1fr 1fr;gap:.7rem}
 .buton{min-height:56px;border-radius:10px;font-family:var(--yazi-govde);font-weight:700;
   font-size:.82rem;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;
@@ -312,20 +315,20 @@ body{
 
 /* --- QR sahnesi --- */
 .qr-kutu{display:flex;flex-direction:column;align-items:center;padding:1.5rem 1.2rem 1.6rem}
-.qr-sahne{position:relative;width:min(300px,80vw)}
-.qr-cerceve{position:relative;border:1px solid var(--cizgi);border-radius:18px;padding:16px;
+.qr-sahne{position:relative;width:min(248px,74vw)}
+.qr-cerceve{position:relative;border:1px solid var(--cizgi);border-radius:18px;padding:13px;
   background:#FFFEF8;box-shadow:inset 0 1px 0 rgba(255,255,255,.9),var(--golge-kucuk);
   animation:yuz 6s ease-in-out infinite}
 @keyframes yuz{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
-.qr-halka{position:absolute;inset:-9px;border:1px solid rgba(156,122,60,.5);border-radius:24px;
+.qr-halka{position:absolute;inset:-8px;border:1px solid rgba(156,122,60,.5);border-radius:24px;
   pointer-events:none;animation:halkaAt 4.5s ease-in-out infinite}
 @keyframes halkaAt{0%,100%{opacity:.4}50%{opacity:.12}}
 .qr-kart{position:relative}
-.qr-kart canvas{display:block;width:100%;height:auto}
-.qr-emoji{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:48px;height:48px;
-  background:#FFFEF8;border:1px solid var(--cizgi);border-radius:50%;display:none;
-  align-items:center;justify-content:center;font-size:26px;line-height:1;
-  box-shadow:0 4px 14px rgba(75,62,40,.22),0 0 0 4px #FFFEF8;pointer-events:none;z-index:2}
+.qr-kart canvas{display:block;width:100% !important;height:auto !important}
+.qr-emoji{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:46px;height:46px;
+  background:#FFFEF8;border-radius:50%;display:none;
+  align-items:center;justify-content:center;font-size:24px;line-height:1;
+  box-shadow:0 0 0 5px #FFFEF8, 0 3px 12px rgba(75,62,40,.24);pointer-events:none;z-index:3}
 .qr-logo-cat{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:64px;height:64px;
   z-index:3;pointer-events:none;display:flex;align-items:center;justify-content:center}
 .qr-logo-halka{position:absolute;inset:0;border-radius:50%;
@@ -1050,16 +1053,11 @@ function qrRengi() {
 
 // ============ LOGOLU QR (merkezde doğum günü logosu) ============
 function qrLogoEkle() {
-  // qrcodejs canvas üretir; üzerine refah modunda logo bindirme yapıyoruz
-  var albüm = qrAlan.querySelector('canvas') || qrAlan.querySelector('img');
-  if (!albüm) { return; }
-  // Logo katmanı zaten varsa temizle
+  // Emoji zaten HTML'de (#qrEmoji) QR'ın tam merkezinde durur.
+  // Sadece görünür yapalım; eski ekstra katmanları temizle.
   var eski = qrAlan.querySelector('.qr-logo-cat');
   if (eski) { eski.remove(); }
-  var cat = document.createElement('div');
-  cat.className = 'qr-logo-cat';
-  cat.innerHTML = '<span class="qr-logo-halka"></span><span class="qr-logo-emoji">' + qrEmoji.textContent.trim() + '</span>';
-  qrAlan.appendChild(cat);
+  qrEmoji.style.display = 'flex';
 }
 
 // ============ ÖNİZLEME ============
@@ -1104,8 +1102,8 @@ async function qrOlustur() {
   try {
     new QRCode(qrAlan, {
       text: url,
-      width: 360,
-      height: 360,
+      width: 280,
+      height: 280,
       colorDark: qrRengi(),
       colorLight: '#ffffff',
       correctLevel: QRCode.CorrectLevel.H
@@ -1206,36 +1204,46 @@ function sablonBul(dosya) {
   }
   return null;
 }
+function sablonParamUygula() {
+  // index.html?sablon=dosya.html → seçili şablonu yükle ve önizlemeyi göster
+  var ap = new URLSearchParams(location.search).get('sablon');
+  if (!ap) { return; }
+  var st = sablonBul(ap);
+  if (!st) { return; }
+  seciliDosya = st.dosya;
+  cinsiyetDegistir(st.cinsiyet);
+  yasDegistir(st.yas);
+  onizlemeIframeKur(st.dosya);
+  setTimeout(ureticiyeKaydir, 60);
+}
+function onizlemeIframeKur(dosya) {
+  var ozn = document.getElementById('onizleme');
+  if (!ozn) { return; }
+  var st = sablonBul(dosya);
+  ozn.innerHTML = '';
+  var ifr = document.createElement('iframe');
+  ifr.className = 'onizleme-iframe';
+  ifr.src = dosya + '?isim=' + encodeURIComponent(isimInput.value.trim() || 'İSİM') + '&not=' + encodeURIComponent(seciliNot()) + '&zarf=0&dil=' + (navigator.language.indexOf('en') === 0 ? 'en' : 'tr');
+  ifr.loading = 'lazy';
+  ifr.title = st ? st.ad : 'Önizleme';
+  ozn.appendChild(ifr);
+}
 for (var s = 0; s < sablonButonlari.length; s++) {
   sablonButonlari[s].addEventListener('click', function () {
     var dosya = this.getAttribute('data-dosya') || '';
-    var cns = this.getAttribute('data-cinsiyet') || 'kiz';
-    var ys  = this.getAttribute('data-yas') || 'cocuk';
     if (!dosya) {
-      // eski butonlar: katalogdan eşleştir (cinsiyet-yaş ilk şablonu)
-      dosya = SABLONLAR.length ? SABLONLAR[0].dosya : '';
+      var cns = this.getAttribute('data-cinsiyet') || 'kiz';
+      var ys  = this.getAttribute('data-yas') || 'cocuk';
       for (var di = 0; di < SABLONLAR.length; di++) {
         if (SABLONLAR[di].cinsiyet === cns && SABLONLAR[di].yas === ys) {
           dosya = SABLONLAR[di].dosya; break;
         }
       }
     }
-    seciliDosya = dosya;
-    cinsiyetDegistir(cns);
-    yasDegistir(ys);
-    ureticiyeKaydir();
-    // önizleme iframe'ini seçilen şablona çevir
-    var ozn = document.getElementById('onizleme');
-    if (ozn) {
-      var st = sablonBul(dosya);
-      ozn.innerHTML = '';
-      var ifr = document.createElement('iframe');
-      ifr.className = 'onizleme-iframe';
-      ifr.src = dosya + '?isim=' + encodeURIComponent(isimInput.value.trim() || 'İSİM') + '&not=' + encodeURIComponent(seciliNot()) + '&dil=' + (navigator.language.indexOf('en') === 0 ? 'en' : 'tr');
-      ifr.loading = 'lazy';
-      ifr.title = st ? st.ad : 'Önizleme';
-      ozn.appendChild(ifr);
-    }
+    if (!dosya) { return; }
+    // Yeni sekmede, önizlemeli kart üreticiyi aç
+    var adres = location.href.split('?')[0] + '?sablon=' + encodeURIComponent(dosya);
+    window.open(adres, '_blank');
   });
 }
 
@@ -1436,6 +1444,7 @@ if (location.protocol === 'file:') {
 galeriyiGuncelle();
 notKartlariniOlustur();
 onizlemeGuncelle();
+sablonParamUygula();
 dilUygula();
 var dilBtn = document.getElementById('dilBtn');
 if (dilBtn) {

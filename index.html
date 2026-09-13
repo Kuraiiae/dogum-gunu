@@ -1,0 +1,535 @@
+﻿<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" id="metaTema" content="#ffd9ea">
+<title>Doğum Günü Kartı Üretici 🎉</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Bangers&family=Baloo+2:wght@600;700;800&family=Oswald:wght@500;600&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============ TEMA RENKLERİ (kız varsayılan, erkek altta ezilir) ============ */
+:root{
+  --plan-1:#fff3f8; --plan-2:#ffd9ea; --plan-3:#efd9ff;
+  --blob1:#ffc9e2; --blob2:#d9c4ff;
+  --kart:rgba(255,255,255,.84); --kart-hat:rgba(255,255,255,.95);
+  --metin:#5c3a55; --metin-acik:#8a6b7f;
+  --vurgu:#ec6aa8; --vurgu-koyu:#d14d8f; --vurgu-acik:#ffb6d9;
+  --alin-grad:linear-gradient(92deg,#ff8fc0,#e86aa8 52%,#c86adf);
+  --btn-grad:linear-gradient(92deg,#ff8fc0,#e86aa8 52%,#c86adf);
+  --hale:radial-gradient(closest-side,rgba(226,105,177,.55),transparent 72%);
+  --qr-renk:#d14d8f;
+  --alan-bg:#ffffff; --alan-hat:#f3b3d2; --alan-yazi:#5c3a55;
+  --odak:#e04d97; --odak-halka:rgba(224,77,151,.16);
+  --secili-bg:#fff0f7;
+  --yazi-vurgu:'Baloo 2','Trebuchet MS',system-ui,sans-serif;
+  --yazi-govde:'Quicksand','Trebuchet MS','Segoe UI',system-ui,sans-serif;
+}
+body[data-cinsiyet="erkek"]{
+  --plan-1:#0b0f24; --plan-2:#10142e; --plan-3:#1a2145;
+  --blob1:radial-gradient(closest-side, rgba(255,43,58,.4), transparent 75%);
+  --blob2:radial-gradient(closest-side, rgba(47,107,255,.38), transparent 75%);
+  --kart:rgba(26,32,70,.92); --kart-hat:rgba(255,201,51,.4);
+  --metin:#f2f5ff; --metin-acik:#aab3dd;
+  --vurgu:#ff2b3a; --vurgu-koyu:#ffc933; --vurgu-acik:#2f6bff;
+  --alin-grad:linear-gradient(180deg,#ff4754,#d3132a);
+  --btn-grad:linear-gradient(180deg,#ff4754,#d3132a);
+  --hale:radial-gradient(closest-side,rgba(255,43,58,.5),transparent 72%);
+  --qr-renk:#ff2b3a;
+  --alan-bg:#161d42; --alan-hat:#343e6b; --alan-yazi:#eef1ff;
+  --odak:#ffc933; --odak-halka:rgba(255,201,51,.18);
+  --secili-bg:rgba(255,43,58,.1);
+  --yazi-vurgu:'Anton','Arial Black',Impact,sans-serif;
+  --yazi-govde:'Oswald','Trebuchet MS','Segoe UI',system-ui,sans-serif;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{min-height:100%}
+body{
+  font-family:var(--yazi-govde);
+  color:var(--metin);
+  background:linear-gradient(168deg,var(--plan-1) 0%,var(--plan-2) 45%,var(--plan-3) 100%);
+  background-attachment:fixed;
+  transition:background .5s ease, color .3s ease;
+  overflow-x:hidden;
+  touch-action:manipulation;
+  -webkit-user-select:none;user-select:none;
+}
+/* Arka plan lekeleri (tema ile değişir) */
+body::before,body::after{
+  content:"";position:fixed;border-radius:50%;filter:blur(62px);
+  pointer-events:none;z-index:0;opacity:.85;transition:background .5s ease;
+}
+body::before{width:380px;height:380px;top:-140px;left:-120px;background:var(--blob1)}
+body::after{width:410px;height:410px;bottom:-160px;right:-140px;background:var(--blob2)}
+/* Sadece erkek temada halftone noktalar */
+.noktalar{position:fixed;inset:0;z-index:0;pointer-events:none;display:none;
+  background-image:radial-gradient(rgba(255,255,255,.05) 1.5px,transparent 1.6px);background-size:20px 20px}
+body[data-cinsiyet="erkek"] .noktalar{display:block}
+
+.kapsayici{position:relative;z-index:1;max-width:480px;margin:0 auto;
+  padding:calc(1.7rem + env(safe-area-inset-top)) 1.15rem calc(2rem + env(safe-area-inset-bottom))}
+
+/* --- Başlık --- */
+.sinyal{display:inline-block;margin-bottom:.6rem;background:var(--kart);border:1px solid var(--kart-hat);
+  border-radius:999px;padding:.32rem .85rem;font-family:var(--yazi-vurgu);font-weight:700;
+  font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--vurgu-koyu);transition:background .4s,color .3s}
+body[data-cinsiyet="erkek"] .sinyal{letter-spacing:.12em}
+.baslik{font-family:var(--yazi-vurgu);font-weight:800;font-size:clamp(1.7rem,8.4vw,2.45rem);
+  line-height:1.14;letter-spacing:.015em;transition:font-family .3s}
+body[data-cinsiyet="erkek"] .baslik{text-transform:uppercase;font-weight:400}
+.alt-baslik{margin-top:.5rem;font-size:.96rem;font-weight:600;color:var(--metin-acik);line-height:1.5}
+
+/* --- Cinsiyet değiştirici --- */
+.cevir{position:relative;display:flex;margin:1.25rem 0;background:var(--kart);
+  border:1px solid var(--kart-hat);border-radius:999px;padding:5px;
+  box-shadow:0 10px 26px -14px rgba(0,0,0,.3)}
+.cevir-gostergesi{position:absolute;top:5px;left:5px;width:calc(50% - 5px);height:calc(100% - 10px);
+  border-radius:999px;background:var(--alin-grad);box-shadow:0 5px 16px -5px rgba(0,0,0,.4);
+  transition:transform .38s cubic-bezier(.3,1.35,.4,1)}
+.cevir.erkek .cevir-gostergesi{transform:translateX(100%)}
+.cevir-buton{flex:1;position:relative;z-index:1;min-height:56px;border:0;background:none;
+  border-radius:999px;font-family:var(--yazi-govde);font-weight:800;font-size:1.02rem;
+  letter-spacing:.08em;color:var(--metin-acik);cursor:pointer;transition:color .3s,font-family .3s;
+  touch-action:manipulation}
+.cevir-buton.aktif{color:#fff;text-shadow:0 1px 0 rgba(0,0,0,.18)}
+
+/* --- Form --- */
+.form-kart{background:var(--kart);border:1px solid var(--kart-hat);border-radius:26px;
+  padding:1.35rem 1.2rem 1.5rem;box-shadow:0 20px 48px -20px rgba(0,0,0,.32);
+  transition:background .5s,border-color .5s}
+.alan-etiket{display:block;margin:.25rem 0 .5rem;font-family:var(--yazi-govde);font-weight:800;
+  font-size:.9rem;letter-spacing:.05em;color:var(--vurgu-koyu);transition:color .3s}
+.alan-etiket span{float:right;font-weight:600;font-size:.78rem;color:var(--metin-acik)}
+.girdi{width:100%;min-height:56px;padding:.9rem 1.05rem;border-radius:16px;
+  border:2px solid var(--alan-hat);background:var(--alan-bg);color:var(--alan-yazi);
+  font-family:var(--yazi-govde);font-weight:600;font-size:1.06rem;outline:none;
+  transition:border-color .2s,box-shadow .2s,background .4s}
+.girdi::placeholder{color:var(--metin-acik);opacity:.65}
+.girdi:focus{border-color:var(--odak);box-shadow:0 0 0 4px var(--odak-halka)}
+
+.not-alan{margin-top:1.3rem}
+.not-kart{position:relative;display:flex;align-items:flex-start;gap:.7rem;min-height:66px;
+  background:var(--alan-bg);border:2px solid var(--alan-hat);border-radius:18px;
+  padding:.85rem .95rem;margin-bottom:.65rem;cursor:pointer;
+  transition:border-color .2s,box-shadow .2s,transform .15s,background .4s}
+.not-kart:hover{transform:translateY(-1px)}
+.not-kart input{position:absolute;opacity:0;pointer-events:none}
+.not-kart.ozel{border-style:dashed}
+.not-kart:has(input:checked){border-color:var(--vurgu);background:var(--secili-bg);
+  box-shadow:0 0 0 3px var(--odak-halka),0 8px 20px -10px var(--vurgu)}
+.not-kart-etiket{display:block;margin-bottom:.22rem;font-family:var(--yazi-vurgu);font-weight:700;
+  font-size:.76rem;letter-spacing:.14em;text-transform:uppercase;color:var(--vurgu-koyu);
+  transition:color .3s}
+.not-kart-metin{font-size:.94rem;font-weight:600;line-height:1.45;color:var(--alan-yazi)}
+.not-kart-isaret{position:absolute;top:.75rem;right:.8rem;width:24px;height:24px;border-radius:50%;
+  border:2.5px solid var(--alan-hat);display:flex;align-items:center;justify-content:center;
+  font-size:.74rem;color:#fff;background:transparent;transition:background .2s,border-color .2s}
+.not-kart:has(input:checked) .not-kart-isaret{background:var(--vurgu);border-color:var(--vurgu)}
+.not-kart:has(input:checked) .not-kart-isaret::after{content:"✓"}
+#ozelKutu.ozel-acik .ozel-not{display:block}
+.ozel-not{display:none;width:100%;min-height:92px;margin-top:-.15rem;padding:.85rem .95rem;
+  border-radius:14px;border:2px dashed var(--alan-hat);background:var(--alan-bg);color:var(--alan-yazi);
+  font-family:var(--yazi-govde);font-weight:600;font-size:.98rem;line-height:1.5;outline:none;
+  resize:vertical;transition:border-color .2s}
+.ozel-not:focus{border-color:var(--odak)}
+
+/* --- Canlı önizleme --- */
+.onizleme{margin:1.05rem 0 .35rem;display:flex;align-items:center;justify-content:center;gap:.4rem;
+  text-align:center;border-radius:999px;padding:.85rem 1rem;font-weight:700;font-size:.95rem;
+  line-height:1.45;color:var(--vurgu-koyu);background:var(--kart);
+  border:1.5px dashed var(--vurgu-acik);transition:all .4s}
+
+/* --- Butonlar --- */
+.butonlar{display:grid;grid-template-columns:1fr 1fr;gap:.7rem;margin:1rem 0 1.4rem}
+.buton{min-height:58px;border-radius:16px;font-family:var(--yazi-govde);font-weight:800;
+  font-size:.94rem;letter-spacing:.01em;cursor:pointer;display:flex;align-items:center;
+  justify-content:center;gap:.4rem;padding:.8rem .55rem;touch-action:manipulation;
+  transition:transform .15s,box-shadow .2s,opacity .25s}
+.buton-bir{background:var(--btn-grad);color:#fff;border:0;
+  box-shadow:0 10px 24px -10px var(--vurgu),inset 0 2px 0 rgba(255,255,255,.3),inset 0 -3px 0 rgba(0,0,0,.14)}
+.buton-iki{background:transparent;color:var(--vurgu-koyu);border:2px solid var(--vurgu-acik)}
+.buton:active{transform:translateY(2px) scale(.98)}
+.buton:disabled{opacity:.45;cursor:not-allowed}
+
+/* --- QR sahnesi --- */
+.qr-kutu{display:flex;flex-direction:column;align-items:center}
+.qr-sahne{position:relative;width:min(332px,86vw)}
+.qr-hale{position:absolute;inset:-8%;background:var(--hale);filter:blur(36px);
+  animation:haleNefes 3s ease-in-out infinite;transition:background .5s}
+@keyframes haleNefes{0%,100%{opacity:.55;transform:scale(1)}50%{opacity:1;transform:scale(1.06)}}
+.qr-cerceve{position:relative;animation:yuz 4.2s ease-in-out infinite}
+@keyframes yuz{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+.qr-halka{position:absolute;inset:-16px;border:2.5px solid var(--vurgu);border-radius:32px;
+  pointer-events:none;animation:halkaAt 2.6s ease-in-out infinite;transition:border-color .4s}
+@keyframes halkaAt{0%,100%{transform:scale(1);opacity:.5}50%{transform:scale(1.05);opacity:.14}}
+.qr-kart{position:relative;background:#fff;border-radius:22px;padding:14px;
+  box-shadow:0 22px 46px -16px rgba(0,0,0,.42),0 0 0 1px rgba(0,0,0,.05)}
+.qr-kart canvas{display:block;width:100%;height:auto;border-radius:10px}
+.qr-emoji{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:48px;height:48px;
+  background:#fff;border-radius:14px;display:none;align-items:center;justify-content:center;
+  font-size:26px;line-height:1;box-shadow:0 4px 14px rgba(0,0,0,.2);pointer-events:none}
+.qr-parilti{position:absolute;inset:0;border-radius:22px;overflow:hidden;pointer-events:none}
+.qr-parilti::before{content:"";position:absolute;top:-20%;bottom:-20%;width:42%;
+  background:linear-gradient(105deg,transparent 0%,rgba(255,255,255,.3) 45%,rgba(255,255,255,.06) 60%,transparent 100%);
+  transform:skewX(-14deg);left:-60%;animation:pariltiKay 3.4s ease-in-out infinite}
+@keyframes pariltiKay{0%{left:-60%}55%,100%{left:135%}}
+.qr-yukleniyor{display:none;flex-direction:column;align-items:center;justify-content:center;gap:.85rem;
+  padding:4.6rem 1rem;color:var(--metin-acik);font-family:var(--yazi-govde);font-weight:700;font-size:.95rem}
+.qr-yukleniyor::before{content:"";width:44px;height:44px;border-radius:50%;
+  border:5px solid #f0d7e4;border-top-color:var(--vurgu);animation:don 1s linear infinite}
+@keyframes don{to{transform:rotate(360deg)}}
+.qr-hata{display:none;flex-direction:column;align-items:center;gap:.7rem;text-align:center;
+  background:var(--kart);border:2px dashed var(--vurgu);border-radius:22px;padding:1.5rem 1rem;
+  color:var(--metin);font-family:var(--yazi-govde);font-weight:600;font-size:.92rem;line-height:1.5}
+.qr-hata-adres{display:block;width:100%;font-size:.7rem;font-family:Consolas,monospace;
+  word-break:break-all;color:var(--metin-acik);background:var(--alan-bg);
+  border:1px solid var(--alan-hat);border-radius:10px;padding:.55rem .7rem}
+.qr-kart.bekliyor .qr-yukleniyor{display:flex}
+#qrKutu.hata .qr-hata{display:flex}
+.qr-not{margin-top:1.2rem;font-size:.86rem;font-weight:600;color:var(--metin-acik);text-align:center;line-height:1.5}
+.qr-ipucu{margin-top:.5rem;font-size:.74rem;font-weight:500;color:var(--metin-acik);opacity:.85;text-align:center}
+
+/* --- Alt not --- */
+.alt-not{margin-top:2.2rem;text-align:center;font-size:.86rem;font-weight:600;color:var(--metin-acik)}
+.kalpAt{display:inline-block;animation:kalpAt 1.5s ease-in-out infinite}
+@keyframes kalpAt{0%,100%{transform:scale(1)}25%{transform:scale(1.28)}40%{transform:scale(1)}}
+
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition:none !important}
+}
+</style>
+</head>
+<body data-cinsiyet="kiz">
+
+<div class="noktalar" aria-hidden="true"></div>
+
+<main class="kapsayici">
+
+  <header>
+    <span class="sinyal">QR Kart Stüdyosu</span>
+    <h1 class="baslik">Doğum Günü<br>Kartı Üretici</h1>
+    <p class="alt-baslik">İsmini ve notunu yaz, çıkan QR'ı telefonla tarat — kart anında açılır. 💌</p>
+  </header>
+
+  <div class="cevir" id="cevir" role="group" aria-label="Kart cinsiyeti">
+    <div class="cevir-gostergesi" aria-hidden="true"></div>
+    <button class="cevir-buton aktif" id="kizBtn" type="button" aria-pressed="true">👧 KIZ</button>
+    <button class="cevir-buton" id="erkekBtn" type="button" aria-pressed="false">👦 ERKEK</button>
+  </div>
+
+  <form id="form" onsubmit="return false">
+    <div class="form-kart">
+
+      <label class="alan-etiket" for="isimInput">İsim <span id="karSayac">0/30</span></label>
+      <input class="girdi" id="isimInput" type="text" placeholder="Örn: Elif" maxlength="30" autocomplete="off" spellcheck="false">
+
+      <div class="not-alan">
+        <span class="alan-etiket">Karta hangi not yazılsın?</span>
+        <div id="notKartlari"></div>
+        <div id="ozelKutu">
+          <textarea class="ozel-not" id="ozelNot" maxlength="160" placeholder="Kendi notunu yaz... (boş bırakırsan 1. örnek kullanılır)"></textarea>
+        </div>
+      </div>
+
+    </div>
+  </form>
+
+  <div class="onizleme" id="onizleme" aria-live="polite"></div>
+
+  <div class="butonlar">
+    <button class="buton buton-bir" id="indirBtn" type="button" disabled>⬇️ QR'ı İndir (PNG)</button>
+    <button class="buton buton-iki" id="kopyalaBtn" type="button">🔗 Linki Kopyala</button>
+  </div>
+
+  <section class="qr-kutu" id="qrKutu" aria-live="polite">
+    <div class="qr-sahne">
+      <div class="qr-hale" aria-hidden="true"></div>
+      <div class="qr-cerceve">
+        <div class="qr-halka" aria-hidden="true"></div>
+        <div class="qr-kart bekliyor" id="qrAlan">
+          <div class="qr-yukleniyor">QR yükleniyor...</div>
+        </div>
+        <div class="qr-emoji" id="qrEmoji" aria-hidden="true">🎂</div>
+        <div class="qr-parilti" aria-hidden="true"></div>
+      </div>
+    </div>
+    <div class="qr-hata" id="qrHata">
+      <div>😔 QR kütüphanesi yüklenemedi. Bağlantını kontrol edip sayfayı yenile.</div>
+      <div class="qr-hata-adres" id="qrHataAdres"></div>
+    </div>
+    <p class="qr-not">QR'ı telefonunla tarat, kartın açılır 🎉</p>
+    <p class="qr-ipucu" id="qrIpucu"></p>
+  </section>
+
+  <footer class="alt-not"><span class="kalpAt" aria-hidden="true">❤️</span> QR ile gönderildi</footer>
+
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" defer></script>
+<script>
+// ============ ÖRNEK NOTLAR ============
+var KIZ_NOTLARI = [
+  "Gülüşün en güzel hediye, iyi ki doğdun! 🎂",
+  "Küçük kalbine kocaman sevgiler, doğum günün kutlu olsun! 🌸",
+  "Seninle her gün bayram, ama bugün resmi olarak senin günün! 🎀",
+  "Dünyaya kattığın gülümsemeler için teşekkürler, iyi ki doğdun! 💖"
+];
+var ERKEK_NOTLARI = [
+  "Süper güçlerin hep seninle olsun, doğum günün kutlu olsun! ⚡",
+  "Bu yıl senin yılın — hız kesmeden devam! 🏁",
+  "Bir süper kahraman gibi, iyi ki doğdun! 🦸",
+  "Gücün, cesaretin ve kahkahaların hep bol olsun! 🚀"
+];
+
+// ============ DURUM ============
+var cinsiyet = 'kiz';
+var seciliTip = 'ornek';   // 'ornek' | 'ozel'
+var seciliIndex = 0;
+var qrLibYok = false;
+var zamanlayici = null;
+
+var isimInput  = document.getElementById('isimInput');
+var notKartlari = document.getElementById('notKartlari');
+var ozelKutu   = document.getElementById('ozelKutu');
+var ozelNot    = document.getElementById('ozelNot');
+var karSayac   = document.getElementById('karSayac');
+var onizleme   = document.getElementById('onizleme');
+var indirBtn   = document.getElementById('indirBtn');
+var kopyalaBtn = document.getElementById('kopyalaBtn');
+var qrKutu     = document.getElementById('qrKutu');
+var qrAlan     = document.getElementById('qrAlan');
+var qrEmoji    = document.getElementById('qrEmoji');
+var qrHata     = document.getElementById('qrHata');
+var qrHataAdres= document.getElementById('qrHataAdres');
+var cevir      = document.getElementById('cevir');
+var kizBtn     = document.getElementById('kizBtn');
+var erkekBtn   = document.getElementById('erkekBtn');
+var metaTema   = document.getElementById('metaTema');
+
+function suAnkiNotlar() { return cinsiyet === 'kiz' ? KIZ_NOTLARI : ERKEK_NOTLARI; }
+
+// ============ NOT KARTLARINI OLUŞTUR ============
+function notKartlariniOlustur() {
+  var metinler = suAnkiNotlar();
+  notKartlari.innerHTML = '';
+  var i;
+  for (i = 0; i < metinler.length; i++) {
+    notKartlari.appendChild(notKartYap('ornek', i, 'Örnek ' + (i + 1), metinler[i]));
+  }
+  notKartlari.appendChild(notKartYap('ozel', -1, 'Özel not yaz', 'Kendi notunu yaz, daha kişisel olsun ✏️'));
+  // Seçili durumu geri yükle
+  var sec = document.querySelector('input[name="notSecim"][value="' + (seciliTip === 'ozel' ? 'ozel' : 'ornek' + seciliIndex) + '"]');
+  if (sec) { sec.checked = true; }
+  ozelKutu.classList.toggle('ozel-acik', seciliTip === 'ozel');
+}
+
+function notKartYap(tip, index, etiket, metin) {
+  var deger = tip === 'ozel' ? 'ozel' : 'ornek' + index;
+  var seciliMi = (seciliTip === tip) && (tip !== 'ozel' ? seciliIndex === index : true);
+  var kart = document.createElement('label');
+  kart.className = 'not-kart' + (tip === 'ozel' ? ' ozel' : '');
+
+  var gir = document.createElement('input');
+  gir.type = 'radio';
+  gir.name = 'notSecim';
+  gir.value = deger;
+  gir.checked = seciliMi;
+
+  var ic = document.createElement('span');
+  var etiketSpan = document.createElement('span');
+  etiketSpan.className = 'not-kart-etiket';
+  etiketSpan.textContent = etiket;
+  var metinSpan = document.createElement('span');
+  metinSpan.className = 'not-kart-metin';
+  metinSpan.textContent = metin;
+  ic.appendChild(etiketSpan);
+  ic.appendChild(metinSpan);
+
+  var isaret = document.createElement('span');
+  isaret.className = 'not-kart-isaret';
+
+  kart.appendChild(gir);
+  kart.appendChild(ic);
+  kart.appendChild(isaret);
+  return kart;
+}
+
+// ============ SEÇİLEN NOT ============
+function seciliNot() {
+  if (seciliTip === 'ozel') {
+    var t = ozelNot.value.trim();
+    if (t) { return t; }
+    return suAnkiNotlar()[0]; // boşsa 1. örneğe düş
+  }
+  return suAnkiNotlar()[seciliIndex] || suAnkiNotlar()[0];
+}
+
+// ============ QR ADRESİ ============
+function qrAdresi() {
+  var isim = isimInput.value.trim() || 'İSİM';
+  var base = new URL('.', location.href).href;
+  return base + 'dogum-gunu-' + cinsiyet + '.html?isim=' + encodeURIComponent(isim) + '&not=' + encodeURIComponent(seciliNot());
+}
+
+function qrRengi() {
+  return getComputedStyle(document.body).getPropertyValue('--qr-renk').trim() || '#d14d8f';
+}
+
+// ============ ÖNİZLEME ============
+function onizlemeGuncelle() {
+  var isim = isimInput.value.trim();
+  var ifade;
+  if (!isim) {
+    ifade = cinsiyet === 'kiz' ? '🎂 İsmini yaz, kartın seni bekliyor ✍️' : '⚡ İsmini yaz, macera hazır ✍️';
+  } else {
+    ifade = (cinsiyet === 'kiz' ? '🎂 ' : '⚡ ') + isim + "'in doğum günü kartı hazır";
+  }
+  onizleme.textContent = ifade;
+}
+
+// ============ QR OLUŞTUR ============
+function hataGoster(url) {
+  qrAlan.classList.remove('bekliyor');
+  qrKutu.classList.add('hata');
+  qrHataAdres.textContent = url;
+  indirBtn.disabled = true;
+}
+
+function qrOlustur() {
+  var url = qrAdresi();
+  if (qrLibYok || typeof QRCode === 'undefined') {
+    if (qrLibYok) { hataGoster(url); }
+    return;
+  }
+  qrAlan.innerHTML = '';
+  try {
+    new QRCode(qrAlan, {
+      text: url,
+      width: 360,
+      height: 360,
+      colorDark: qrRengi(),
+      colorLight: '#ffffff',
+      correctLevel: QRCode.CorrectLevel.H
+    });
+    qrAlan.classList.remove('bekliyor');
+    qrKutu.classList.remove('hata');
+    qrEmoji.style.display = 'flex';
+    indirBtn.disabled = false;
+  } catch (e) {
+    hataGoster(url);
+  }
+}
+
+function qrYenile(aninda) {
+  clearTimeout(zamanlayici);
+  if (aninda) { qrOlustur(); return; }
+  zamanlayici = setTimeout(qrOlustur, 300);
+}
+
+// QR kütüphanesi gelene kadar bekle (yüklenince oluştur)
+var beklemeBaslangici = Date.now();
+function bekleyipOlustur() {
+  if (typeof QRCode !== 'undefined') { qrYenile(true); return; }
+  if (Date.now() - beklemeBaslangici > 12000) {
+    qrLibYok = true;
+    hataGoster(qrAdresi());
+    return;
+  }
+  setTimeout(bekleyipOlustur, 350);
+}
+
+// ============ OLAYLAR ============
+isimInput.addEventListener('input', function () {
+  karSayac.textContent = isimInput.value.length + '/30';
+  onizlemeGuncelle();
+  qrYenile(false);
+});
+
+notKartlari.addEventListener('change', function (e) {
+  if (e.target && e.target.name === 'notSecim') {
+    if (e.target.value === 'ozel') { seciliTip = 'ozel'; }
+    else {
+      seciliTip = 'ornek';
+      seciliIndex = parseInt(e.target.value.replace('ornek', ''), 10) || 0;
+    }
+    ozelKutu.classList.toggle('ozel-acik', seciliTip === 'ozel');
+    qrYenile(false);
+  }
+});
+
+ozelNot.addEventListener('input', function () { qrYenile(false); });
+
+function cinsiyetDegistir(yeni) {
+  if (cinsiyet === yeni) { return; }
+  cinsiyet = yeni;
+  document.body.dataset.cinsiyet = yeni;
+  cevir.classList.toggle('erkek', yeni === 'erkek');
+  kizBtn.classList.toggle('aktif', yeni === 'kiz');
+  erkekBtn.classList.toggle('aktif', yeni === 'erkek');
+  kizBtn.setAttribute('aria-pressed', yeni === 'kiz');
+  erkekBtn.setAttribute('aria-pressed', yeni === 'erkek');
+  metaTema.setAttribute('content', yeni === 'kiz' ? '#ffd9ea' : '#0b0f24');
+  notKartlariniOlustur();
+  onizlemeGuncelle();
+  qrYenile(false);
+}
+kizBtn.addEventListener('click', function () { cinsiyetDegistir('kiz'); });
+erkekBtn.addEventListener('click', function () { cinsiyetDegistir('erkek'); });
+
+// --- İndir (PNG) ---
+indirBtn.addEventListener('click', function () {
+  var cnv = qrAlan.querySelector('canvas');
+  var img = qrAlan.querySelector('img');
+  var kaynak = cnv ? cnv.toDataURL('image/png') : (img ? img.src : null);
+  if (!kaynak) { return; }
+  var ad = (isimInput.value.trim() || 'dogum-gunu') + '-qr.png';
+  var a = document.createElement('a');
+  a.href = kaynak;
+  a.download = ad;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+});
+
+// --- Kopyala ---
+function eskiYontemKopyala(metin, tamam) {
+  var gecici = document.createElement('textarea');
+  gecici.value = metin;
+  gecici.style.position = 'fixed';
+  gecici.style.opacity = '0';
+  document.body.appendChild(gecici);
+  gecici.focus();
+  gecici.select();
+  try { document.execCommand('copy'); tamam(); } catch (e) { }
+  gecici.remove();
+}
+kopyalaBtn.addEventListener('click', function () {
+  var url = qrAdresi();
+  var orijinal = kopyalaBtn.innerHTML;
+  function geriBildirim() {
+    kopyalaBtn.innerHTML = 'Kopyalandı ✓';
+    setTimeout(function () { kopyalaBtn.innerHTML = orijinal; }, 1800);
+  }
+  function basarili() { geriBildirim(); }
+  function sartli(a, b) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(a).then(b, function () { eskiYontemKopyala(a, b); });
+    } else { eskiYontemKopyala(a, b); }
+  }
+  sartli(url, basarili);
+});
+
+// ============ BAŞLANGIÇ ============
+// file:// üzerinden açılırsa telefonla okutulamayacağını haber ver
+if (location.protocol === 'file:') {
+  document.getElementById('qrIpucu').textContent = 'ℹ️ Kart sayfası da QR ile aynı sunucuda olmalı: bu klasörü bir sunucuya yükleyip oradan açmalısın.';
+}
+
+notKartlariniOlustur();
+onizlemeGuncelle();
+bekleyipOlustur();
+</script>
+</body>
+</html>

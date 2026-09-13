@@ -364,13 +364,19 @@ body{
 
 <script>
 // ==================== BURAYA İSMİ VE NOTU YAZ ====================
-const ISIM = "İSİM";
-const NOT  = "Senin için en güzel dileklerimle...";
+const VARSAYILAN_ISIM = "İSİM";
+const VARSAYILAN_NOT  = "Senin için en güzel dileklerimle...";
 // =================================================================
+
+// --- URL parametrelerinden isim ve notu oku (yoksa varsayılan) ---
+var params = new URLSearchParams(location.search);
+var ISIM = (params.get('isim') || '').trim() || VARSAYILAN_ISIM;
+var NOT  = (params.get('not')  || '').trim() || VARSAYILAN_NOT;
 
 // --- İsim ve notu yazdır ---
 document.getElementById('isimYazisi').textContent = ISIM;
 document.getElementById('notYazisi').textContent  = NOT;
+document.title = 'Doğum günün kutlu olsun, ' + ISIM + '! ⚡';
 
 // --- Çizgi roman yıldız patlamaları üret ---
 function yildizPatlamasi(nokta, d1, d2) {

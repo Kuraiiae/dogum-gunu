@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#ffd9ea">
+<title>Doğum Günün Kutlu Olsun 💖</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Dancing+Script:wght@600;700&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============ BURAYA RENKLERİ DEĞİŞTİREBİLİRSİN ============ */
+:root{
+  --pembe-acik:#ffd6e8;
+  --pembe:#ffb6d9;
+  --gul:#ff9ec7;
+  --gul-koyu:#f07fb0;
+  --pembe-koyu:#ec6aa8;
+  --roze:#d14d8f;
+  --lavanta:#d9c4ff;
+  --lavanta-koyu:#b26ce0;
+  --krem:#fff8ee;
+  --murekkep:#5c3a55;
+  --murekkep-acik:#8a6b7f;
+  --altin:#ffd98a;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{
+  font-family:'Quicksand','Trebuchet MS','Segoe UI',system-ui,-apple-system,sans-serif;
+  color:var(--murekkep);
+  background:linear-gradient(168deg,#fff3f8 0%,var(--pembe-acik) 36%,#efd9ff 74%,var(--lavanta) 100%);
+  background-attachment:fixed;
+  overflow-x:hidden;
+  min-height:100vh;min-height:100dvh;
+  padding-bottom:env(safe-area-inset-bottom);
+  user-select:none;-webkit-user-select:none;touch-action:manipulation;
+}
+
+/* --- Yumuşak rüya bulutları --- */
+.blob{position:fixed;border-radius:50%;filter:blur(48px);opacity:.55;z-index:0;pointer-events:none}
+.blob.b1{width:340px;height:340px;background:#ffc9e2;top:-120px;left:-110px;animation:drift1 14s ease-in-out infinite alternate}
+.blob.b2{width:320px;height:320px;background:#d9c4ff;bottom:-110px;right:-100px;animation:drift2 18s ease-in-out infinite alternate}
+.blob.b3{width:230px;height:230px;background:#ffe9c2;top:42%;right:-90px;animation:drift1 16s ease-in-out infinite alternate-reverse}
+@keyframes drift1{from{transform:translate(0,0) scale(1)}to{transform:translate(46px,32px) scale(1.12)}}
+@keyframes drift2{from{transform:translate(0,0) scale(1)}to{transform:translate(-40px,-26px) scale(1.08)}}
+
+/* --- Süzülen ambiyans --- */
+#ortam{position:fixed;inset:0;z-index:1;pointer-events:none;overflow:hidden}
+.balon{position:absolute;bottom:-95px;opacity:0;will-change:transform;animation-name:balonUc;animation-timing-function:linear;animation-iteration-count:infinite}
+@keyframes balonUc{
+  0%  {transform:translate3d(0,0,0) rotate(-5deg);opacity:0}
+  8%  {opacity:.92}
+  45% {transform:translate3d(26px,-46vh,0) rotate(5deg)}
+  78% {transform:translate3d(-18px,-84vh,0) rotate(-4deg)}
+  100%{transform:translate3d(8px,-112vh,0) rotate(3deg);opacity:.85}
+}
+.kalp{position:absolute;bottom:-45px;opacity:0;will-change:transform;animation-name:kalpUc;animation-timing-function:linear;animation-iteration-count:infinite}
+@keyframes kalpUc{
+  0%  {transform:translate3d(0,0,0) rotate(-8deg);opacity:0}
+  12% {opacity:.9}
+  50% {transform:translate3d(-22px,-50vh,0) rotate(9deg)}
+  100%{transform:translate3d(14px,-110vh,0) rotate(-6deg);opacity:.8}
+}
+.parilti{position:absolute;opacity:0;animation-name:parla;animation-iteration-count:infinite;animation-timing-function:ease-in-out}
+@keyframes parla{
+  0%,100%{opacity:.12;transform:scale(.55) rotate(0deg)}
+  50%{opacity:1;transform:scale(1.12) rotate(45deg)}
+}
+
+/* --- Kart --- */
+main{position:relative;z-index:10;max-width:480px;margin:0 auto;padding:calc(1.9rem + env(safe-area-inset-top)) 1.15rem 7.5rem;text-align:center}
+.kart{
+  background:rgba(255,255,255,.78);
+  border:1px solid rgba(255,255,255,.95);
+  border-radius:32px;
+  padding:2.1rem 1.35rem 2.3rem;
+  box-shadow:0 26px 60px -20px rgba(209,77,143,.4), inset 0 0 0 1px rgba(255,255,255,.4);
+}
+.kupkutu{width:86px;margin:0 auto .4rem;animation:kupKalcik 3.2s ease-in-out infinite}
+@keyframes kupKalcik{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-8px) rotate(3deg)}}
+.rozet{
+  display:inline-block;background:rgba(255,255,255,.85);border:1.5px solid var(--pembe);
+  border-radius:999px;padding:.42rem 1rem;margin-bottom:1rem;
+  font-family:'Quicksand','Trebuchet MS',sans-serif;font-weight:700;font-size:.76rem;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--pembe-koyu);
+}
+.baslik{
+  font-family:'Baloo 2','Trebuchet MS',system-ui,sans-serif;font-weight:800;
+  font-size:clamp(1.55rem,7.6vw,2.35rem);line-height:1.16;letter-spacing:.02em;
+  background:linear-gradient(93deg,#e44d9a 10%,#b26ce0 90%);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;
+  filter:drop-shadow(0 2px 10px rgba(226,105,177,.22));
+}
+.ayrac{color:var(--gul-koyu);font-size:1rem;letter-spacing:.55em;margin:.55rem 0 .65rem;text-indent:.55em}
+.isim{
+  font-family:'Dancing Script','Segoe Script','Apple Chancery',cursive;font-weight:700;
+  font-size:clamp(2.4rem,13.5vw,3.7rem);line-height:1.1;letter-spacing:.015em;
+  background:linear-gradient(95deg,#e44d9a 5%,#c25ce0 55%,#b26ce0 95%);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;
+  background-size:220% 100%;
+  animation:isimParilti 4.5s ease-in-out infinite;
+  transform:rotate(-2deg);text-shadow:0 4px 22px rgba(226,105,177,.25);
+}
+@keyframes isimParilti{0%,100%{background-position:0% 0}50%{background-position:100% 0}}
+.imza-cizgi{margin:.3rem auto .85rem;color:var(--gul-koyu)}
+.not{
+  font-family:'Quicksand','Trebuchet MS',sans-serif;font-weight:600;font-size:1.02rem;
+  line-height:1.65;color:#7a4a6b;
+  background:var(--krem);border:2px dashed #f3b3d2;border-radius:20px;
+  padding:1.05rem 1.15rem;text-align:left;position:relative;
+  box-shadow:inset 0 0 0 4px rgba(255,248,238,.55);
+}
+.not::before{content:"❝";position:absolute;top:-.4rem;left:.85rem;font-size:1.6rem;color:var(--gul-koyu);line-height:1}
+.btn{
+  display:block;width:min(300px,88%);margin:1.45rem auto 0;
+  font-family:'Baloo 2','Trebuchet MS',system-ui,sans-serif;font-weight:800;font-size:1.14rem;
+  color:#fff;letter-spacing:.02em;
+  background:linear-gradient(92deg,#ff8fc0 0%,#e86aa8 52%,#c86adf 100%);
+  border:none;border-radius:999px;padding:1rem 1.2rem;min-height:56px;cursor:pointer;
+  box-shadow:0 10px 26px -8px rgba(224,86,163,.65), inset 0 -3px 0 rgba(0,0,0,.12), inset 0 2px 0 rgba(255,255,255,.35);
+  animation:butonNabiz 2.4s ease-in-out infinite;
+  touch-action:manipulation;
+}
+.btn:active{transform:translateY(3px) scale(.98);box-shadow:0 5px 14px -6px rgba(224,86,163,.55)}
+@keyframes butonNabiz{0%,100%{transform:scale(1)}50%{transform:scale(1.045)}}
+
+/* --- Giriş animasyonu (kademeli) --- */
+.ent{opacity:0;animation:ent .85s cubic-bezier(.22,.9,.28,1) forwards}
+.ent-0{animation-delay:.05s}
+.ent-1{animation-delay:.18s}
+.ent-2{animation-delay:.3s}
+.ent-3{animation-delay:.42s}
+.ent-4{animation-delay:.54s}
+.ent-isim{opacity:0;animation:entIsim .9s cubic-bezier(.3,1.5,.4,1) .6s forwards}
+.ent-5{animation-delay:.72s}
+.ent-6{animation-delay:.85s}
+.ent-7{animation-delay:1s}
+@keyframes ent{from{opacity:0;transform:translateY(26px) scale(.96)}to{opacity:1;transform:none}}
+@keyframes entIsim{from{opacity:0;transform:scale(.35) rotate(-10deg)}65%{transform:scale(1.12) rotate(3deg)}to{opacity:1;transform:scale(1) rotate(-2deg)}}
+
+.hop{animation:hop .6s ease-in-out}
+@keyframes hop{0%{transform:scale(1) rotate(-2deg)}35%{transform:scale(1.14) rotate(2deg)}70%{transform:scale(.96)}100%{transform:scale(1) rotate(-2deg)}}
+
+/* --- Alt not --- */
+.altnot{
+  position:fixed;left:0;right:0;bottom:0;z-index:12;text-align:center;
+  padding:1rem 1rem calc(.9rem + env(safe-area-inset-bottom));
+  font-family:'Quicksand','Trebuchet MS',sans-serif;font-weight:600;font-size:.86rem;
+  color:rgba(92,58,85,.6);background:linear-gradient(0deg,rgba(255,243,248,.9),rgba(255,243,248,0));
+  pointer-events:none;
+}
+.kalpAt{display:inline-block;animation:kalpAt 1.5s ease-in-out infinite}
+@keyframes kalpAt{0%,100%{transform:scale(1)}25%{transform:scale(1.28)}40%{transform:scale(1)}}
+
+#konfeti{position:fixed;inset:0;width:100%;height:100%;z-index:40;pointer-events:none}
+
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition:none !important}
+}
+</style>
+</head>
+<body>
+
+<div class="blob b1" aria-hidden="true"></div>
+<div class="blob b2" aria-hidden="true"></div>
+<div class="blob b3" aria-hidden="true"></div>
+<div id="ortam" aria-hidden="true"></div>
+<canvas id="konfeti" aria-hidden="true"></canvas>
+
+<main>
+  <section class="kart ent ent-0">
+
+    <div class="kupkutu ent ent-1" aria-hidden="true">
+      <svg viewBox="0 0 80 72" width="84" height="75">
+        <path d="M18 38 L62 38 L55 60 Q40 68 25 60 Z" fill="#ffb6d9"/>
+        <path d="M18 38 L62 38 L58 45 L22 45 Z" fill="#ff9ec7"/>
+        <rect x="22" y="44" width="4" height="8" rx="2" fill="#fff3f8" transform="rotate(-14 24 48)"/>
+        <rect x="38" y="42" width="4" height="8" rx="2" fill="#fff3f8" transform="rotate(10 40 46)"/>
+        <rect x="52" y="44" width="4" height="8" rx="2" fill="#fff3f8" transform="rotate(-8 54 48)"/>
+        <circle cx="40" cy="29" r="20" fill="#fff3f8"/>
+        <circle cx="24" cy="37" r="13" fill="#fff3f8"/>
+        <circle cx="56" cy="37" r="13" fill="#fff3f8"/>
+        <circle cx="30" cy="25" r="3" fill="#ff9ec7"/>
+        <circle cx="50" cy="28" r="3" fill="#d9c4ff"/>
+        <circle cx="42" cy="16" r="5.5" fill="#e44d9a"/>
+        <path d="M45 16 L49 13" stroke="#c23b80" stroke-width="1.6" stroke-linecap="round"/>
+      </svg>
+    </div>
+
+    <span class="rozet ent ent-2">🎂 Bugün senin günün</span>
+
+    <h1 class="baslik ent ent-3">DOĞUM GÜNÜN<br>KUTLU OLSUN</h1>
+    <div class="ayrac ent ent-4" aria-hidden="true">❀ ✿ ❀</div>
+
+    <h2 class="isim ent ent-isim" id="isimYazisi">İSİM</h2>
+    <div class="imza-cizgi ent ent-5" aria-hidden="true">
+      <svg viewBox="0 0 120 14" width="126" height="15">
+        <path d="M4 9 Q 16 2 28 9 T 52 9 T 76 9 T 100 9 T 116 7" fill="none" stroke="#ff9ec7" stroke-width="3" stroke-linecap="round"/>
+      </svg>
+    </div>
+
+    <div class="not ent ent-6">
+      <p id="notYazisi">Senin için en güzel dileklerimle...</p>
+    </div>
+
+    <button class="btn ent ent-7" id="buton" type="button">🎉 Kutlamayı Başlat</button>
+
+  </section>
+</main>
+
+<footer class="altnot"><span class="kalpAt" aria-hidden="true">❤️</span> QR ile gönderildi</footer>
+
+<script>
+// ==================== BURAYA İSMİ VE NOTU YAZ ====================
+const ISIM = "İSİM";
+const NOT  = "Senin için en güzel dileklerimle...";
+// =================================================================
+
+// --- İsim ve notu yazdır ---
+document.getElementById('isimYazisi').textContent = ISIM;
+document.getElementById('notYazisi').textContent  = NOT;
+
+// --- Balonlar, kalpler, parıltılar ---
+var ortam = document.getElementById('ortam');
+var balonRenkleri = [['#ff9ec7','#f07fb0'],['#d9c4ff','#bf9df2'],['#ffb6d9','#f78fc3'],['#b8e0ff','#8ccbf5'],['#ffe3a3','#f7c968']];
+var i;
+for (i = 0; i < 9; i++) {
+  var b = document.createElement('div');
+  b.className = 'balon';
+  var r = balonRenkleri[i % balonRenkleri.length];
+  var s = 30 + Math.random() * 18;
+  b.style.left = (4 + Math.random() * 88) + '%';
+  b.style.animationDuration = (9 + Math.random() * 8) + 's';
+  b.style.animationDelay = (Math.random() * 10) + 's';
+  b.innerHTML = '<svg viewBox="0 0 48 64" width="' + s + '" height="' + Math.round(s * 4 / 3) + '">' +
+    '<ellipse cx="24" cy="20" rx="20" ry="24" fill="' + r[0] + '"/>' +
+    '<ellipse cx="16" cy="13" rx="6.5" ry="10" fill="rgba(255,255,255,.55)" transform="rotate(-24 16 13)"/>' +
+    '<path d="M24 42 L18.5 47.5 L24 52 L29.5 47.5 Z" fill="' + r[1] + '"/>' +
+    '<path d="M24 52 Q23 57 24 63" stroke="' + r[1] + '" stroke-width="2.4" fill="none" stroke-linecap="round"/>' +
+    '</svg>';
+  ortam.appendChild(b);
+}
+var kalpRenkleri = ['#ff8fc0', '#e6a8ff', '#ff7bac', '#ffb6d9'];
+for (i = 0; i < 7; i++) {
+  var k = document.createElement('div');
+  k.className = 'kalp';
+  var s2 = 15 + Math.random() * 13;
+  k.style.left = (4 + Math.random() * 90) + '%';
+  k.style.animationDuration = (12 + Math.random() * 8) + 's';
+  k.style.animationDelay = (Math.random() * 12) + 's';
+  k.innerHTML = '<svg viewBox="0 0 40 36" width="' + s2 + '" height="' + Math.round(s2 * 0.92) + '">' +
+    '<path d="M20 32 C 8 23.5 2.5 17 2.5 10.5 C 2.5 5 6.5 2 10.5 2 C 14.5 2 18 4.5 20 8 C 22 4.5 25.5 2 29.5 2 C 33.5 2 37.5 5 37.5 10.5 C 37.5 17 32 23.5 20 32 Z" fill="' + kalpRenkleri[i % kalpRenkleri.length] + '"/>' +
+    '</svg>';
+  ortam.appendChild(k);
+}
+var pariltiRengi = '#ffd98a';
+for (i = 0; i < 14; i++) {
+  var p = document.createElement('div');
+  p.className = 'parilti';
+  var s3 = 9 + Math.random() * 8;
+  p.style.left = (3 + Math.random() * 92) + '%';
+  p.style.top = (8 + Math.random() * 80) + '%';
+  p.style.animationDuration = (2.2 + Math.random() * 1.6) + 's';
+  p.style.animationDelay = (Math.random() * 2.6) + 's';
+  p.innerHTML = '<svg viewBox="0 0 24 24" width="' + s3 + '" height="' + s3 + '">' +
+    '<path d="M12 0 C13.2 6.8 17.2 10.8 24 12 C17.2 13.2 13.2 17.2 12 24 C10.8 17.2 6.8 13.2 0 12 C6.8 10.8 10.8 6.8 12 0 Z" fill="' + pariltiRengi + '" stroke="rgba(255,255,255,.85)" stroke-width="0.7"/>' +
+    '</svg>';
+  ortam.appendChild(p);
+}
+
+// --- Konfeti motoru ---
+var cv = document.getElementById('konfeti');
+var cx = cv.getContext('2d');
+var renkler = ['#ff8fc0', '#ffb6d9', '#e6a8ff', '#ffd98a', '#fff3f8', '#b8e0ff'];
+var DPR = Math.max(1, Math.min(2.5, window.devicePixelRatio || 1));
+function boyutla() {
+  cv.width = Math.floor(innerWidth * DPR);
+  cv.height = Math.floor(innerHeight * DPR);
+  cx.setTransform(DPR, 0, 0, DPR, 0, 0);
+}
+boyutla();
+window.addEventListener('resize', boyutla);
+var azHareket = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+var parcaciklar = [];
+
+function patlat(x, y, adet) {
+  for (var t = 0; t < adet; t++) {
+    var aci = Math.random() * Math.PI * 2;
+    var hiz = 2 + Math.random() * 5;
+    parcaciklar.push({
+      x: x, y: y,
+      vx: Math.cos(aci) * hiz,
+      vy: Math.sin(aci) * hiz - 3.2,
+      rot: Math.random() * Math.PI * 2,
+      vr: (Math.random() - 0.5) * 0.3,
+      boy: 5 + Math.random() * 7,
+      renk: renkler[(Math.random() * renkler.length) | 0],
+      sekil: Math.random() < 0.5 ? 0 : 1,
+      omur: 100 + Math.random() * 70,
+      op: 1
+    });
+  }
+}
+function yagmur() {
+  parcaciklar.push({
+    x: Math.random() * innerWidth, y: -10,
+    vx: (Math.random() - 0.5) * 0.6,
+    vy: 0.5 + Math.random() * 1.1,
+    rot: Math.random() * 6.28, vr: 0.02,
+    boy: 4 + Math.random() * 6,
+    renk: renkler[(Math.random() * renkler.length) | 0],
+    sekil: Math.random() < 0.5 ? 0 : 1,
+    omur: 320, op: 1
+  });
+}
+var son = 0;
+function dongu(zaman) {
+  requestAnimationFrame(dongu);
+  cx.clearRect(0, 0, innerWidth, innerHeight);
+  if (!azHareket && zaman - son > 500 && parcaciklar.length < 150) {
+    son = zaman;
+    yagmur();
+  }
+  for (var t = parcaciklar.length - 1; t >= 0; t--) {
+    var p = parcaciklar[t];
+    p.vy += 0.1; p.x += p.vx; p.y += p.vy; p.rot += p.vr; p.omur--;
+    p.op = Math.min(1, p.omur / 70);
+    if (p.y > innerHeight + 30 || p.omur <= 0) { parcaciklar.splice(t, 1); continue; }
+    cx.save();
+    cx.translate(p.x, p.y); cx.rotate(p.rot);
+    cx.globalAlpha = Math.max(0, p.op);
+    cx.fillStyle = p.renk;
+    if (p.sekil === 0) { cx.fillRect(-p.boy / 2, -p.boy / 2, p.boy, p.boy * 0.6); }
+    else { cx.beginPath(); cx.arc(0, 0, p.boy / 2, 0, 6.283); cx.fill(); }
+    cx.restore();
+  }
+}
+requestAnimationFrame(dongu);
+
+// --- Açılışta kutlama patlaması ---
+setTimeout(function () {
+  patlat(innerWidth * 0.5, innerHeight * 0.5, 110);
+  setTimeout(function () { patlat(innerWidth * 0.22, innerHeight * 0.68, 60); }, 200);
+  setTimeout(function () { patlat(innerWidth * 0.78, innerHeight * 0.62, 65); }, 400);
+}, 400);
+
+// --- Buton: büyük kutlama ---
+var buton = document.getElementById('buton');
+var isimEl = document.getElementById('isimYazisi');
+buton.addEventListener('click', function () {
+  patlat(innerWidth * 0.5, innerHeight * 0.45, 150);
+  setTimeout(function () { patlat(innerWidth * 0.18, innerHeight * 0.62, 80); }, 160);
+  setTimeout(function () { patlat(innerWidth * 0.82, innerHeight * 0.5, 80); }, 320);
+  isimEl.classList.remove('hop');
+  void isimEl.offsetWidth;
+  isimEl.classList.add('hop');
+  buton.textContent = '🎊 Tekrar Kutla!';
+});
+</script>
+</body>
+</html>

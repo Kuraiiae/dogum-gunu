@@ -1,0 +1,14 @@
+# ================================================================
+# GitHub linguist ayarları: HTML/CSS/JS template dosyaları
+# "vendored" işareti → dil istatistiklerinden ve code search'ten gizlenir
+# Sitenin çalışmasını ETKILEMEZ, sadece GitHub UI görünümünü düzenler
+# ================================================================
+
+# Şablon dosyaları
+dogum-gunu-*.html linguist-vendored=true
+zarf-motoru.css linguist-vendored=true
+zarf-motoru.js linguist-vendored=true
+
+# Tüm HTML'i istatistiklerden gizle (README ve proje kodu HTML içermez)
+*.html linguist-vendored=true
+

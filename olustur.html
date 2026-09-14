@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
@@ -316,7 +316,7 @@ body{
   box-shadow:0 0 0 2px #0c0d10;
 }
 .onizleme-phone{
-  width:min(310px,86%);
+  width:min(360px,90%);
   aspect-ratio:390/844;
   background:#000;border-radius:34px;overflow:hidden;position:relative;
   box-shadow:0 0 0 2px #0c0d10, 0 18px 34px -18px rgba(0,0,0,.85);
@@ -326,7 +326,7 @@ body{
 @keyframes oneGir{from{opacity:0;transform:translateY(8px) scale(.985)}to{opacity:1;transform:none}}
 .onizleme-phone::after{content:"";position:absolute;top:0;left:0;right:0;height:32%;z-index:1;pointer-events:none;
   background:linear-gradient(180deg,rgba(255,255,255,.13),rgba(255,255,255,0))}
-@media (min-width:1101px){.sag-panel{position:sticky;top:1.2rem;align-self:flex-start}}
+@media (min-width:860px){.sag-panel{position:sticky;top:80px;align-self:flex-start;max-height:calc(100vh - 100px);overflow-y:auto}}
 .sablon-sec-alan{margin-top:.4rem}
 .sablon-secim{display:grid;grid-template-columns:repeat(2,1fr);gap:.5rem}
 .sablon-sec{display:flex;align-items:center;gap:.45rem;min-height:44px;padding:.45rem .6rem;border-radius:10px;
@@ -383,6 +383,34 @@ body{
   color:var(--murekkep-acik);line-height:1.55;border:1px solid var(--cizgi);border-radius:10px;
   background:var(--kagit3);padding:.7rem .9rem}
 .qr-ipucu{margin-top:.55rem;font-size:.72rem;font-weight:400;color:var(--murekkep-acik);opacity:.85;text-align:center}
+.qr-olustur-btn{
+  width:100%;min-height:58px;border-radius:12px;background:var(--murekkep);
+  color:var(--kagit2);border:none;font-family:var(--yazi-govde);font-weight:700;
+  font-size:1rem;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:.5rem;
+  transition:background .25s,transform .15s;margin-top:.8rem;
+  touch-action:manipulation;
+}
+.qr-olustur-btn:hover{background:var(--bordo)}
+.qr-olustur-btn:active{transform:translateY(2px)}
+.qr-degisti-uyari{
+  display:none;align-items:center;justify-content:space-between;gap:.6rem;
+  background:#FFF3CD;border:1px solid #F0C040;border-radius:10px;
+  padding:.7rem .9rem;margin-top:.7rem;
+  font-family:var(--yazi-govde);font-size:.82rem;font-weight:600;color:#7A5C00;
+  animation:uyariGel .3s ease;
+}
+.qr-degisti-uyari.goster{display:flex}
+@keyframes uyariGel{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
+.qr-yenile-btn{
+  min-height:34px;padding:.35rem .85rem;border-radius:999px;
+  background:var(--altin);border:none;color:#fff;font-family:var(--yazi-govde);
+  font-weight:700;font-size:.76rem;letter-spacing:.08em;cursor:pointer;
+  white-space:nowrap;flex-shrink:0;
+}
+.qr-yenile-btn:hover{background:var(--vurgu-koyu)}
+.qr-alan-kapali{display:none}
+.qr-alan-kapali.goster{display:block}
 
 /* --- SSS --- */
 .sss-max{max-width:760px;margin:0 auto}
@@ -524,6 +552,11 @@ body{
 
         <div class="onizleme" id="onizleme" aria-live="polite"></div>
 
+        <button class="qr-olustur-btn" id="qrOlusturBtn" type="button">🎉 QR Kodu Oluştur</button>
+        <div class="qr-degisti-uyari" id="qrDegistiUyari">
+          <span>⚠️ Bilgiler değişti — QR'ı yenile</span>
+          <button class="qr-yenile-btn" id="qrYenileBtn" type="button">Yenile</button>
+        </div>
         <div class="butonlar">
           <button class="buton buton-bir" id="indirBtn" type="button" disabled>⬇️ QR'ı İndir (PNG)</button>
           <button class="buton buton-iki" id="kopyalaBtn" type="button">🔗 Linki Kopyala</button>
@@ -669,6 +702,8 @@ var seciliDosya = '';      // boşsa kategoriye göre klasik dosya seçilir
 var hediyeTipi = 'soz';    // 'none' | 'soz' | 'link' | 'resim'
 var qrLibYok = false;
 var zamanlayici = null;
+var qrOlusturulduMu = false; // henüz QR oluşturulmamış
+var formDegistiMi = false;
 
 // ============ 24 ŞABLON KATALOĞU (parça 1) ============
 var SABLONLAR = [
@@ -764,6 +799,9 @@ async function kartBaglantisiUret(isim, not, dosyaAdi, pin, yas, hediye, dil) {
     if (sifre) { url += '&sifre=' + sifre; }
     else { url += '&sifreDuz=' + encodeURIComponent(pin); }
   }
+  // Add expiration: valid for 1 week (7 days) from generation
+  var exp = Math.floor(Date.now() / 1000) + 7 * 24 * 60 * 60; // seconds
+  url += '&exp=' + exp;
   return url;
 }
 
@@ -928,18 +966,31 @@ async function qrOlustur() {
 }
 
 function qrYenile(aninda) {
+  // artık otomatik QR oluşturma — sadece değişti işareti koy
+  if (qrOlusturulduMu) {
+    formDegistiMi = true;
+    var uyari = document.getElementById('qrDegistiUyari');
+    if (uyari) { uyari.classList.add('goster'); }
+  }
+}
+function qrManuelOlustur() {
+  formDegistiMi = false;
+  qrOlusturulduMu = true;
+  var uyari = document.getElementById('qrDegistiUyari');
+  if (uyari) { uyari.classList.remove('goster'); }
+  // qrKutu'yu göster
+  var qrSectionEl = document.getElementById('qrKutu');
+  if (qrSectionEl) { qrSectionEl.style.display = ''; }
   clearTimeout(zamanlayici);
-  if (aninda) { qrOlustur(); return; }
-  zamanlayici = setTimeout(qrOlustur, 300);
+  qrOlustur();
 }
 
-// QR kütüphanesi gelene kadar bekle (yüklenince oluştur)
+// QR kütüphanesi gelene kadar bekle — artık otomatik QR oluşturmaz
 var beklemeBaslangici = Date.now();
 function bekleyipOlustur() {
-  if (typeof QRCode !== 'undefined') { qrYenile(true); return; }
+  if (typeof QRCode !== 'undefined') { return; } // lib geldi, oluşturma
   if (Date.now() - beklemeBaslangici > 12000) {
     qrLibYok = true;
-    qrAdresi().then(function(u){ hataGoster(u); });
     return;
   }
   setTimeout(bekleyipOlustur, 350);
@@ -1378,4 +1429,16 @@ if (dilBtn) {
   });
 }
 bekleyipOlustur();
+// QR Oluştur butonları
+var qrOlusturBtn = document.getElementById('qrOlusturBtn');
+if (qrOlusturBtn) {
+  qrOlusturBtn.addEventListener('click', qrManuelOlustur);
+}
+var qrYenileBtnEl = document.getElementById('qrYenileBtn');
+if (qrYenileBtnEl) {
+  qrYenileBtnEl.addEventListener('click', qrManuelOlustur);
+}
+// QR kutusu başta gizli
+var qrKutuEl = document.getElementById('qrKutu');
+if (qrKutuEl) { qrKutuEl.style.display = 'none'; }
 </script>

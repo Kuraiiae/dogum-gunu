@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
@@ -142,14 +142,70 @@ body{
   margin-left:.5rem}
 .grup-ici{display:grid;gap:1.5rem;grid-template-columns:repeat(auto-fit,minmax(258px,1fr));align-items:start}
 
-.sablon{padding:1.5rem 1.15rem 1.4rem;display:flex;flex-direction:column;align-items:center;gap:1.1rem;
-  transition:transform .25s,box-shadow .25s}
-.sablon:hover{transform:translateY(-3px);box-shadow:inset 0 1px 0 rgba(255,255,255,.85),
-  inset 0 -1px 0 rgba(75,62,40,.06),0 22px 44px -22px rgba(75,62,40,.45)}
+/* ====== ANİMASYONLU ŞABLON KARTLARI ====== */
+.sablon{
+  padding:1.5rem 1.15rem 1.4rem;
+  display:flex;flex-direction:column;align-items:center;gap:1.1rem;
+  transition:transform .32s cubic-bezier(.22,1,.36,1),box-shadow .32s ease,border-color .25s;
+  opacity:0;transform:translateY(22px);
+  animation:kartGelAnim .55s cubic-bezier(.22,1,.36,1) forwards;
+}
+/* staggered fade-in: her kart biraz gecikmeli açılır */
+.sablon:nth-child(1){animation-delay:.06s}
+.sablon:nth-child(2){animation-delay:.14s}
+.sablon:nth-child(3){animation-delay:.22s}
+.sablon:nth-child(4){animation-delay:.30s}
+.sablon:nth-child(5){animation-delay:.38s}
+.sablon:nth-child(6){animation-delay:.46s}
+.sablon:nth-child(7){animation-delay:.52s}
+.sablon:nth-child(8){animation-delay:.58s}
+@keyframes kartGelAnim{
+  from{opacity:0;transform:translateY(22px) scale(.97)}
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
+/* Hover: yukarı kalk + şık gölge + çerçeve rengi */
+.sablon:hover{
+  transform:translateY(-6px) scale(1.012);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.9),
+             inset 0 -1px 0 rgba(75,62,40,.06),
+             0 28px 56px -24px rgba(75,62,40,.5),
+             0 0 0 2px var(--vurgu-acik);
+  border-color:var(--vurgu);
+}
+/* Telefon çerçevesine hover efekti */
+.sablon:hover .telefon{
+  box-shadow:inset 0 0 0 2px rgba(255,255,255,.8),
+             0 22px 44px -18px rgba(75,62,40,.6),
+             0 0 0 3px var(--vurgu-acik);
+  transition:box-shadow .32s ease;
+}
+/* CTA butonuna hover'da animasyon */
+.sablon:hover .sablon-cta{
+  letter-spacing:.2em;
+  background:var(--murekkep);
+  border-color:var(--murekkep);
+  color:var(--kagit2);
+}
+
+/* Kız serisi: pembe vurgu rengi hover */
+#kiz-serisi .sablon:hover{
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.9),
+             0 28px 56px -24px rgba(196,106,78,.4),
+             0 0 0 2px rgba(196,106,78,.2);
+  border-color:rgba(196,106,78,.5);
+}
+/* Erkek serisi: mavi vurgu rengi hover */
+#erkek-serisi .sablon:hover{
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.9),
+             0 28px 56px -24px rgba(44,74,110,.4),
+             0 0 0 2px rgba(44,74,110,.15);
+  border-color:rgba(44,74,110,.35);
+}
 
 .telefon{position:relative;width:min(262px,76vw);aspect-ratio:9/19.4;border-radius:32px;
   overflow:hidden;background:var(--kagit3);border:1px solid var(--cizgi-koyu);
-  box-shadow:inset 0 0 0 1px rgba(255,255,255,.6),var(--golfe,0 18px 34px -18px rgba(75,62,40,.5))}
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.6),var(--golfe,0 18px 34px -18px rgba(75,62,40,.5));
+  transition:box-shadow .32s ease;}
 .telefon iframe{position:absolute;top:0;left:0;border:0;width:480px;height:1035px;
   transform:scale(.54583);transform-origin:0 0}
 @media (max-width:349px){
@@ -180,9 +236,24 @@ body{
   -webkit-backdrop-filter:blur(5px);backdrop-filter:blur(5px);box-shadow:0 3px 12px rgba(75,62,40,.28)}
 
 .sablon-bilgi{text-align:center;width:100%;display:flex;flex-direction:column;align-items:center}
-.yasetiketi{display:inline-block;font-family:var(--yazi-govde);font-weight:700;font-size:.64rem;
-  letter-spacing:.22em;text-transform:uppercase;color:var(--altin);border:1px solid var(--altin-soluk);
-  background:var(--altin-soluk);border-radius:999px;padding:.3rem .8rem;margin-bottom:.6rem}
+.yasetiketi{
+  display:inline-block;font-family:var(--yazi-govde);font-weight:700;font-size:.64rem;
+  letter-spacing:.22em;text-transform:uppercase;color:var(--altin);
+  border:1px solid var(--altin-soluk);background:var(--altin-soluk);
+  border-radius:999px;padding:.3rem .8rem;margin-bottom:.6rem;
+  position:relative;overflow:hidden;
+}
+/* Parlayan sweep efekti */
+.yasetiketi::after{
+  content:"";position:absolute;top:-50%;left:-75%;width:50%;height:200%;
+  background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,.55) 50%,transparent 60%);
+  animation:badgeSweep 3.5s ease-in-out infinite;
+}
+@keyframes badgeSweep{
+  0%,60%{left:-75%}
+  80%,100%{left:130%}
+}
+
 .sablon-bilgi h3{font-family:var(--yazi-vurgu);font-weight:700;font-size:1.22rem;color:var(--murekkep)}
 .sablon-bilgi .sablon-aciklama{font-family:var(--yazi-vurgu);font-style:italic;font-size:.88rem;
   color:var(--murekkep-acik);margin-top:.25rem}
@@ -418,12 +489,11 @@ body{
 
 <header class="baslik-tur">
   <div class="baslik-tur-ic">
-    <a class="logo" href="#uretici">doğumgünü<i>.com</i></a>
+    <a class="logo" href="#sekmeler">doğumgünü<i>.com</i></a>
     <div class="ust-sag">
       <nav aria-label="Ana gezinti">
         <ul class="cat-navigasyon">
           <li><a href="#sekmeler" data-i18n="navSekmeler">Şablonlar</a></li>
-          <li><a href="olustur.html" data-i18n="navUretici">Kart Üretici</a></li>
           <li><a href="#sss" data-i18n="navSss">S.S.S.</a></li>
         </ul>
       </nav>
@@ -628,121 +698,7 @@ body{
     </div>
   </section>
 
-  <!-- ==================== KART ÜRETİCİ ==================== -->
-  <section class="bolum" id="uretici" aria-label="Kart üretici">
-    <div class="bolum-baslik">
-      <span class="sira">Üretici</span>
-      <div class="baslik-sus" aria-hidden="true"><span>✦</span></div>
-      <h2>Kartını Oluştur</h2>
-      <p>İsmini ve notunu seç, QR'ı indir ya da paylaş. Kart, telefonunda kendini açar.</p>
-    </div>
-
-    <div class="uretici-ic">
-
-      <div class="cerceve form-kart">
-
-        <form id="form" onsubmit="return false">
-
-          <label class="alan-etiket" for="isimInput">İsim <span id="karSayac">0/30</span></label>
-          <input class="girdi" id="isimInput" type="text" placeholder="Örn: Elif" maxlength="30" autocomplete="off" spellcheck="false">
-
-          <div class="cevir" id="cevir" role="group" aria-label="Kart cinsiyeti">
-            <div class="cevir-gostergesi" aria-hidden="true"></div>
-            <button class="cevir-buton aktif" id="kizBtn" type="button" aria-pressed="true">🌸 KIZ</button>
-            <button class="cevir-buton" id="erkekBtn" type="button" aria-pressed="false">⚡ ERKEK</button>
-          </div>
-
-          <div class="yas-alan">
-            <span class="alan-etiket">Yaş grubu</span>
-            <div class="yas-satir" role="group" aria-label="Yaş grubu">
-              <button class="yas-btn aktif" type="button" data-yas="cocuk">Çocuk</button>
-              <button class="yas-btn" type="button" data-yas="genc">Genç</button>
-              <button class="yas-btn" type="button" data-yas="yetiskin">Yetişkin</button>
-            </div>
-          </div>
-
-          <div class="sablon-sec-alan">
-            <span class="alan-etiket">Şablon <span class="kucuk-ipucu">(seçtiğin ön izlemede açılır)</span></span>
-            <div id="sablonSecim" class="sablon-secim" role="listbox" aria-label="Şablon seçimi"></div>
-          </div>
-
-          <div class="yas-sayialan">
-            <label class="alan-etiket" for="yasInput">Kaç yaşına giriyor? <span class="kucuk-ipucu">(boş bırakılırsa dinamik yazı)</span></label>
-            <input class="girdi" id="yasInput" type="number" inputmode="numeric" min="1" max="120" placeholder="Örn: 7" autocomplete="off">
-          </div>
-
-          <div class="not-alan">
-            <span class="alan-etiket">Karta hangi not yazılsın?</span>
-            <div id="notKartlari"></div>
-            <div id="ozelKutu">
-              <textarea class="ozel-not" id="ozelNot" maxlength="160" placeholder="Kendi notunu yaz... (boş bırakırsan 1. örnek kullanılır)"></textarea>
-            </div>
-          </div>
-
-          <div class="hediye-alan">
-            <span class="alan-etiket" data-i18n="hedBaslik">🎁 Hediye bölmesi (isteğe bağlı)</span>
-            <div class="hediye-satir" role="group" aria-label="Hediye türü">
-              <button class="hediye-btn" type="button" data-hed="none">Yok</button>
-              <button class="hediye-btn aktif" type="button" data-hed="soz">Söz</button>
-              <button class="hediye-btn" type="button" data-hed="link">Link</button>
-              <button class="hediye-btn" type="button" data-hed="resim">Resim</button>
-              <button class="hediye-btn" type="button" data-hed="muzik">Müzik</button>
-            </div>
-            <div class="hediye-girdi-kutu">
-              <input class="girdi" id="hediyeDeger" type="text" placeholder="Örn: Her zaman yanındayım 💛" maxlength="300">
-              <p class="pin-yardim" id="hediyeYardim">Hediye kutusunun içinde söz/resim/link/müzik olarak görünür. Resim için görsel URL'si, müzik için ses dosyası URL'si (örn: https://.../sarki.mp3) yapıştır; yüklenemezse söz olarak gösterilir.</p>
-            </div>
-          </div>
-
-          <div class="pin-kutu">
-            <div class="pin-baslik">
-              <label class="pin-etiket" for="pinAcik">🔒 PIN Kilidi (isteğe bağlı)
-                <span class="pin-kucuk">Kartı yalnızca PIN bilen açabilsin</span>
-              </label>
-              <label class="dugme-ac" aria-label="PIN kilidini aç">
-                <input type="checkbox" id="pinAcik">
-                <span class="kaydirici" aria-hidden="true"></span>
-              </label>
-            </div>
-            <div id="pinAlan">
-              <input class="girdi" id="pinKodu" type="text" inputmode="numeric" pattern="[0-9]{4,6}" maxlength="6" autocomplete="off" placeholder="4-6 rakam (örn: 2580)" title="4 ila 6 haneli rakam">
-              <p class="pin-yardim">QR'ı tarayan kişi kartı açmak için PIN girecek. PIN'i karta gönderdiğin kişiyle ayrı kanaldan paylaş.</p>
-            </div>
-          </div>
-
-        </form>
-      </div>
-
-      <div class="sag-panel">
-
-        <div class="onizleme" id="onizleme" aria-live="polite"></div>
-
-        <div class="butonlar">
-          <button class="buton buton-bir" id="indirBtn" type="button" disabled>⬇️ QR'ı İndir (PNG)</button>
-          <button class="buton buton-iki" id="kopyalaBtn" type="button">🔗 Linki Kopyala</button>
-        </div>
-
-        <section class="qr-kutu cerceve" id="qrKutu" aria-live="polite">
-          <div class="qr-sahne">
-            <div class="qr-cerceve">
-              <div class="qr-kart bekliyor" id="qrAlan">
-                <div class="qr-yukleniyor">QR hazırlanıyor...</div>
-              </div>
-            </div>
-          </div>
-          <div class="qr-hata" id="qrHata">
-            <div>😔 QR kütüphanesi yüklenemedi. Bağlantını kontrol edip sayfayı yenile.</div>
-            <div class="qr-hata-adres" id="qrHataAdres"></div>
-          </div>
-          <p class="qr-not">QR'ı telefonunla tarat, kartın açılır 🎉</p>
-          <p class="gizlilik-notu">🔒 Bu kart kişiye özel ve tahmin edilemez bir bağlantıyla üretilir — başkaları ulaşamaz.</p>
-          <p class="qr-ipucu" id="qrIpucu"></p>
-        </section>
-
-      </div>
-    </div>
-  </section>
-
+  
   <!-- ==================== SSS ==================== -->
   <section class="bolum" id="sss" aria-label="Sık sorulan sorular">
     <div class="bolum-baslik">
@@ -778,7 +734,6 @@ body{
   <p class="alt-soz">Sevgiyle hazırlanmış kartlar</p>
   <nav class="alt-links" aria-label="Alt gezinti">
     <a href="#sekmeler">Şablonlar</a>
-    <a href="olustur.html">Kart Üretici</a>
     <a href="#sss">S.S.S.</a>
   </nav>
   <p class="copyright">© doğumgünü.com — QR ile doğum günü kutlaması <span aria-hidden="true">❤️</span></p>
@@ -791,7 +746,7 @@ var DIL = (localStorage.getItem('dogumgunu-dil') || '');
 if (DIL !== 'tr' && DIL !== 'en') { DIL = navigator.language.toLowerCase().indexOf('en') === 0 ? 'en' : 'tr'; }
 var I18N = {
   tr: {
-    navSekmeler:'Şablonlar', navUretici:'Kart Üretici', navSss:'S.S.S.',
+    navSekmeler:'Şablonlar', navSss:'S.S.S.',
     galeri:'Galeri', sablonlar:'Şablonlar',
     galeriAlt:'24 tasarım, üç yaş grubu, kız & erkek. Hepsi animasyonlu — QR ile zarf açılışına sahip.',
     uretici:'Üretici', kartUret:'Kartını Oluştur',
@@ -811,10 +766,10 @@ var I18N = {
     butonKutla:'🎉 Kutlamayı Başlat', butonTekrar:'🎊 Tekrar Kutla!',
     kopyalandi:'Kopyalandı ✓', qrIpucu:'QR\'ı telefonunla tarat, kartın zarf gibi açılır 🎉',
     sss:'S.S.S.', altSoz:'Sevgiyle hazırlanmış kartlar', copyright:'© doğumgünü.com — QR ile doğum günü kutlaması',
-    sablonlarLink:'Şablonlar', altUretici:'Kart Üretici'
+    sablonlarLink:'Şablonlar'
   },
   en: {
-    navSekmeler:'Templates', navUretici:'Card Maker', navSss:'F.A.Q.',
+    navSekmeler:'Templates', navSss:'F.A.Q.',
     galeri:'Gallery', sablonlar:'Templates',
     galeriAlt:'24 designs, three age groups, girl & boy. All animated — QR opens a gift envelope.',
     uretici:'Maker', kartUret:'Build Your Card',
@@ -834,7 +789,7 @@ var I18N = {
     butonKutla:'🎉 Start Celebration', butonTekrar:'🎊 Celebrate Again!',
     kopyalandi:'Copied ✓', qrIpucu:'Scan the QR with your phone — the card opens like an envelope 🎉',
     sss:'F.A.Q.', altSoz:'Cards made with love', copyright:'© dogumgunu.com — QR birthday celebration',
-    sablonlarLink:'Templates', altUretici:'Card Maker'
+    sablonlarLink:'Templates'
   }
 };
 function dilUygula() {
@@ -988,6 +943,9 @@ async function kartBaglantisiUret(isim, not, dosyaAdi, pin, yas, hediye, dil) {
     if (sifre) { url += '&sifre=' + sifre; }
     else { url += '&sifreDuz=' + encodeURIComponent(pin); }
   }
+  // QR 7 gün geçerli (604800 saniye)
+  var exp = Math.floor(Date.now() / 1000) + 7 * 24 * 60 * 60;
+  url += '&exp=' + exp;
   return url;
 }
 

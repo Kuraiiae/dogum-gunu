@@ -43,6 +43,47 @@
     DIL = (navigator.language || 'tr').toLowerCase().indexOf('en') === 0 ? 'en' : 'tr';
   }
 
+  // ====== QR Geçerlilik Süresi Kontrolü (7 gün) ======
+  var EXP = p('exp');
+  if (EXP) {
+    var expSec = parseInt(EXP, 10);
+    var nowSec = Math.floor(Date.now() / 1000);
+    if (!isNaN(expSec) && nowSec > expSec) {
+      var EN_exp = (p('dil') || '').toLowerCase() === 'en' ||
+                   ((navigator.language || 'tr').toLowerCase().indexOf('en') === 0);
+      document.body.innerHTML = '';
+      document.body.style.cssText = [
+        'margin:0;padding:0;min-height:100vh;',
+        'display:flex;align-items:center;justify-content:center;',
+        'background:linear-gradient(135deg,#FBF6EA 0%,#F1E8D4 100%);',
+        'font-family:system-ui,sans-serif;'
+      ].join('');
+      var surehDiv = document.createElement('div');
+      surehDiv.style.cssText = 'text-align:center;padding:2.5rem 2rem;max-width:420px;width:90%;';
+      surehDiv.innerHTML =
+        '<div style="font-size:4rem;margin-bottom:1rem;display:inline-block;' +
+          'animation:sureKalp 2s ease-in-out infinite">⏰</div>' +
+        '<h1 style="font-size:1.6rem;color:#332C22;margin:0 0 .8rem;font-weight:700;">' +
+          (EN_exp ? 'This card has expired' : 'Bu kartın süresi doldu') +
+        '</h1>' +
+        '<p style="color:#82745E;font-size:.98rem;line-height:1.65;margin:0 0 1.6rem;">' +
+          (EN_exp
+            ? 'Birthday cards are valid for <strong>7 days</strong> from creation.<br>Ask the sender to create a new one! 🎂'
+            : 'Doğum günü kartları oluşturulduğundan itibaren <strong>7 gün</strong> geçerlidir.<br>Gönderenden yeni bir kart oluşturmasını iste! 🎂') +
+        '</p>' +
+        '<div style="background:#fff;border:1px solid rgba(75,62,40,.16);border-radius:16px;' +
+          'padding:1.1rem 1.3rem;font-size:.9rem;color:#82745E;box-shadow:0 8px 24px -12px rgba(75,62,40,.2);">' +
+          '🎉 ' + (EN_exp ? 'Create free cards at' : 'Ücretsiz kart oluşturmak için') +
+          ' <a href="/" style="color:#9C7A3C;font-weight:700;text-decoration:none;">doğumgünü.com</a>' +
+        '</div>';
+      var expStil = document.createElement('style');
+      expStil.textContent = '@keyframes sureKalp{0%,100%{transform:rotate(-12deg) scale(1)}50%{transform:rotate(12deg) scale(1.15)}}';
+      document.head.appendChild(expStil);
+      document.body.appendChild(surehDiv);
+      return;
+    }
+  }
+
   // ====== Metinler ======
   var EN = DIL === 'en';
   var M = {
@@ -192,7 +233,19 @@
       return;
     }
 
-    // "Aşağı kaydır" ipucu: sayfayı yavaşça aç (scroll davet)
+    // === YENİ AKILLI ŞENLIK AKIŞI ===
+
+    // 1. Şenlik/animasyon göster (atajı ateşleme efekti)
+    var celebration = elYap('div', 'celebration-overlay');
+    celebration.innerHTML = '\n      <div class="celebration-content">\n        <h1 class="celebration-title">🎉</h1>\n        <div class="celebration-fireworks"></div>\n      </div>\n    ';
+    document.body.appendChild(celebration);
+
+    // 2. İsim ve "Doğum günün kutlu olsun" + ilk not göster
+    var isimNotBasligi = elYap('div', 'isim-not-basligi');
+    isimNotBasligi.innerHTML = '\n      <div class="isim-basligi">' + (ISIM || 'Sevgili') + '</div>\n      <div class="kutlu-baslik">' + cevir('kutlama') + '</div>\n      <div class="ilk-not">' + (NOT || '') + '</div>\n    ';
+    document.body.appendChild(isimNotBasligi);
+
+    // 3. Aşağı kaydır ipucu (şablona uygun animasyonlu)
     var kaydir2 = elYap('button', 'zf-kaydir');
     kaydir2.style.position = 'static';
     kaydir2.style.margin = '1.4rem auto';
@@ -210,26 +263,25 @@
       eklendiMi = true;
     }
 
-    // NOT cümle cümle yaz
-    if (notEl && NOT) {
-      var orijinal = notEl.textContent;
-      notEl.setAttribute('data-son', orijinal);
-      notEl.innerHTML = '';
-      cumleCumleYaz(notEl, NOT);
-      // Not bitince "Nice senelere!" mesajı
-      if (notEl.parentNode) {
-        var niceSatir = elYap('div', 'nice-senelere', cevir('niceSenelere'));
-        notEl.parentNode.appendChild(niceSatir);
+    // 4. İkinci notu zarf içinde göster (zarf hâlâ görünüyorsa ve not varsa)
+    // Zarfı hâlâ göster ve ikinci notu göster (sadece not varsa)
+    if (NOT) {
+      var zarfIkinciNot = elYap('div', 'zarf-ikinci-not');
+      zarfIkinciNot.innerHTML = '\n      <div class="zarf-ic-ikinci-not">' + NOT + '</div>\n    ';
+      // Zarf hâlâ DOM'da olduğu için onu bul ve içeriğini güncelle
+      var zarfSahne = document.querySelector('.zarf-sahne');
+      if (zarfSahne) {
+        // Zarf içeriğine ikinci not ekle
+        var zarfIc = zarfSahne.querySelector('.zf-ic');
+        if (zarfIc) {
+          var ikinciNotEl = elYap('div', 'zarf-ikinci-not-el');
+          ikinciNotEl.textContent = NOT;
+          zarfIc.appendChild(ikinciNotEl);
+        }
       }
-    } else {
-      // Not yoksa da "Nice senelere!" görünsün
-      var hedef2 = notEl || mainKart || document.body;
-      var niceSatir2 = elYap('div', 'nice-senelere', cevir('niceSenelere'));
-      if (notEl) { notEl.parentNode.appendChild(niceSatir2); }
-      else { hedef2.appendChild(niceSatir2); }
     }
 
-    // Yaş bilgisi: dinamik yazı (not üzerinde veya ek bir satırda)
+    // 5. Yaş bilgisi
     var yasSatir = elYap('div', 'dinamik-yas');
     var yasMetin;
     if (YAS) {
@@ -250,10 +302,30 @@
       }
     }
 
-    // Hediye bölümü
-    if (GIFT.deger) {
-      setTimeout(hediyeKur, 1200);
-    }
+    // 6. Zamanlama: not yoksa hemen, varsa 7 saniye sonra hediye
+    var hediyeGecikmesi = NOT ? 7000 : 0; // 7 saniye not varsa, yoksa hemen
+
+    setTimeout(function() {
+      // Şenlik overlayini kaldır
+      if (celebration && celebration.parentNode) {
+        celebration.parentNode.removeChild(celebration);
+      }
+      if (isimNotBasligi && isimNotBasligi.parentNode) {
+        isimNotBasligi.parentNode.removeChild(isimNotBasligi);
+      }
+      // İkinci notu zarfından kaldır (eğer eklendiyse ve NOT varsa)
+      if (NOT) {
+        var zarfIkinciNotEl = document.querySelector('.zarf-ikinci-not-el');
+        if (zarfIkinciNotEl && zarfIkinciNotEl.parentNode) {
+          zarfIkinciNotEl.parentNode.removeChild(zarfIkinciNotEl);
+        }
+      }
+
+      // Hediye kutusunu göster
+      if (GIFT.deger) {
+        hediyeKur();
+      }
+    }, hediyeGecikmesi);
   }
 
   function cumleCumleYaz(hedef, metin) {

@@ -53,6 +53,82 @@
 .zf-patik{position:absolute;z-index:6;font-size:1.2rem;pointer-events:none;animation:zfPatik .9s cubic-bezier(.2,.8,.3,1) forwards}
 @keyframes zfPatik{0%{transform:scale(0) rotate(0);opacity:1}70%{transform:scale(1.25) rotate(24deg)}100%{transform:scale(1) rotate(12deg);opacity:.5}}
 
+/* === YENİ ŞENLIK ANİMASYONLARI === */
+.celebration-overlay{
+  position:fixed;inset:0;z-index:9995;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(0,0,0,0.3);
+}
+.celebration-content{
+  text-align:center;position:relative;
+}
+.celebration-title{
+  font-size:8rem;margin-bottom:1rem;display:block;
+  animation:titlePop 0.6s ease-out;
+}
+.celebration-fireworks{
+  position:relative;width:100%;height:200px;
+}
+.celebration-fireworks::before,
+.celebration-fireworks::after{
+  content:'';position:absolute;width:200px;height:200px;
+  background:radial-gradient(circle,var(--vurgu) 0%,transparent 70%);
+  border-radius:50%;opacity:0.6;animation:fireworkPulse 2s ease-out infinite;
+}
+.celebration-fireworks::before{
+  top:-50px;left:calc(50% - 100px);animation-delay:0s;
+}
+.celebration-fireworks::after{
+  top:50px;left:calc(50% - 100px);animation-delay:1s;
+}
+@keyframes titlePop{
+  0%{transform:scale(0.3) rotate(-15deg);opacity:0}
+  60%{transform:scale(1.1) rotate(5deg);opacity:1}
+  100%{transform:scale(1) rotate(0deg);opacity:1}
+}
+@keyframes fireworkPulse{
+  0%{transform:scale(0.2);opacity:0}
+  30%{transform:scale(1.2);opacity:0.7}
+  100%{transform:scale(2.5);opacity:0}
+}
+.isim-not-basligi{
+  position:fixed;top:20%;left:50%;transform:translateX(-50%);
+  z-index:9996;text-align:center;background:rgba(255,255,255,0.9);
+  padding:2rem;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,0.2);
+  max-width:90%;animation:slideDown 0.6s ease-out;
+}
+.isim-basligi{
+  font-size:2.2rem;font-weight:800;margin-bottom:0.5rem;
+  background:linear-gradient(120deg,var(--vurgu) 0%,var(--vurgu-koyu) 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.kutlu-baslik{
+  font-size:1.8rem;font-weight:600;margin-bottom:1rem;color:#8a4a6b;
+}
+.ilk-not{
+  font-size:1.4rem;line-height:1.6;color:#5a3a2f;
+}
+.zarf-ikinci-not{
+  position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
+  z-index:9997;background:rgba(255,255,255,0.95);padding:1.5rem;
+  border-radius:12px;box-shadow:0 8px 25px rgba(0,0,0,0.15);
+  max-width:90%;text-align:center;animation:fadeInUp 0.5s ease-out;
+}
+.zarf-ic-ikinci-not{
+  font-size:1.3rem;line-height:1.6;color:#6b4f3f;
+  font-style:italic;
+}
+@keyframes slideDown{
+  0%{transform:translate(-50%,-30px);opacity:0}
+  100%{transform:translate(-50%,0);opacity:1}
+}
+@keyframes fadeInUp{
+  0%{transform:translate(-50%,30px);opacity:0}
+  100%{transform:translate(-50%,-50%);opacity:1}
+}
+
+/* Existing animations continue below */
+
 /* -- Aşağı kaydır ipucu -- */
 .zf-kaydir{
   position:absolute;bottom:calc(2rem + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);

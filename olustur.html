@@ -876,7 +876,7 @@ body{
   flex-direction:column;
   align-items:center;
   justify-content:center;
-  padding:16px;
+  padding:0;
   border:1.5px solid var(--cizgi-koyu);
   border-radius:20px;
   background:#FFFFFF;
@@ -1884,16 +1884,9 @@ input::placeholder, textarea::placeholder{
 
             <!-- Telefon Cihaz Kasası -->
             <div class="telefon-kasa">
-              <!-- Hoparlör / Dinamik Ada / Çentik (Kasa içinde tam ortalı) -->
+              <!-- Hoparlör / Dinamik Ada (Kasa içinde tam ortalı) -->
               <div class="telefon-centik" aria-hidden="true"></div>
-              <span class="canli">Canlı</span>
               <iframe class="onizleme-iframe" id="onizlemeIframe" title="Canlı önizleme"></iframe>
-              <div class="hazirlaniyor" aria-hidden="true">
-                <span class="hz-sus">✦</span>
-                <span class="hz-metin">Şablon hazırlanıyor…</span>
-                <span class="hz-kucuk">BİRKAÇ SANİYE</span>
-              </div>
-              <span class="telefon-isim" id="onizlemeTelefonIsim" style="display:none"></span>
             </div>
           </div><!-- /onizleme-yeni-konteyner -->
           <!-- Yeni sekmede önizle butonu -->
@@ -2029,9 +2022,9 @@ var I18N = {
     galeriAlt:'24 tasarım, üç yaş grubu, kız & erkek. Hepsi animasyonlu — QR ile zarf açılışına sahip.',
     uretici:'Üretici', kartUret:'Kartını Oluştur',
     ureticiAlt:'İsmini ve notunu seç, QR\'ı indir ya da paylaş. Kart, telefonunda zarf gibi açılır.',
-    isim:'İsim', ornekIsim:'Örn: Elif', kiz:'🌸 KIZ', erkek:'⚡ ERKEK',
+    isim:'İsim', ornekIsim:'İsim', kiz:'🌸 KIZ', erkek:'⚡ ERKEK',
     yasGrubu:'Yaş grubu', cocuk:'Çocuk', genc:'Genç', yetiskin:'Yetişkin',
-    kacYas:'Kaç yaşına giriyor?', yasIpu:'(boş bırakılırsa dinamik yazı)', ornekYas:'Örn: 7',
+    kacYas:'Kaç yaşına giriyor?', yasIpu:'(boş bırakılırsa dinamik yazı)', ornekYas:'Yaş',
     notSoru:'Karta hangi not yazılsın?', ozelNotYaz:'Özel not yaz',
     ozelNotPh:'Kendi notunu yaz... (boş bırakırsan 1. örnek kullanılır)',
     hedBaslik:'🎁 Hediye bölmesi (isteğe bağlı)', hedYok:'Yok', hedSoz:'Söz', hedLink:'Link', hedResim:'Resim',
@@ -2052,9 +2045,9 @@ var I18N = {
     galeriAlt:'24 designs, three age groups, girl & boy. All animated — QR opens a gift envelope.',
     uretici:'Maker', kartUret:'Build Your Card',
     ureticiAlt:'Pick a name and message, download or share the QR. The card opens like an envelope.',
-    isim:'Name', ornekIsim:'e.g. Amy', kiz:'🌸 GIRL', erkek:'⚡ BOY',
+    isim:'Name', ornekIsim:'Name', kiz:'🌸 GIRL', erkek:'⚡ BOY',
     yasGrubu:'Age group', cocuk:'Kid', genc:'Teen', yetiskin:'Adult',
-    kacYas:'How old will they be?', yasIpu:'(leave empty for dynamic text)', ornekYas:'e.g. 7',
+    kacYas:'How old will they be?', yasIpu:'(leave empty for dynamic text)', ornekYas:'Age',
     notSoru:'Which message goes on the card?', ozelNotYaz:'Write custom message',
     ozelNotPh:'Write your own message... (empty = use sample 1)',
     hedBaslik:'🎁 Gift box (optional)', hedYok:'None', hedSoz:'Quote', hedLink:'Link', hedResim:'Image',
@@ -2665,6 +2658,20 @@ function onizlemeIframeKur(dosya) {
   ifr.src = yeniSrc;
   ifr.title = st ? st.ad : 'Önizleme';
   onizleLinkiGuncelle();
+
+  // Wait for iframe to load and then set the name
+  ifr.onload = function() {
+    try {
+      var doc = ifr.contentDocument || ifr.contentWindow.document;
+      var isimEl = doc.getElementById('isimYazisi');
+      if (isimEl) {
+        // Set the name to the current input or empty if not provided
+        isimEl.textContent = curIsim || ''; // If empty, set to empty string
+      }
+    } catch (e) {
+      // Cross-origin error or other issue; ignore
+    }
+  };
 }
 // Butona tıklanan şablonu AYRI OLUŞTURMA SAYFASINDA aç (seçili şablon + QR hedefiyle)
 function sablonButonTikla(buton) {

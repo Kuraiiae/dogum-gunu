@@ -706,15 +706,30 @@ body{
 }
 .telefon-kasa:hover{transform:translateY(-2px)}
 
-/* Hoparlör / Dinamik Ada / Çentik */
+/* Hoparlör / Dinamik Ada / Çentik (Telefon Üst Barı) */
 .telefon-centik{
   position:absolute;
-  top:16px;left:50%;transform:translateX(-50%);
-  width:72px;height:16px;
-  background:#0f1012;
+  top:15px;left:50%;transform:translateX(-50%);
+  width:90px;height:22px;
+  background:#0c0d10;
   border-radius:999px;
-  z-index:10;
+  z-index:20;
   pointer-events:none;
+  box-shadow:inset 0 1px 1px rgba(255,255,255,0.2), 0 2px 8px rgba(0,0,0,0.6);
+  display:flex;align-items:center;justify-content:flex-end;
+  padding-right:8px;
+}
+.telefon-centik::after{
+  content:'';width:9px;height:9px;border-radius:50%;
+  background:#1a1d24;border:1px solid rgba(255,255,255,0.12);
+}
+.telefon-kasa .canli{
+  position:absolute;top:17px;left:20px;z-index:20;
+  background:rgba(12,13,16,0.8);color:#22c55e;
+  border:1px solid rgba(34,197,94,0.3);
+  -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);
+  padding:.22rem .55rem;font-size:.56rem;letter-spacing:.1em;
+  border-radius:999px;box-shadow:0 2px 8px rgba(0,0,0,0.4);
 }
 
 /* Telefon Ekranı */
@@ -833,22 +848,73 @@ body{
   box-shadow:none;
 }
 
-/* --- QR sahnesi (minimal) --- */
-.qr-kutu{display:flex;flex-direction:column;align-items:center;padding:1.3rem 1.1rem 1.4rem;animation:qrKutuGel .4s cubic-bezier(.22,1,.36,1)}
+/* --- QR sahnesi & Karekod Çerçevesi (Ortalı ve İnce Çerçeveli) --- */
+.qr-kutu{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  width:100%;
+  max-width:520px;
+  margin:0 auto;
+  padding:1.4rem 1rem;
+  animation:qrKutuGel .4s cubic-bezier(.22,1,.36,1);
+}
 @keyframes qrKutuGel{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
-.qr-sahne{position:relative;width:min(224px,70vw)}
-.qr-cerceve{position:relative;border:1px solid var(--cizgi);border-radius:12px;padding:12px;
-  background:var(--kagit2);box-shadow:0 2px 4px rgba(75,62,40,.1);}
-.qr-kart{position:relative}
-.qr-kart canvas{display:block;width:100% !important;height:auto !important;border-radius:6px}
+.qr-sahne{
+  position:relative;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  width:100%;
+  margin:1.2rem auto;
+}
+.qr-cerceve{
+  position:relative;
+  display:inline-flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:16px;
+  border:1.5px solid var(--cizgi-koyu);
+  border-radius:20px;
+  background:#FFFFFF;
+  box-shadow:0 12px 36px -12px rgba(0,0,0,.25), 0 0 0 1px rgba(255,255,255,.9);
+  margin:0 auto;
+  transition:all .3s ease;
+}
+[data-theme="gece"] .qr-cerceve,
+[data-theme="neon"] .qr-cerceve{
+  background:#141A23;
+  border-color:var(--vurgu);
+  box-shadow:0 0 25px -5px var(--vurgu-acik), 0 0 0 1px var(--vurgu);
+}
+.qr-kart{
+  position:relative;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  margin:0 auto;
+  min-width:240px;
+  min-height:240px;
+}
+.qr-kart canvas,
+.qr-kart img{
+  display:block !important;
+  margin:0 auto !important;
+  border-radius:10px;
+  width:240px !important;
+  height:240px !important;
+}
 .qr-yukleniyor{display:none;flex-direction:column;align-items:center;justify-content:center;gap:.9rem;
-  padding:4.4rem 1rem;color:var(--murekkep-acik);font-family:var(--yazi-govde);font-weight:500;font-size:.9rem}
+  padding:4.4rem 1rem;color:var(--murekkep-acik);font-family:var(--yazi-govde);font-weight:500;font-size:.9rem;margin:0 auto}
 .qr-yukleniyor::before{content:"";width:40px;height:40px;border-radius:50%;
   border:4px solid var(--altin-soluk);border-top-color:var(--altin);animation:don 1s linear infinite}
 @keyframes don{to{transform:rotate(360deg)}}
 .qr-hata{display:none;flex-direction:column;align-items:center;gap:.7rem;text-align:center;
   background:var(--kagit2);border:1px dashed var(--cizgi-koyu);border-radius:12px;padding:1.4rem 1rem;
-  color:var(--murekkep);font-family:var(--yazi-govde);font-weight:500;font-size:.9rem;line-height:1.5}
+  color:var(--murekkep);font-family:var(--yazi-govde);font-weight:500;font-size:.9rem;line-height:1.5;margin:0 auto}
 .qr-hata-adres{display:block;width:100%;font-size:.68rem;font-family:Consolas,monospace;
   word-break:break-all;color:var(--murekkep-acik);background:var(--kagit3);
   border:1px solid var(--cizgi);border-radius:8px;padding:.5rem .6rem}
@@ -1818,6 +1884,8 @@ input::placeholder, textarea::placeholder{
 
             <!-- Telefon Cihaz Kasası -->
             <div class="telefon-kasa">
+              <!-- Hoparlör / Dinamik Ada / Çentik (Kasa içinde tam ortalı) -->
+              <div class="telefon-centik" aria-hidden="true"></div>
               <span class="canli">Canlı</span>
               <iframe class="onizleme-iframe" id="onizlemeIframe" title="Canlı önizleme"></iframe>
               <div class="hazirlaniyor" aria-hidden="true">
@@ -1825,11 +1893,8 @@ input::placeholder, textarea::placeholder{
                 <span class="hz-metin">Şablon hazırlanıyor…</span>
                 <span class="hz-kucuk">BİRKAÇ SANİYE</span>
               </div>
-              <span class="telefon-isim" id="onizlemeTelefonIsim">🌸 Elif</span>
+              <span class="telefon-isim" id="onizlemeTelefonIsim" style="display:none"></span>
             </div>
-
-            <!-- Hoparlör / Dinamik Ada / Çentik -->
-            <div class="telefon-centik" aria-hidden="true"></div>
           </div><!-- /onizleme-yeni-konteyner -->
           <!-- Yeni sekmede önizle butonu -->
           <a class="onizle-link" id="onizleLink" href="#" target="_blank" rel="noopener noreferrer">
@@ -2340,12 +2405,26 @@ function onizlemeGuncelle() {
   if (secilen) {
     sablonGostergeGuncelle(secilen);
   }
+
+  // Telefon altındaki isim rozeti: sadece isim girilmişse göster, yoksa gizli tut
+  var telIsim = document.getElementById('onizlemeTelefonIsim');
+  if (telIsim) {
+    if (isim) {
+      telIsim.textContent = (cinsiyet === 'kiz' ? '🌸 ' : '⚡ ') + isim;
+      telIsim.style.display = 'block';
+    } else {
+      telIsim.textContent = '';
+      telIsim.style.display = 'none';
+    }
+  }
   
   var canli = document.getElementById('onizlemeIframe');
   if (canli) {
-    var yeniSrc = dosyaAd + '?isim=' + encodeURIComponent(isim || 'İSİM') +
-      '&not=' + encodeURIComponent(seciliNot()) +
+    var yeniSrc = dosyaAd + '?not=' + encodeURIComponent(seciliNot()) +
       '&zarf=0&dil=' + (navigator.language.indexOf('en') === 0 ? 'en' : 'tr');
+    if (isim) {
+      yeniSrc += '&isim=' + encodeURIComponent(isim);
+    }
     var yas = seciliYas();
     if (yas) { yeniSrc += '&yas=' + encodeURIComponent(yas); }
     
@@ -2377,8 +2456,8 @@ async function qrOlustur() {
   try {
     new QRCode(qrAlan, {
       text: url,
-      width: 280,
-      height: 280,
+      width: 240,
+      height: 240,
       colorDark: qrRengi(),
       colorLight: qrRengiAclik(),
       correctLevel: QRCode.CorrectLevel.H
@@ -2404,13 +2483,13 @@ function qrManuelOlustur() {
   qrOlusturulduMu = true;
   var uyari = document.getElementById('qrDegistiUyari');
   if (uyari) { uyari.classList.remove('goster'); }
-  // qrKutu'yu göster
+  // qrKutu'yu göster ve ekranı tam ortasına kaydır
   var qrSectionEl = document.getElementById('qrKutu');
   if (qrSectionEl) {
     qrSectionEl.style.display = 'flex';
     setTimeout(function () {
-      qrSectionEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    }, 100);
+      qrSectionEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 120);
   }
   clearTimeout(zamanlayici);
   qrOlustur();
@@ -2578,7 +2657,9 @@ function onizlemeIframeKur(dosya) {
     obSablon.textContent = st.emoji + ' ' + st.ad;
   }
   if (!ifr) { return; }
-  var yeniSrc = dosya + '?isim=' + encodeURIComponent(isimInput.value.trim() || 'İSİM') + '&not=' + encodeURIComponent(seciliNot()) + '&zarf=0&dil=' + (navigator.language.indexOf('en') === 0 ? 'en' : 'tr');
+  var curIsim = isimInput.value.trim();
+  var yeniSrc = dosya + '?not=' + encodeURIComponent(seciliNot()) + '&zarf=0&dil=' + (navigator.language.indexOf('en') === 0 ? 'en' : 'tr');
+  if (curIsim) { yeniSrc += '&isim=' + encodeURIComponent(curIsim); }
   var yas = seciliYas();
   if (yas) { yeniSrc += '&yas=' + encodeURIComponent(yas); }
   ifr.src = yeniSrc;
@@ -2644,7 +2725,7 @@ function galeriyiGuncelle() {
     art.innerHTML =
       '<div class="telefon">' +
         '<span class="canli">Canlı</span>' +
-        '<iframe src="' + sb.dosya + '?isim=Elif&not=' + encodeURIComponent('İyi ki doğdun!') + '&zarf=0" title="' + sb.ad + '" loading="lazy"></iframe>' +
+        '<iframe src="' + sb.dosya + '?not=' + encodeURIComponent('İyi ki doğdun!') + '&zarf=0" title="' + sb.ad + '" loading="lazy"></iframe>' +
         '<div class="hazirlaniyor" aria-hidden="true"><span class="hz-sus">✦</span><span class="hz-metin">Yükleniyor…</span></div>' +
         '<span class="telefon-isim">' + sb.emoji + ' ' + sb.ad + '</span>' +
       '</div>' +

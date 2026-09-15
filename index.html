@@ -1393,9 +1393,9 @@ function galeriyiGuncelle() {
     art.innerHTML =
       '<div class="telefon">' +
         '<span class="canli">Yeni</span>' +
-        '<iframe data-src="' + sb.dosya + '?isim=Elif&not=' + encodeURIComponent('Bu kart tamamen animasyonlu! İyi ki doğdun!') + '&zarf=0" title="' + sb.ad + '" loading="lazy"></iframe>' +
-        '<div class="hazirlaniyor" aria-hidden="true"><span class="hz-sus">✦</span><span class="hz-metin">Şablon hazırlanıyor…</span><span class="hz-kucuk">BİRKAÇ SANİYE</span></div>' +
-        '<span class="telefon-isim">' + sb.emoji + ' Elif</span>' +
+        '<iframe src="' + sb.dosya + '?not=' + encodeURIComponent('Bu kart tamamen animasyonlu! İyi ki doğdun!') + '&zarf=0" title="' + sb.ad + '" loading="lazy"></iframe>' +
+        '<div class="hazirlaniyor" aria-hidden="true"><span class="hz-sus">✦</span><span class="hz-metin">Yükleniyor…</span></div>' +
+        '<span class="telefon-isim">' + sb.emoji + ' ' + sb.ad + '</span>' +
       '</div>' +
       '<div class="sablon-bilgi">' +
         '<span class="yasetiketi">Yeni</span>' +
@@ -1631,7 +1631,7 @@ function galeriyiGuncelle() {
     art.innerHTML =
       '<div class="telefon">' +
         '<span class="canli">Canlı</span>' +
-        '<iframe src="' + sb.dosya + '?isim=Elif&not=' + encodeURIComponent('İyi ki doğdun!') + '&zarf=0" title="' + sb.ad + '" loading="lazy"></iframe>' +
+        '<iframe src="' + sb.dosya + '?not=' + encodeURIComponent('İyi ki doğdun!') + '&zarf=0" title="' + sb.ad + '" loading="lazy"></iframe>' +
         '<div class="hazirlaniyor" aria-hidden="true"><span class="hz-sus">✦</span><span class="hz-metin">Yükleniyor…</span></div>' +
         '<span class="telefon-isim">' + sb.emoji + ' ' + sb.ad + '</span>' +
       '</div>' +

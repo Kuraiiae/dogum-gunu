@@ -399,10 +399,10 @@ body{
 .hazirlaniyor{position:absolute;inset:0;z-index:1;display:flex;flex-direction:column;
   align-items:center;justify-content:center;gap:.65rem;text-align:center;padding:1rem;
   background:linear-gradient(160deg,var(--kagit2) 0%,var(--kagit3) 100%);
-  opacity:0;transition:opacity .45s ease;pointer-events:none}
+  opacity:0;transition:opacity .35s ease;pointer-events:none}
 .hazirlaniyor.aktif{opacity:1}
-/* Henüz yüklenmemiş (data-src bekleyen) kartlarda yer tutucu görünür olsun */
-.telefon:has(iframe[data-src]) .hazirlaniyor{opacity:1}
+.telefon iframe{position:absolute;top:0;left:0;border:0;width:480px;height:1035px;
+  transform:scale(.54583);transform-origin:0 0;z-index:2;background:#fff}
 .hazirlaniyor .hz-sus{color:var(--altin);font-size:1.25rem;line-height:1}
 .hazirlaniyor .hz-metin{font-family:var(--yazi-vurgu);font-style:italic;font-size:.95rem;color:var(--murekkep-acik)}
 .hazirlaniyor .hz-kucuk{font-family:var(--yazi-govde);font-size:.72rem;letter-spacing:.08em;
@@ -2644,7 +2644,7 @@ function galeriyiGuncelle() {
     art.innerHTML =
       '<div class="telefon">' +
         '<span class="canli">Canlı</span>' +
-        '<iframe data-src="' + sb.dosya + '?isim=Elif&not=' + encodeURIComponent('İyi ki doğdun!') + '&zarf=0" title="' + sb.ad + '" loading="lazy"></iframe>' +
+        '<iframe src="' + sb.dosya + '?isim=Elif&not=' + encodeURIComponent('İyi ki doğdun!') + '&zarf=0" title="' + sb.ad + '" loading="lazy"></iframe>' +
         '<div class="hazirlaniyor" aria-hidden="true"><span class="hz-sus">✦</span><span class="hz-metin">Yükleniyor…</span></div>' +
         '<span class="telefon-isim">' + sb.emoji + ' ' + sb.ad + '</span>' +
       '</div>' +
@@ -2656,6 +2656,21 @@ function galeriyiGuncelle() {
         '<button class="sablon-cta" type="button">Bu Tasarımı Seç ✨</button>' +
       '</div>';
 
+    // İframe yüklendiğinde 'hazırlanıyor' katmanını kesinlikle kaldır
+    var ifr = art.querySelector('iframe');
+    var hz = art.querySelector('.hazirlaniyor');
+    function hazirGizle() {
+      if (hz) {
+        hz.style.opacity = '0';
+        setTimeout(function () { hz.style.display = 'none'; }, 300);
+      }
+    }
+    if (ifr) {
+      ifr.addEventListener('load', hazirGizle);
+      ifr.addEventListener('error', hazirGizle);
+      setTimeout(hazirGizle, 3000);
+    }
+
     var secBtn = art.querySelector('.sablon-cta');
     secBtn.addEventListener('click', function () {
       sablonDurumuUygula(sb);
@@ -2664,72 +2679,25 @@ function galeriyiGuncelle() {
 
     izgara.appendChild(art);
   });
+}
 
-  galeriLazyBaslat();
-}
-// --- Galerideki şablon sayfalarını yalnızca yaklaşırken yükle (aynı anda 24 sayfa açılmaz) ---
-function galeriLazyBaslat() {
-  var list = document.querySelectorAll('.telefon iframe[data-src]');
-  if (!list.length) { return; }
-  if (!('IntersectionObserver' in window)) {
-    for (var i = 0; i < list.length; i++) { list[i].src = list[i].getAttribute('data-src'); list[i].removeAttribute('data-src'); }
-    return;
-  }
-  if (!galeriLazyBaslat._io) {
-    galeriLazyBaslat._io = new IntersectionObserver(function (kayitlar) {
-      for (var r = 0; r < kayitlar.length; r++) {
-        if (!kayitlar[r].isIntersecting) { continue; }
-        var cf = kayitlar[r].target;
-        galeriLazyBaslat._io.unobserve(cf);
-        var kaynak = cf.getAttribute('data-src');
-        if (kaynak) { cf.src = kaynak; cf.removeAttribute('data-src'); }
-      }
-    }, { rootMargin: '600px 0px' });
-  }
-  for (var j = 0; j < list.length; j++) { galeriLazyBaslat._io.observe(list[j]); }
-}
-// Aynı cinsiyet+yaş seçilirse durum değişmez ama üreticiye yine de kaydırılır
-// (cinsiyetDegistir / yasDegistir erken döner, kaydırma her zaman çalışır)
-
-// --- Şablon önizleme: yüklenmeyen (henüz hazır olmayan) dosyalar için yer tutucu ---
-// Not: Chrome, iframe 404'lerinde 'error' değil 'load' olayı fırlatır ve kendi
-// hata sayfasını içeriğe basar. Bu yüzden içeriğin gerçekten kart olup olmadığına
-// bakılır (kart gövdesi binlerce karakter, hata sayfası birkaç yüz).
-var telefonlar = document.querySelectorAll('.telefon');
-for (var t = 0; t < telefonlar.length; t++) {
-  (function (telefon) {
-    var hazir = telefon.querySelector('.hazirlaniyor');
-    var cerceve = telefon.querySelector('iframe');
-    var yuklendiMi = false;
-    function gizle() { yuklendiMi = true; hazir.classList.remove('aktif'); }
-    function goster() { if (!yuklendiMi) { hazir.classList.add('aktif'); } }
-    // Gerçek kart içeriği mi? true=evet, false=hayır(hata sayfası), null=erişilemiyor(file://)
-    function icerikGercekMi() {
-      try {
-        var belge = cerceve.contentDocument;
-        if (!belge || !belge.body) { return false; }
-        return belge.body.innerHTML.length > 1500;
-      } catch (e) { return null; }
+// Ana formdaki önizleme iframe'i yüklendiğinde de hazırlanıyor katmanını kaldır
+(function () {
+  var anaIfr = document.getElementById('onizlemeIframe');
+  var anaTelefon = anaIfr ? anaIfr.closest('.telefon-kasa') : null;
+  var anaHazir = anaTelefon ? anaTelefon.querySelector('.hazirlaniyor') : null;
+  function anaGizle() {
+    if (anaHazir) {
+      anaHazir.style.opacity = '0';
+      setTimeout(function () { anaHazir.style.display = 'none'; }, 300);
     }
-    function loadSonrasi() {
-      var durum = icerikGercekMi();
-      if (durum === true) { gizle(); }
-      else if (durum === null && location.protocol === 'file:') { gizle(); } // file:// içinde doğrulanamaz, olaya güven
-      else { goster(); } // 404/hata sayfası: "hazırlanıyor" yerinde kalsın
-    }
-    cerceve.addEventListener('load', function () { setTimeout(loadSonrasi, 120); });
-    cerceve.addEventListener('error', goster); // 'error' fırlatan tarayıcılar için
-    // Ne load ne error olduysa bir de süreli kontrolle karar ver
-    setTimeout(function () {
-      if (yuklendiMi) { return; }
-      var durum = icerikGercekMi();
-      if (durum === true) { gizle(); }
-      else if (durum === false) { goster(); }
-    }, 2500);
-    // 400ms sonra hâlâ bilinmiyorsa "hazırlanıyor" görünsün (yüklendiyse loadSonrasi gizler)
-    setTimeout(goster, 400);
-  })(telefonlar[t]);
-}
+  }
+  if (anaIfr) {
+    anaIfr.addEventListener('load', anaGizle);
+    anaIfr.addEventListener('error', anaGizle);
+    setTimeout(anaGizle, 2500);
+  }
+})();
 
 // --- Yaş input & İkinci not ---
 if (yasInput) {

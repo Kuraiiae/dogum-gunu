@@ -345,30 +345,24 @@ body{
   box-shadow:inset 0 0 0 1px rgba(255,255,255,.6),var(--golfe,0 18px 34px -18px rgba(75,62,40,.5));
   transition:box-shadow .32s ease;}
 .telefon iframe{position:absolute;top:0;left:0;border:0;width:480px;height:1035px;
-  transform:scale(.54583);transform-origin:0 0}
-@media (max-width:349px){
-  .telefon{width:224px}
-  .telefon iframe{transform:scale(.46667)}
-}
+  transform:scale(.54583);transform-origin:0 0;z-index:2;background:#fff}
 .hazirlaniyor{position:absolute;inset:0;z-index:1;display:flex;flex-direction:column;
   align-items:center;justify-content:center;gap:.65rem;text-align:center;padding:1rem;
-  background:linear-gradient(160deg,#FBF6EA 0%,#F1E8D4 100%);
-  opacity:0;transition:opacity .45s ease;pointer-events:none}
+  background:linear-gradient(160deg,var(--kagit2) 0%,var(--kagit3) 100%);
+  opacity:0;transition:opacity .35s ease;pointer-events:none}
 .hazirlaniyor.aktif{opacity:1}
-/* Henüz yüklenmemiş (data-src bekleyen) kartlarda yer tutucu görünür olsun */
-.telefon:has(iframe[data-src]) .hazirlaniyor{opacity:1}
 .hazirlaniyor .hz-sus{color:var(--altin);font-size:1.25rem;line-height:1}
 .hazirlaniyor .hz-metin{font-family:var(--yazi-vurgu);font-style:italic;font-size:.95rem;color:var(--murekkep-acik)}
 .hazirlaniyor .hz-kucuk{font-family:var(--yazi-govde);font-size:.72rem;letter-spacing:.08em;
   color:var(--murekkep-acik);opacity:.75}
-.canli{position:absolute;top:.6rem;left:.6rem;z-index:2;display:flex;align-items:center;gap:.35rem;
+.canli{position:absolute;top:.6rem;left:.6rem;z-index:3;display:flex;align-items:center;gap:.35rem;
   background:rgba(255,253,246,.94);color:#3E6B4B;border:1px solid rgba(62,107,75,.3);
   border-radius:999px;padding:.26rem .62rem;font-size:.62rem;font-weight:700;letter-spacing:.12em;
   text-transform:uppercase;font-family:var(--yazi-govde);box-shadow:0 3px 10px rgba(75,62,40,.16)}
 .canli::before{content:"";width:6px;height:6px;border-radius:50%;background:#22c55e;
   animation:canliAt 1.8s ease-in-out infinite}
 @keyframes canliAt{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(.7)}}
-.telefon-isim{position:absolute;bottom:.6rem;left:50%;transform:translateX(-50%);z-index:2;
+.telefon-isim{position:absolute;bottom:.6rem;left:50%;transform:translateX(-50%);z-index:3;
   background:rgba(43,38,28,.68);color:#FFF8E7;border-radius:999px;padding:.32rem .85rem;
   font-size:.72rem;font-weight:700;font-family:var(--yazi-govde);white-space:nowrap;
   -webkit-backdrop-filter:blur(5px);backdrop-filter:blur(5px);box-shadow:0 3px 12px rgba(75,62,40,.28)}
@@ -398,13 +392,14 @@ body{
 .ozellikler{list-style:none;margin-top:.9rem;display:flex;flex-direction:column;gap:.42rem;align-items:center}
 .ozellikler li{font-size:.85rem;font-weight:400;color:var(--murekkep-acik);display:flex;align-items:center;gap:.45rem}
 .ozellikler li::before{content:"✦";color:var(--altin);font-size:.62rem}
-.sablon-cta{min-height:52px;width:100%;max-width:280px;margin-top:1.15rem;display:flex;
+.sablon-cta{min-height:50px;width:100%;max-width:280px;margin-top:1.15rem;display:inline-flex;
   align-items:center;justify-content:center;gap:.4rem;cursor:pointer;touch-action:manipulation;
   font-family:var(--yazi-govde);font-weight:700;font-size:.82rem;letter-spacing:.14em;
-  text-transform:uppercase;background:transparent;color:var(--murekkep);border:1px solid var(--cizgi-koyu);
+  text-transform:uppercase;text-decoration:none;background:var(--vurgu);color:#FFFFFF;border:1px solid var(--vurgu);
+  border-radius:999px;box-shadow:0 6px 18px -6px var(--vurgu);
   transition:background .25s,color .25s,border-color .25s,transform .15s}
-.sablon-cta:hover{background:var(--murekkep);border-color:var(--murekkep);color:var(--kagit2)}
-.sablon-cta:active{transform:translateY(2px)}
+.sablon-cta:hover{background:var(--vurgu-koyu);border-color:var(--vurgu-koyu);color:#FFFFFF;transform:translateY(-2px)}
+.sablon-cta:active{transform:translateY(0)}
 
 /* ============ ÜRETİCİ ============ */
 .uretici-ic{display:grid;gap:1.8rem}
@@ -675,172 +670,20 @@ body{
     <div class="bolum-baslik">
       <span class="sira">Galeri</span>
       <div class="baslik-sus" aria-hidden="true"><span>✦</span></div>
-      <h2>Şablonlar</h2>
-      <p>Altı tasarım, üç yaş grubu. Hepsi canlı önizleme — hazır olmayanlar sayfa açılınca tamamlanır.</p>
+      <h2>24 Canlı Şablon</h2>
+      <p>Aşağıdaki tüm şablonları canlı önizleyebilir, beğendiğin tasarımla tek tıkla kartını oluşturabilirsin.</p>
     </div>
 
-    <!-- KIZ SERİSİ -->
-    <div class="grup" id="kiz-serisi">
-      <div class="grup-baslik">
-        <h3>Kız Serisi <small>🌸</small></h3>
-      </div>
-      <div class="grup-ici">
-
-        <article class="sablon cerceve">
-          <div class="telefon">
-            <span class="canli">Canlı</span>
-            <iframe data-src="dogum-gunu-kiz.html?isim=Elif&amp;not=G%C3%BCl%C3%BC%C5%9F%C3%BCn%20en%20g%C3%BCzel%20hediye%2C%20iyi%20ki%20do%C4%9Fdun%21%20%F0%9F%8E%82&amp;zarf=0" title="Kız çocuk şablonu canlı önizleme" loading="lazy"></iframe>
-            <div class="hazirlaniyor" aria-hidden="true">
-              <span class="hz-sus">✦</span>
-              <span class="hz-metin">Şablon hazırlanıyor…</span>
-              <span class="hz-kucuk">BİRKAÇ SANİYE</span>
-            </div>
-            <span class="telefon-isim">🌸 Elif</span>
-          </div>
-          <div class="sablon-bilgi">
-            <span class="yasetiketi">Çocuk</span>
-            <h3>Pastel Çiçek</h3>
-            <p class="sablon-aciklama">İlk doğum günü kartlarının klasiği</p>
-            <ul class="ozellikler">
-              <li>Yumuşak pastel tonlar</li>
-              <li>Balonlar &amp; kalpler</li>
-              <li>Neşeli, okunaklı yazı</li>
-            </ul>
-            <button class="sablon-cta" type="button" data-cinsiyet="kiz" data-yas="cocuk">Bu şablonla kart oluştur →</button>
-          </div>
-        </article>
-
-        <article class="sablon cerceve">
-          <div class="telefon">
-            <span class="canli">Canlı</span>
-            <iframe data-src="dogum-gunu-kiz-genc.html?isim=Elif&amp;not=R%C3%BCya%20gibi%20lavanta%2C%20kelebekler%2E%20Do%C4%9Fum%20g%C3%BCn%C3%BCn%20kutlu%20olsun%21%20%F0%9F%A6%8B&amp;zarf=0" title="Kız genç şablonu canlı önizleme" loading="lazy"></iframe>
-            <div class="hazirlaniyor" aria-hidden="true">
-              <span class="hz-sus">✦</span>
-              <span class="hz-metin">Şablon hazırlanıyor…</span>
-              <span class="hz-kucuk">BİRKAÇ SANİYE</span>
-            </div>
-            <span class="telefon-isim">🌸 Elif</span>
-          </div>
-          <div class="sablon-bilgi">
-            <span class="yasetiketi">Genç</span>
-            <h3>Lavanta Rüyası</h3>
-            <p class="sablon-aciklama">Hayallere yakışan bir sayfa</p>
-            <ul class="ozellikler">
-              <li>Rüya gibi lavanta, kelebekler</li>
-              <li>Yumuşak ışıltılı gece yıldızları</li>
-              <li>Trend ve zarif detaylar</li>
-            </ul>
-            <button class="sablon-cta" type="button" data-cinsiyet="kiz" data-yas="genc">Bu şablonla kart oluştur →</button>
-          </div>
-        </article>
-
-        <article class="sablon cerceve">
-          <div class="telefon">
-            <span class="canli">Canlı</span>
-            <iframe data-src="dogum-gunu-kiz-yetiskin.html?isim=Elif&amp;not=Zarif%20krem%20ve%20alt%C4%B1n%20gibi%20de%C4%9Ferlisin%2E%20Nice%20mutlu%20y%C4%B1llara%21%20%F0%9F%8C%B9&amp;zarf=0" title="Kız yetişkin şablonu canlı önizleme" loading="lazy"></iframe>
-            <div class="hazirlaniyor" aria-hidden="true">
-              <span class="hz-sus">✦</span>
-              <span class="hz-metin">Şablon hazırlanıyor…</span>
-              <span class="hz-kucuk">BİRKAÇ SANİYE</span>
-            </div>
-            <span class="telefon-isim">🌸 Elif</span>
-          </div>
-          <div class="sablon-bilgi">
-            <span class="yasetiketi">Yetişkin</span>
-            <h3>Krem &amp; Altın</h3>
-            <p class="sablon-aciklama">Sadelik ve zerafet bir arada</p>
-            <ul class="ozellikler">
-              <li>Zarif krem + altın, gül yaprakları</li>
-              <li>Şık, sade tipografi</li>
-              <li>Sıcak ve olgun bir his</li>
-            </ul>
-            <button class="sablon-cta" type="button" data-cinsiyet="kiz" data-yas="yetiskin">Bu şablonla kart oluştur →</button>
-          </div>
-        </article>
-
-      </div>
+    <!-- Filtre Butonları -->
+    <div class="galeri-filtreler" style="display:flex;justify-content:center;gap:.6rem;flex-wrap:wrap;margin-bottom:2rem">
+      <button class="yas-btn aktif" type="button" id="filtreTum" onclick="galeriFiltrele('tum')">🌟 Tümü (24)</button>
+      <button class="yas-btn" type="button" id="filtreKiz" onclick="galeriFiltrele('kiz')">🌸 Kız Şablonları (12)</button>
+      <button class="yas-btn" type="button" id="filtreErkek" onclick="galeriFiltrele('erkek')">⚡ Erkek Şablonları (12)</button>
     </div>
 
-    <!-- ERKEK SERİSİ -->
-    <div class="grup" id="erkek-serisi">
-      <div class="grup-baslik">
-        <h3>Erkek Serisi <small>⚡</small></h3>
-      </div>
-      <div class="grup-ici">
-
-        <article class="sablon cerceve">
-          <div class="telefon">
-            <span class="canli">Canlı</span>
-            <iframe data-src="dogum-gunu-erkek.html?isim=Ali&amp;not=S%C3%BCper%20g%C3%BC%C3%A7lerin%20hep%20seninle%20olsun%2C%20do%C4%9Fum%20g%C3%BCn%C3%BCn%20kutlu%20olsun%21%20%E2%9A%A1&amp;zarf=0" title="Erkek çocuk şablonu canlı önizleme" loading="lazy"></iframe>
-            <div class="hazirlaniyor" aria-hidden="true">
-              <span class="hz-sus">✦</span>
-              <span class="hz-metin">Şablon hazırlanıyor…</span>
-              <span class="hz-kucuk">BİRKAÇ SANİYE</span>
-            </div>
-            <span class="telefon-isim">⚡ Ali</span>
-          </div>
-          <div class="sablon-bilgi">
-            <span class="yasetiketi">Çocuk</span>
-            <h3>Çizgi Roman</h3>
-            <p class="sablon-aciklama">Aksiyon dolu bir kutlama</p>
-            <ul class="ozellikler">
-              <li>Comic çizgiler, dinamik patlamalar</li>
-              <li>Süper kahraman enerjisi</li>
-              <li>Konfeti patlaması</li>
-            </ul>
-            <button class="sablon-cta" type="button" data-cinsiyet="erkek" data-yas="cocuk">Bu şablonla kart oluştur →</button>
-          </div>
-        </article>
-
-        <article class="sablon cerceve">
-          <div class="telefon">
-            <span class="canli">Canlı</span>
-            <iframe data-src="dogum-gunu-erkek-genc.html?isim=Ali&amp;not=Urban%20espor%20havas%C4%B1%2C%20neon%20%C4%B1zgaralar%2E%20Do%C4%9Fum%20g%C3%BCn%C3%BCn%20kutlu%20olsun%21%20%E2%9A%A1&amp;zarf=0" title="Erkek genç şablonu canlı önizleme" loading="lazy"></iframe>
-            <div class="hazirlaniyor" aria-hidden="true">
-              <span class="hz-sus">✦</span>
-              <span class="hz-metin">Şablon hazırlanıyor…</span>
-              <span class="hz-kucuk">BİRKAÇ SANİYE</span>
-            </div>
-            <span class="telefon-isim">⚡ Ali</span>
-          </div>
-          <div class="sablon-bilgi">
-            <span class="yasetiketi">Genç</span>
-            <h3>Neon Urban</h3>
-            <p class="sablon-aciklama">Esport ekranından fırlamış gibi</p>
-            <ul class="ozellikler">
-              <li>Urban/espor, neon ızgaralar</li>
-              <li>Oyun estetiği, keskin çizgiler</li>
-              <li>Elektrikli vurgular</li>
-            </ul>
-            <button class="sablon-cta" type="button" data-cinsiyet="erkek" data-yas="genc">Bu şablonla kart oluştur →</button>
-          </div>
-        </article>
-
-        <article class="sablon cerceve">
-          <div class="telefon">
-            <span class="canli">Canlı</span>
-            <iframe data-src="dogum-gunu-erkek-yetiskin.html?isim=Ali&amp;not=Olgun%20lacivert%20ve%20alt%C4%B1n%20gibi%20zarif%20bir%20y%C4%B1l%2E%20Nice%20mutlu%20y%C4%B1llara%21%20%F0%9F%A5%82&amp;zarf=0" title="Erkek yetişkin şablonu canlı önizleme" loading="lazy"></iframe>
-            <div class="hazirlaniyor" aria-hidden="true">
-              <span class="hz-sus">✦</span>
-              <span class="hz-metin">Şablon hazırlanıyor…</span>
-              <span class="hz-kucuk">BİRKAÇ SANİYE</span>
-            </div>
-            <span class="telefon-isim">⚡ Ali</span>
-          </div>
-          <div class="sablon-bilgi">
-            <span class="yasetiketi">Yetişkin</span>
-            <h3>Lacivert &amp; Altın</h3>
-            <p class="sablon-aciklama">Dur durak bilmeyen bir zarafet</p>
-            <ul class="ozellikler">
-              <li>Olgun lacivert + altın, zarif detaylar</li>
-              <li>Minimal, güçlü tipografi</li>
-              <li>Dengeli ve şık his</li>
-            </ul>
-            <button class="sablon-cta" type="button" data-cinsiyet="erkek" data-yas="yetiskin">Bu şablonla kart oluştur →</button>
-          </div>
-        </article>
-
-      </div>
+    <!-- 24 Şablon Izgarası -->
+    <div class="grup-ici" id="sablonlarIzgara" style="display:grid;gap:1.5rem;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));align-items:start">
+      <!-- JavaScript tarafından dinamik olarak 24 şablon doldurulur -->
     </div>
   </section>
 
@@ -1747,57 +1590,84 @@ if (dilBtn) {
 }
 bekleyipOlustur();
 
-// Tema değiştirici
-const temalar = ['clasik', 'gece', 'neon', 'pastel'];
-const temaBtn = document.getElementById('temaBtn');
-const metaTema = document.getElementById('metaTema');
-const htmlElement = document.documentElement; // <html>
-
-function uygulaTema(tema) {
-  // Tema özniteliğini html öğesine ekle
-  htmlElement.setAttribute('data-theme', tema);
-  // localStorage'a kaydet
-  try { localStorage.setItem('dogumgunu-tema', tema); } catch (e) {}
-  // meta tema rengini güncelle (kâğıt rengi)
-  const kagitRengi = getComputedStyle(htmlElement).getPropertyValue('--kagit').trim();
-  if (metaTema && kagitRengi) {
-    metaTema.content = kagitRengi;
-  }
-  // butonun aria-label'ını güncelle (isteğe bağlı)
-  if (temaBtn) {
-    const temaIsimleri = {
-      clasik: 'Klasik Tema',
-      gece: 'Gece Tema',
-      neon: 'Neon Tema',
-      pastel: 'Pastel Tema'
-    };
-    temaBtn.setAttribute('aria-label', temaIsimleri[tema] || 'Tema değiştir');
-  }
+// Tema butonu olay dinleyicisi
+var temaBtnEl = document.getElementById('temaBtn');
+if (temaBtnEl) {
+  temaBtnEl.addEventListener('click', temaDegistir);
 }
 
-function sonrakiTema() {
-  const mevcut = htmlElement.getAttribute('data-theme') || 'clasik';
-  const idx = temalar.indexOf(mevcut);
-  const sonrakiIdx = (idx + 1) % temalar.length;
-  uygulaTema(temalar[sonrakiIdx]);
+// ============ 24 ŞABLON GALERİ MOTORU ============
+var aktifGaleriFiltre = 'tum';
+function galeriFiltrele(filtre) {
+  aktifGaleriFiltre = filtre;
+  ['filtreTum', 'filtreKiz', 'filtreErkek'].forEach(function (id) {
+    var b = document.getElementById(id);
+    if (b) b.classList.remove('aktif');
+  });
+  if (filtre === 'tum') { var b1 = document.getElementById('filtreTum'); if (b1) b1.classList.add('aktif'); }
+  if (filtre === 'kiz') { var b2 = document.getElementById('filtreKiz'); if (b2) b2.classList.add('aktif'); }
+  if (filtre === 'erkek') { var b3 = document.getElementById('filtreErkek'); if (b3) b3.classList.add('aktif'); }
+  galeriyiGuncelle();
 }
 
-// Başlangıçta temasını yükle
-document.addEventListener('DOMContentLoaded', function () {
-  let tema = 'clasik';
-  try {
-    const saved = localStorage.getItem('dogumgunu-tema');
-    if (saved && temalar.includes(saved)) {
-      tema = saved;
+function galeriyiGuncelle() {
+  var izgara = document.getElementById('sablonlarIzgara');
+  if (!izgara || typeof SABLONLAR === 'undefined') return;
+  izgara.innerHTML = '';
+
+  var filtreli = SABLONLAR.filter(function (sb) {
+    if (aktifGaleriFiltre === 'kiz') return sb.cinsiyet === 'kiz';
+    if (aktifGaleriFiltre === 'erkek') return sb.cinsiyet === 'erkek';
+    return true;
+  });
+
+  filtreli.forEach(function (sb) {
+    var art = document.createElement('article');
+    art.className = 'sablon cerceve';
+    var ozell = sb.ozellik.map(function (o) { return '<li>' + o + '</li>'; }).join('');
+    var yasEtiket = sb.yas === 'cocuk' ? 'Çocuk' : (sb.yas === 'genc' ? 'Genç' : 'Yetişkin');
+    var cinsIcon = sb.cinsiyet === 'kiz' ? '🌸 Kız' : '⚡ Erkek';
+
+    art.innerHTML =
+      '<div class="telefon">' +
+        '<span class="canli">Canlı</span>' +
+        '<iframe src="' + sb.dosya + '?isim=Elif&not=' + encodeURIComponent('İyi ki doğdun!') + '&zarf=0" title="' + sb.ad + '" loading="lazy"></iframe>' +
+        '<div class="hazirlaniyor" aria-hidden="true"><span class="hz-sus">✦</span><span class="hz-metin">Yükleniyor…</span></div>' +
+        '<span class="telefon-isim">' + sb.emoji + ' ' + sb.ad + '</span>' +
+      '</div>' +
+      '<div class="sablon-bilgi">' +
+        '<span class="yasetiketi">' + cinsIcon + ' · ' + yasEtiket + '</span>' +
+        '<h3>' + sb.emoji + ' ' + sb.ad + '</h3>' +
+        '<p class="sablon-aciklama">' + sb.aciklama + '</p>' +
+        '<ul class="ozellikler">' + ozell + '</ul>' +
+        '<a class="sablon-cta" href="olustur.html?sablon=' + encodeURIComponent(sb.dosya) + '">Bu Tasarımı Seç ✨</a>' +
+      '</div>';
+
+    // İframe yüklendiğinde 'hazırlanıyor' katmanını kesinlikle kaldır
+    var ifr = art.querySelector('iframe');
+    var hz = art.querySelector('.hazirlaniyor');
+    function hazirGizle() {
+      if (hz) {
+        hz.style.opacity = '0';
+        setTimeout(function () { hz.style.display = 'none'; }, 300);
+      }
     }
-  } catch (e) {}
-  uygulaTema(tema);
-});
+    if (ifr) {
+      ifr.addEventListener('load', hazirGizle);
+      ifr.addEventListener('error', hazirGizle);
+      setTimeout(hazirGizle, 3000);
+    }
 
-// Tema butonuna tıklama olayı
-if (temaBtn) {
-  temaBtn.addEventListener('click', sonrakiTema);
+    izgara.appendChild(art);
+  });
 }
+
+// Başlangıçta galeriyi 24 şablonla doldur
+document.addEventListener('DOMContentLoaded', function () {
+  galeriyiGuncelle();
+});
+setTimeout(galeriyiGuncelle, 100);
+
 
 </script>
 </body>

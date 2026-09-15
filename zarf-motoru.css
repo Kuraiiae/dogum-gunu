@@ -1,220 +1,350 @@
 /* ============================================================
-   ZARF MOTORU — ortak katman (tüm şablonlarda çalışır)
-   Zarf açılış → konfeti/balon → aşağı kaydır → kart → hediye
+   ZARF MOTORU 2.0 — PARŞÖMEN & HAVAİ FİŞEK & MESAJ POSTA DENEYİMİ
+   Tüm şablonlarda QR ve bağlantı açılışında çalışır
    ============================================================ */
-.zarf-sahne{
-  position:fixed;inset:0;z-index:9990;overflow:hidden;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  background:linear-gradient(168deg,#fff5fb 0%,#ffe9f3 40%,#f3e9ff 100%);
-  transition:transform .8s cubic-bezier(.7,0,.3,1),opacity .6s ease;
-}
-.zarf-sahne[data-acildi="1"]{transform:translateY(-104%);pointer-events:none}
-.zarf-sahne[data-gizle] {opacity:0;pointer-events:none}
 
-/* -- Zarf görseli -- */
-.zarf-gorsel{position:relative;width:min(320px,82vw);aspect-ratio:1.6/1;margin:0 auto 1.6rem}
-.zarf-gorsel .zg-alt{
-  position:absolute;inset:0;border-radius:14px;
-  background:linear-gradient(150deg,var(--zf-bir,#ff9ec7) 0%,var(--zf-iki,#e86aa8) 100%);
-  box-shadow:0 26px 60px -20px rgba(0,0,0,.35),inset 0 2px 0 rgba(255,255,255,.4);
+/* --- Ana Deneyim Katmanı --- */
+.parsomen-deneyim{
+  position:fixed;inset:0;z-index:99999;overflow-y:auto;overflow-x:hidden;
+  background:radial-gradient(ellipse at 50% 15%, #18202c 0%, #090c12 70%, #040507 100%);
+  display:flex;flex-direction:column;align-items:center;
+  padding:2rem 1rem 5rem;
+  scroll-behavior:smooth;
+  -webkit-overflow-scrolling:touch;
 }
-.zarf-gorsel .zg-kapak{
-  position:absolute;left:0;right:0;top:0;height:52%;transform-origin:top center;
-  background:linear-gradient(180deg,var(--zf-iki,#e86aa8) 0%,var(--zf-bir,#ff9ec7) 100%);
-  border-radius:14px 14px 6px 6px;transition:transform .55s cubic-bezier(.6,0,.3,1);
-  z-index:3;
-}
-.zf-kalp{
-  position:absolute;left:50%;top:22%;transform:translate(-50%,-50%);z-index:4;
-  font-size:2.4rem;animation:zfKalp 1.6s ease-in-out infinite;
-}
-@keyframes zfKalp{0%,100%{transform:translate(-50%,-50%) scale(1)}50%{transform:translate(-50%,-50%) scale(1.18)}}
 
-/* -- Zarf şeridi / iç davet -- */
-.zf-ic{position:absolute;left:7%;right:7%;top:20%;bottom:12%;z-index:2;
-  background:rgba(255,255,255,.92);border-radius:8px;padding:1rem;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.3rem;
-  font-family:'Segoe UI',system-ui,sans-serif;text-align:center;color:#8a4a6b;
+/* --- Arka Plan Havai Fişek Canvas --- */
+#fireworksCanvas{
+  position:fixed;inset:0;width:100vw;height:100vh;
+  pointer-events:none;z-index:1;
 }
-.zf-ic .zf-davet{font-size:.95rem;font-weight:600;color:#b06a92}
-.zf-ic .zf-isim{font-family:'Georgia',serif;font-size:1.5rem;font-weight:800;
-  background:linear-gradient(120deg,var(--zf-bir,#ff9ec7),var(--zf-iki,#e86aa8));
-  -webkit-background-clip:text;background-clip:text;color:transparent}
 
-/* -- Balon / konfeti fışkırtması (C tipi açılış) -- */
-.zf-balonlar{position:absolute;inset:0;pointer-events:none;z-index:5}
-.zf-balon{position:absolute;bottom:-90px;font-size:1.6rem;opacity:0;animation:zfBalon 4.5s linear infinite}
-@keyframes zfBalon{
- 0%{transform:translate3d(0,0,0);opacity:0}
- 10%{opacity:.95}
- 50%{transform:translate3d(18px,-48vh,0)}
- 100%{transform:translate3d(-16px,-108vh,0);opacity:.7}
+/* --- Yeni Yaş Parıltılı Başlık --- */
+.yas-havai-kutu{
+  position:relative;z-index:10;text-align:center;
+  margin:1rem auto 1.8rem;animation:yasInis .8s cubic-bezier(.2,1.3,.3,1) both;
 }
-.zf-patik{position:absolute;z-index:6;font-size:1.2rem;pointer-events:none;animation:zfPatik .9s cubic-bezier(.2,.8,.3,1) forwards}
-@keyframes zfPatik{0%{transform:scale(0) rotate(0);opacity:1}70%{transform:scale(1.25) rotate(24deg)}100%{transform:scale(1) rotate(12deg);opacity:.5}}
-
-/* === YENİ ŞENLIK ANİMASYONLARI === */
-.celebration-overlay{
-  position:fixed;inset:0;z-index:9995;overflow:hidden;
-  display:flex;align-items:center;justify-content:center;
-  background:rgba(0,0,0,0.3);
-}
-.celebration-content{
-  text-align:center;position:relative;
-}
-.celebration-title{
-  font-size:8rem;margin-bottom:1rem;display:block;
-  animation:titlePop 0.6s ease-out;
-}
-.celebration-fireworks{
-  position:relative;width:100%;height:200px;
-}
-.celebration-fireworks::before,
-.celebration-fireworks::after{
-  content:'';position:absolute;width:200px;height:200px;
-  background:radial-gradient(circle,var(--vurgu) 0%,transparent 70%);
-  border-radius:50%;opacity:0.6;animation:fireworkPulse 2s ease-out infinite;
-}
-.celebration-fireworks::before{
-  top:-50px;left:calc(50% - 100px);animation-delay:0s;
-}
-.celebration-fireworks::after{
-  top:50px;left:calc(50% - 100px);animation-delay:1s;
-}
-@keyframes titlePop{
-  0%{transform:scale(0.3) rotate(-15deg);opacity:0}
-  60%{transform:scale(1.1) rotate(5deg);opacity:1}
-  100%{transform:scale(1) rotate(0deg);opacity:1}
-}
-@keyframes fireworkPulse{
-  0%{transform:scale(0.2);opacity:0}
-  30%{transform:scale(1.2);opacity:0.7}
-  100%{transform:scale(2.5);opacity:0}
-}
-.isim-not-basligi{
-  position:fixed;top:20%;left:50%;transform:translateX(-50%);
-  z-index:9996;text-align:center;background:rgba(255,255,255,0.9);
-  padding:2rem;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,0.2);
-  max-width:90%;animation:slideDown 0.6s ease-out;
-}
-.isim-basligi{
-  font-size:2.2rem;font-weight:800;margin-bottom:0.5rem;
-  background:linear-gradient(120deg,var(--vurgu) 0%,var(--vurgu-koyu) 100%);
+.yas-rakam-vurgu{
+  display:inline-block;
+  font-family:'Playfair Display', Georgia, serif;
+  font-weight:900;font-size:clamp(2.4rem, 9vw, 4.2rem);
+  letter-spacing:.04em;
+  background:linear-gradient(135deg, #FFF6D6 0%, #FFD700 50%, #FFA500 100%);
   -webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 0 24px rgba(255,215,0,.6));
+  animation:yasParlasin 2s ease-in-out infinite alternate;
 }
-.kutlu-baslik{
-  font-size:1.8rem;font-weight:600;margin-bottom:1rem;color:#8a4a6b;
+@keyframes yasParlasin{
+  0%{filter:drop-shadow(0 0 16px rgba(255,215,0,.5)) scale(1)}
+  100%{filter:drop-shadow(0 0 36px rgba(255,215,0,.9)) scale(1.03)}
 }
-.ilk-not{
-  font-size:1.4rem;line-height:1.6;color:#5a3a2f;
+@keyframes yasInis{
+  from{opacity:0;transform:translateY(-40px) scale(.85)}
+  to{opacity:1;transform:none}
 }
-.zarf-ikinci-not{
-  position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
-  z-index:9997;background:rgba(255,255,255,0.95);padding:1.5rem;
-  border-radius:12px;box-shadow:0 8px 25px rgba(0,0,0,0.15);
-  max-width:90%;text-align:center;animation:fadeInUp 0.5s ease-out;
-}
-.zarf-ic-ikinci-not{
-  font-size:1.3rem;line-height:1.6;color:#6b4f3f;
-  font-style:italic;
-}
-@keyframes slideDown{
-  0%{transform:translate(-50%,-30px);opacity:0}
-  100%{transform:translate(-50%,0);opacity:1}
-}
-@keyframes fadeInUp{
-  0%{transform:translate(-50%,30px);opacity:0}
-  100%{transform:translate(-50%,-50%);opacity:1}
+.yas-alt-tebrik{
+  font-family:'Karla', system-ui, sans-serif;
+  font-size:clamp(.95rem, 3vw, 1.25rem);
+  font-weight:600;letter-spacing:.15em;text-transform:uppercase;
+  color:#E0D0B0;margin-top:.4rem;
+  text-shadow:0 2px 10px rgba(0,0,0,.8);
 }
 
-/* Existing animations continue below */
+/* --- Antik Parşömen Rulo Taşıyıcı --- */
+.parsomen-kapsayici{
+  position:relative;z-index:10;
+  width:min(660px, 94vw);
+  margin:0 auto 3rem;
+  display:flex;flex-direction:column;align-items:center;
+  animation:parsomenGel 1s cubic-bezier(.2,1.2,.3,1) both;
+}
+@keyframes parsomenGel{
+  from{opacity:0;transform:translateY(60px) scale(.92)}
+  to{opacity:1;transform:none}
+}
 
-/* -- Aşağı kaydır ipucu -- */
-.zf-kaydir{
-  position:absolute;bottom:calc(2rem + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);
-  display:flex;flex-direction:column;align-items:center;gap:.4rem;color:#b06a92;
-  font-family:'Segoe UI',system-ui,sans-serif;font-weight:600;font-size:.9rem;z-index:7;
-  animation:zfOynat 1.4s ease-in-out infinite;cursor:pointer;background:none;border:none;padding:.6rem 1.2rem;
+/* Parşömen Ahşap / Altın Rulo Uçları */
+.rulo-baslik-cubuk{
+  width:104%;height:22px;border-radius:11px;
+  background:linear-gradient(180deg, #E6C875 0%, #9C7A3C 40%, #5E461A 100%);
+  box-shadow:0 8px 24px rgba(0,0,0,.6), inset 0 2px 2px rgba(255,255,255,.6);
+  position:relative;z-index:12;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 .8rem;
 }
-@keyframes zfOynat{0%,100%{transform:translate(-50%,0)}50%{transform:translate(-50%,9px)}}
-.zf-kaydir .zf-ok{font-size:1.7rem;line-height:1}
-/* ===== Hediye kutusu (kartın altında) ===== */
-.hediye-bolum{position:relative;z-index:12;max-width:520px;margin:2rem auto 3rem;padding:0 1.1rem;text-align:center}
-/* Hediye paketi alttan süzülerek gelir */
-.hediye-bolum{animation:hediyeGel .9s cubic-bezier(.2,1.2,.4,1) both}
-@keyframes hediyeGel{from{opacity:0;transform:translateY(90px) scale(.92)}to{opacity:1;transform:none}}
-.hediye-kutu{
-  position:relative;margin:0 auto;width:min(210px,66vw);aspect-ratio:1;
-  background:linear-gradient(150deg,var(--zf-bir,#ff9ec7),var(--zf-iki,#e86aa8));
-  border-radius:18px;cursor:pointer;box-shadow:0 22px 44px -16px rgba(0,0,0,.4);
-  display:flex;align-items:center;justify-content:center;font-size:3.4rem;
+.rulo-baslik-cubuk::before, .rulo-baslik-cubuk::after{
+  content:'';width:18px;height:18px;border-radius:50%;
+  background:radial-gradient(circle, #FFF2A1 0%, #9C7A3C 100%);
+  box-shadow:0 0 8px rgba(255,215,0,.6);
 }
-.hediye-kutu.kapak-once{animation:hkDurus 1.6s ease-in-out infinite}
-@keyframes hkDurus{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-10px) rotate(2deg)}}
-.hediye-kutu.acilacak{animation:hkAc .7s cubic-bezier(.3,1.4,.4,1) forwards}
-@keyframes hkAc{0%{transform:scale(1)}55%{transform:scale(1.16) rotate(-4deg)}100%{transform:scale(1.06)}}
-.hediye-kutu .hk-kapak{
-  position:absolute;left:-6%;right:-6%;top:-9%;height:34%;
-  background:linear-gradient(160deg,var(--zf-iki,#e86aa8),var(--zf-bir,#ff9ec7));
-  border-radius:12px;transform-origin:bottom center;transition:transform .45s cubic-bezier(.5,0,.3,1);
-  z-index:2;box-shadow:0 8px 18px -8px rgba(0,0,0,.35);
-}
-.hediye-kutu.acik .hk-kapak{transform:rotateX(152deg)}
-.hediye-kutu .hk-yazi{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
-  z-index:1;font-size:3.4rem}
-.hediye-ic{
-  opacity:0;transform:translateY(14px) scale(.92);transition:all .5s cubic-bezier(.3,1.2,.4,1);
-  margin-top:1.1rem;max-width:420px;margin-left:auto;margin-right:auto;
-}
-.hediye-ic.acik{opacity:1;transform:none}
-.hediye-ic img.resim-hediyesi{max-width:100%;max-height:320px;border-radius:14px;box-shadow:0 18px 40px -18px rgba(0,0,0,.45)}
-.hediye-ic .soz-hediye{
-  font-family:'Georgia',serif;font-size:1.15rem;font-style:italic;line-height:1.6;
-  padding:1.2rem 1.3rem;background:rgba(255,255,255,.85);border-radius:14px;
-  border:1px dashed rgba(0,0,0,.14);
-}
-.hediye-ic .link-hediye{
-  display:inline-block;padding:.8rem 1.4rem;border-radius:999px;text-decoration:none;font-weight:700;
-  background:linear-gradient(120deg,var(--zf-bir,#ff9ec7),var(--zf-iki,#e86aa8));color:#fff;
-}
-.hediye-baslik{display:inline-block;padding:.4rem 1.2rem;border-radius:999px;font-size:.88rem;font-weight:700;
-  letter-spacing:.08em;text-transform:uppercase;background:rgba(255,255,255,.8);margin-bottom:1rem;
-  color:var(--zf-bir,#d14d8f);border:1px solid rgba(0,0,0,.08)}
 
-/* ===== Cümle cümle not akışı ===== */
-.not-satir{opacity:0;transform:translateY(16px);transition:opacity .55s ease,transform .55s ease}
-.not-satir.geldi{opacity:1;transform:none}
-.not-satir.imlec:after{content:"|";margin-left:2px;color:currentColor;animation:zfImlec .8s infinite}
-@keyframes zfImlec{0%,49%{opacity:1}50%,100%{opacity:0}}
-.dinamik-yas{
-  font-family:inherit;font-size:1.05rem;font-weight:700;letter-spacing:.02em;
-  background:linear-gradient(120deg,var(--zf-bir,#ff9ec7),var(--zf-iki,#e86aa8));
-  -webkit-background-clip:text;background-clip:text;color:transparent;
-  animation:zfYas 2.2s ease-in-out infinite;
+/* Parşömen Gövdesi (Sürekli Uzayan / Açılan Kağıt Doku) */
+.parsomen-govde{
+  width:100%;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.55' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23p)' opacity='.05'/%3E%3C/svg%3E"),
+    linear-gradient(180deg, #F9F1DC 0%, #F5E8C8 30%, #EFE0B8 70%, #F7ECDA 100%);
+  border-left:4px solid rgba(156,122,60,.4);
+  border-right:4px solid rgba(156,122,60,.4);
+  box-shadow:
+    inset 16px 0 28px -12px rgba(110,80,30,.25),
+    inset -16px 0 28px -12px rgba(110,80,30,.25),
+    0 24px 60px -15px rgba(0,0,0,.8);
+  padding:2.8rem 2rem 3rem;
+  color:#3A2E1A;
+  position:relative;
+  transition:min-height .6s ease;
 }
-@keyframes zfYas{0%,100%{opacity:.85;transform:scale(1)}50%{opacity:1;transform:scale(1.04)}}
-.zf-adi{display:inline-block;animation:zfAdi .9s cubic-bezier(.3,1.4,.4,1) both}
-@keyframes zfAdi{0%{opacity:0;transform:scale(.3) rotate(-8deg)}100%{opacity:1;transform:scale(1) rotate(0)}}
-
-/* Overlay içi buton (tıkla da devam edebilir) */
-.zf-btn{
-  margin-top:1.2rem;border:none;cursor:pointer;border-radius:999px;padding:.9rem 2rem;
-  font-weight:800;font-size:1.02rem;color:#fff;letter-spacing:.04em;
-  background:linear-gradient(120deg,var(--zf-bir,#ff9ec7),var(--zf-iki,#e86aa8));
-  box-shadow:0 12px 26px -10px rgba(0,0,0,.4);transition:transform .2s ease;
-}
-.zf-btn:active{transform:scale(.95)}
-
-/* Arkada hafif süzülen parıltılar */
-.zf-sus{position:absolute;font-size:1.1rem;opacity:.5;pointer-events:none;animation:zfSus 6s ease-in-out infinite;z-index:0}
-@keyframes zfSus{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-26px) rotate(18deg)}}
-
-/* Mobil + erişilebilirlik */
 @media (max-width:480px){
-  .zarf-gorsel{width:min(280px,90vw)}
-  .zf-ic .zf-isim{font-size:1.25rem}
+  .parsomen-govde{padding:2rem 1.2rem 2.5rem}
 }
-@media (prefers-reduced-motion:reduce){
-  .zarf-sahne,.zarf-gorsel,.hediye-kutu,.zf-kaydir{animation:none!important;transition-duration:.01ms!important}
-  .zf-balon,.zf-patik,.zf-sus,.not-satir.imlec:after{animation:none!important}
+
+/* Parşömen Üst Başlık & İsim */
+.parsomen-tepe{text-align:center;margin-bottom:2rem}
+.parsomen-sus-satir{
+  display:flex;align-items:center;justify-content:center;gap:.8rem;
+  color:#9C7A3C;font-size:1.1rem;margin-bottom:.8rem;
 }
+.parsomen-sus-satir::before, .parsomen-sus-satir::after{
+  content:'';height:1px;width:60px;background:rgba(156,122,60,.45);
+}
+.parsomen-isim{
+  font-family:'Playfair Display', Georgia, serif;
+  font-weight:800;font-size:clamp(2rem, 7vw, 3.2rem);
+  line-height:1.2;color:#2B1E0E;
+  margin-bottom:.4rem;
+  letter-spacing:-.01em;
+}
+.parsomen-tebrik-alt{
+  font-family:'Dancing Script', cursive, serif;
+  font-size:clamp(1.5rem, 5vw, 2.2rem);
+  color:#913831;font-weight:700;
+  margin-bottom:1.4rem;
+}
+
+/* Parşömen İlk Not */
+.parsomen-ilk-not{
+  background:rgba(255,255,255,.55);
+  border:1px dashed rgba(156,122,60,.35);
+  border-radius:14px;
+  padding:1.4rem 1.6rem;
+  font-family:'Karla', system-ui, sans-serif;
+  font-size:clamp(1.05rem, 3vw, 1.25rem);
+  line-height:1.7;text-align:center;color:#42321C;
+  position:relative;
+  margin:0 auto 2.2rem;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.8);
+}
+.parsomen-ilk-not::before{content:'“';font-size:2.8rem;color:#9C7A3C;opacity:.4;position:absolute;top:-12px;left:14px;line-height:1}
+.parsomen-ilk-not::after{content:'”';font-size:2.8rem;color:#9C7A3C;opacity:.4;position:absolute;bottom:-28px;right:14px;line-height:1}
+
+/* Aşağı Kaydır Oku / İpucu */
+.parsomen-kaydir-ipucu{
+  display:flex;flex-direction:column;align-items:center;gap:.3rem;
+  font-size:.82rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:#8C7040;margin:1.4rem auto;animation:okZiplasin 1.6s ease-in-out infinite;
+}
+@keyframes okZiplasin{0%,100%{transform:translateY(0)}50%{transform:translateY(8px)}}
+
+/* --- Parşömen Kişisel Mesaj (Lyrics / Şarkı Sözleri Bölümü) --- */
+.parsomen-lyrics-alani{
+  margin:2.4rem 0;
+  padding:1.6rem 1.4rem;
+  border-radius:16px;
+  background:linear-gradient(160deg, rgba(255,255,255,.7) 0%, rgba(240,230,205,.7) 100%);
+  border:1px solid rgba(156,122,60,.3);
+  box-shadow:0 8px 24px -10px rgba(110,80,30,.2);
+}
+.lyrics-ayrac-baslik{
+  display:flex;align-items:center;justify-content:center;gap:.6rem;
+  font-family:'Playfair Display', Georgia, serif;
+  font-size:1.15rem;font-style:italic;font-weight:700;color:#5E461A;
+  margin-bottom:1.1rem;
+}
+.lyrics-dizeler-listesi{
+  display:flex;flex-direction:column;gap:.75rem;
+  text-align:center;
+}
+.lyrics-tek-dize{
+  font-family:'Playfair Display', Georgia, serif;
+  font-style:italic;
+  font-size:clamp(1.05rem, 3.2vw, 1.25rem);
+  line-height:1.75;color:#382A16;
+  padding:.4rem .6rem;
+  border-bottom:1px dashed rgba(156,122,60,.2);
+  transition:all .3s ease;
+}
+.lyrics-tek-dize:last-child{border-bottom:none}
+.lyrics-tek-dize:hover{
+  background:rgba(255,215,0,.15);border-radius:8px;
+  transform:scale(1.02);color:#1A1208;
+}
+
+/* --- Mesaj Postası & Hediye Zarfı --- */
+.posta-hediye-bolumu{
+  margin:2.8rem auto 1rem;
+  display:flex;flex-direction:column;align-items:center;
+  text-align:center;
+}
+.posta-zarf-kutu{
+  position:relative;
+  width:min(260px, 80vw);
+  aspect-ratio:1.4/1;
+  background:linear-gradient(135deg, #B54238 0%, #85221A 100%);
+  border-radius:14px;
+  box-shadow:0 18px 45px -10px rgba(0,0,0,.6), inset 0 1px 2px rgba(255,255,255,.4);
+  cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:transform .3s ease, box-shadow .3s ease;
+  user-select:none;
+}
+.posta-zarf-kutu:hover{
+  transform:translateY(-4px) scale(1.03);
+  box-shadow:0 24px 50px -8px rgba(0,0,0,.7);
+}
+.posta-zarf-kutu.acildi{
+  animation:zarfAcilisAnim .6s ease forwards;
+}
+@keyframes zarfAcilisAnim{
+  0%{transform:scale(1)}
+  40%{transform:scale(1.1) rotate(-3deg)}
+  100%{transform:scale(1.02)}
+}
+
+/* Kırmızı Mum Mühür */
+.mum-muhur{
+  width:54px;height:54px;border-radius:50%;
+  background:radial-gradient(circle at 35% 35%, #D64234 0%, #75140C 100%);
+  box-shadow:0 4px 16px rgba(0,0,0,.45), inset 0 2px 3px rgba(255,255,255,.4);
+  border:2px solid rgba(255,215,0,.6);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.5rem;color:#FFF3C4;
+  transition:transform .3s ease;
+}
+.posta-zarf-kutu:hover .mum-muhur{transform:scale(1.12) rotate(6deg)}
+
+/* Açılan Hediye Kartı / İçerik */
+.posta-acilan-icerik{
+  display:none;
+  width:100%;max-width:480px;
+  margin-top:1.8rem;
+  animation:hediyeFirlasin .6s cubic-bezier(.2,1.2,.3,1) forwards;
+}
+.posta-acilan-icerik.aktif{display:flex;flex-direction:column;align-items:center}
+@keyframes hediyeFirlasin{
+  from{opacity:0;transform:translateY(30px) scale(.9)}
+  to{opacity:1;transform:none}
+}
+
+/* Fotoğraf / Resim Hediyesi (Polaroid Kart) */
+.hediye-polaroid{
+  background:#fff;padding:12px 12px 28px;
+  border-radius:8px;box-shadow:0 16px 40px rgba(0,0,0,.35);
+  transform:rotate(-2deg);transition:transform .3s ease;
+  max-width:320px;margin:0 auto;
+}
+.hediye-polaroid:hover{transform:rotate(0) scale(1.04)}
+.hediye-polaroid img{
+  width:100%;max-height:280px;object-fit:cover;
+  border-radius:4px;display:block;
+}
+.hediye-polaroid-alt{
+  font-family:'Dancing Script', cursive;font-size:1.3rem;color:#4A3828;
+  margin-top:.6rem;text-align:center;
+}
+
+/* Link Hediyesi */
+.hediye-link-btn{
+  display:inline-flex;align-items:center;gap:.6rem;
+  padding:1rem 2.2rem;border-radius:999px;
+  background:linear-gradient(135deg, #9C7A3C 0%, #6E4F1A 100%);
+  color:#FFFDF6;font-family:'Karla', sans-serif;font-weight:700;
+  font-size:1.05rem;letter-spacing:.08em;text-transform:uppercase;
+  text-decoration:none;box-shadow:0 12px 30px rgba(110,80,30,.4);
+  transition:transform .2s ease, box-shadow .2s ease;
+}
+.hediye-link-btn:hover{transform:translateY(-3px);box-shadow:0 16px 36px rgba(110,80,30,.6)}
+
+/* Müzik Çalar & Lyrics Ekranı */
+.hediye-muzik-kapsayici{
+  width:100%;
+  background:linear-gradient(145deg, #241D12 0%, #151009 100%);
+  border:1px solid rgba(255,215,0,.35);
+  border-radius:20px;padding:1.4rem 1.2rem;
+  box-shadow:0 16px 40px rgba(0,0,0,.6);
+  color:#FFF;
+}
+.muzik-header{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:1rem;
+}
+.muzik-bilgi-baslik{
+  font-family:'Playfair Display', serif;font-size:1.15rem;color:#FFD700;
+  font-weight:700;
+}
+.muzik-dalgalar{
+  display:flex;align-items:flex-end;gap:3px;height:18px;
+}
+.m-dalga{
+  width:3px;background:#FFD700;border-radius:2px;
+  animation:dalgaAnim 1s ease-in-out infinite alternate;
+}
+.m-dalga:nth-child(1){height:6px;animation-delay:0s}
+.m-dalga:nth-child(2){height:18px;animation-delay:.2s}
+.m-dalga:nth-child(3){height:12px;animation-delay:.4s}
+.m-dalga:nth-child(4){height:16px;animation-delay:.1s}
+@keyframes dalgaAnim{0%{height:4px}100%{height:18px}}
+
+.muzik-player-kontroller{
+  display:flex;align-items:center;justify-content:center;gap:1rem;
+  margin-bottom:1.2rem;
+}
+.muzik-oynat-btn{
+  width:56px;height:56px;border-radius:50%;border:none;
+  background:linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+  color:#241D12;font-size:1.5rem;font-weight:900;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;box-shadow:0 6px 20px rgba(255,215,0,.4);
+  transition:transform .15s ease;
+}
+.muzik-oynat-btn:active{transform:scale(.92)}
+
+/* Müzik Eşliğinde Canlı Lyrics / Şarkı Sözleri */
+.muzik-lyrics-ekrani{
+  max-height:180px;overflow-y:auto;
+  background:rgba(0,0,0,.45);border-radius:12px;
+  padding:1rem;border:1px solid rgba(255,255,255,.1);
+  text-align:center;
+  scrollbar-width:thin;
+}
+.muzik-lyrics-dize{
+  font-family:'Playfair Display', serif;font-style:italic;
+  font-size:1rem;line-height:2;color:#D8CABA;
+  transition:color .3s ease, transform .3s ease;
+}
+.muzik-lyrics-dize.vurgulu{
+  color:#FFD700;font-size:1.15rem;font-weight:700;
+  text-shadow:0 0 12px rgba(255,215,0,.6);
+  transform:scale(1.04);
+}
+
+/* Söz Hediyesi */
+.hediye-soz-kutusu{
+  background:rgba(255,255,255,.9);border-radius:14px;
+  padding:1.4rem 1.6rem;font-family:'Playfair Display', serif;
+  font-style:italic;font-size:1.2rem;line-height:1.7;
+  color:#422F1D;box-shadow:0 12px 30px rgba(0,0,0,.25);
+  border:1px dashed #9C7A3C;
+}
+
+/* Alt Kapanış & Şablonu İncele Butonu */
+.parsomen-kapanis-bar{
+  margin-top:2.5rem;display:flex;flex-direction:column;align-items:center;gap:.8rem;
+}
+.sablonu-gor-btn{
+  border:1px solid #9C7A3C;background:transparent;color:#7A5E2E;
+  padding:.6rem 1.4rem;border-radius:999px;cursor:pointer;
+  font-family:'Karla', sans-serif;font-weight:700;font-size:.84rem;
+  letter-spacing:.1em;text-transform:uppercase;transition:all .2s ease;
+}
+.sablonu-gor-btn:hover{background:#9C7A3C;color:#FFF}

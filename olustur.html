@@ -1515,6 +1515,36 @@ input[type="color"]{
   padding:0;
 }
 
+/* Renk öneri kutularını buton gibi göster */
+.renk-oneri{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:4px;
+  cursor:pointer;
+  width:48px;
+  /* height will adjust based on content */
+  padding:4px;
+  border:1px solid var(--cizgi);
+  border-radius:8px;
+  background-color:var(--kagit2);
+  transition:background-color .2s ease, border-color .2s ease, transform .2s ease;
+}
+.renk-oneri:hover{
+  background-color:var(--kagit3);
+  border-color:var(--altin);
+  transform:translateY(-2px);
+}
+.renk-oneri:active{
+  transform:translateY(0);
+}
+.renk-oneri label{
+  font-family:var(--yazi-govde);
+  font-size:.68rem;
+  color:var(--murekkep);
+  white-space:nowrap;
+}
+
 /* Gece & Neon Temalarda Form & Kart Kontrastı */
 [data-theme="gece"] .form-kart,
 [data-theme="neon"] .form-kart{

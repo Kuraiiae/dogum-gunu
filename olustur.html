@@ -26,6 +26,7 @@
   --yazi-vurgu:'Playfair Display',Georgia,'Times New Roman',serif;
   --yazi-govde:'Karla','Trebuchet MS','Segoe UI',system-ui,sans-serif;
   --yazi-el:'Dancing Script','Segoe Script',cursive;
+  --tkgy-kahve:#8B4513; --tkgy-lacivert:#191970; --tkgy-yesil:#228B22; --tkgy-turuncu:#FFA500;
 }
 
 /* ============ TEMALAR ============ */
@@ -39,6 +40,7 @@
   --secili-bg:#FDF1EA;
   --qr-renk:#A03E22;
   --odak:#C65839; --odak-halka:rgba(198,88,57,.25);
+  --tkgy-kahve:#8B4513; --tkgy-lacivert:#191970; --tkgy-yesil:#228B22; --tkgy-turuncu:#FFA500;
 }
 
 [data-theme="gece"]{
@@ -53,6 +55,7 @@
   --odak:#2EE59D; --odak-halka:rgba(46,229,157,.3);
   --golge:0 16px 38px -20px rgba(0,0,0,.8);
   --golge-kucuk:0 8px 18px -10px rgba(0,0,0,.6);
+  --tkgy-kahve:#8B4513; --tkgy-lacivert:#191970; --tkgy-yesil:#228B22; --tkgy-turuncu:#FFA500;
 }
 
 [data-theme="neon"]{
@@ -846,8 +849,8 @@ body{
   background:#FFFFFF;
   box-shadow:0 12px 36px -12px rgba(0,0,0,.25), 0 0 0 1px rgba(255,255,255,.9);
   margin:0 auto;
-  width:240px;
-  height:240px;
+  width:125px;
+  height:125px;
   box-sizing:border-box;
   transition:all .3s ease;
 }
@@ -1727,6 +1730,24 @@ input::placeholder, textarea::placeholder{
           <div class="alan-group renk-paleti">
             <span class="alan-etiket">Şablon Renkleri</span>
             <div class="renk-secici">
+              <!-- Temalı varsayılan renkler -->
+              <div class="renk-oneri" data-renk="--tkgy-kahve" data-etiket="Kahve">
+                <input type="color" value="#8B4513">
+                <label>Kahve</label>
+              </div>
+              <div class="renk-oneri" data-renk="--tkgy-lacivert" data-etiket="Lacivert">
+                <input type="color" value="#191970">
+                <label>Lacivert</label>
+              </div>
+              <div class="renk-oneri" data-renk="--tkgy-yesil" data-etiket="Yeşil">
+                <input type="color" value="#228B22">
+                <label>Yeşil</label>
+              </div>
+              <div class="renk-oneri" data-renk="--tkgy-turuncu" data-etiket="Turuncu">
+                <input type="color" value="#FFA500">
+                <label>Turuncu</label>
+              </div>
+              <!-- Ekstra şablon renk temaları -->
               <div class="renk-oneri" data-renk="--tkgy-pembe" data-etiket="Pembe">
                 <input type="color" value="#ff6b9d">
                 <label>Pembe</label>
@@ -2394,7 +2415,7 @@ async function qrOlustur() {
   try {
     // Ensure QR code is square by using the smaller dimension of its container
     var container = qrAlan.parentElement; // .qr-kartu
-    var size = 240; // fallback
+    var size = 125; // fallback
     if (container) {
       var w = container.clientWidth || 0;
       var h = container.clientHeight || 0;

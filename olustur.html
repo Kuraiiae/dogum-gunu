@@ -815,7 +815,7 @@ body{
   box-shadow:none;
 }
 
-/* --- QR sahnesi & Karekod Çerçevesi (Ortalı ve İnce Çerçeveli) --- */
+/* --- QR sahnesi & Karekod Çerçevesi (her zaman tam kare) --- */
 .qr-kutu{
   display:flex;
   flex-direction:column;
@@ -837,50 +837,59 @@ body{
   width:100%;
   margin:1.2rem auto;
 }
+/* Kare çerçeve: genişlik ve yükseklik her zaman eşit → QR kare görünür */
 .qr-cerceve{
   position:relative;
-  display:inline-flex;
-  flex-direction:column;
+  display:flex;
   align-items:center;
   justify-content:center;
-  padding:0;
+  width:min(240px,70vw);
+  height:min(240px,70vw);
+  aspect-ratio:1 / 1;
+  padding:12px;
   border:1.5px solid var(--cizgi-koyu);
   border-radius:20px;
   background:#FFFFFF;
   box-shadow:0 12px 36px -12px rgba(0,0,0,.25), 0 0 0 1px rgba(255,255,255,.9);
   margin:0 auto;
-  width:125px;
-  height:125px;
   box-sizing:border-box;
   transition:all .3s ease;
 }
 [data-theme="gece"] .qr-cerceve,
 [data-theme="neon"] .qr-cerceve{
-  background:#141A23;
+  background:#FFFFFF;
   border-color:var(--vurgu);
   box-shadow:0 0 25px -5px var(--vurgu-acik), 0 0 0 1px var(--vurgu);
 }
 .qr-kart{
   position:relative;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  margin:0 auto;
+  display:block;
   width:100%;
   height:100%;
+  aspect-ratio:1 / 1;
+  margin:0;
   background:#FFFFFF;
-  box-sizing: content-box;
+  box-sizing:border-box;
 }
-.qr-kart canvas,
-.qr-kart img{
-  display:block !important;
-  margin:0 auto !important;
+/* Yalnızca TEK QR görünür: görünen kopya kare kutuyu tam doldurur */
+.qr-kart img,
+.qr-kart canvas{
+  display:block;
+  margin:0 auto;
   border-radius:0;
-  width:100% !important;
-  height:100% !important;
+  width:100%;
+  height:100%;
+  aspect-ratio:1 / 1;
+  object-fit:contain;
+  background:#FFFFFF;
 }
-.qr-yukleniyor{display:none;flex-direction:column;align-items:center;justify-content:center;gap:.9rem;
-  padding:4.4rem 1rem;color:var(--murekkep-acik);font-family:var(--yazi-govde);font-weight:500;font-size:.9rem;margin:0 auto}
+.qr-yukleniyor{display:none;flex-direction:column;align-items:center;justify-content:center;gap:.55rem;
+  padding:.8rem;color:var(--murekkep-acik);font-family:var(--yazi-govde);font-weight:500;
+  font-size:.74rem;line-height:1.35;text-align:center;margin:0 auto}
+.qr-yukleniyor::before{content:"";width:24px;height:24px;border-radius:50%;
+  border:3px solid var(--altin-soluk);border-top-color:var(--altin);animation:don 1s linear infinite}
+[data-theme="gece"] .qr-yukleniyor,
+[data-theme="neon"] .qr-yukleniyor{color:#6B5744}
 .qr-yukleniyor::before{content:"";width:40px;height:40px;border-radius:50%;
   border:4px solid var(--altin-soluk);border-top-color:var(--altin);animation:don 1s linear infinite}
 @keyframes don{to{transform:rotate(360deg)}}
@@ -1515,50 +1524,81 @@ input[type="color"]{
   padding:0;
 }
 
-/* Renk öneri kutularını buton gibi göster */
+/* --- Şablon Renkleri: her sırada 2 buton, sayfanın buton diliyle uyumlu --- */
+.renk-secici{
+  display:grid;
+  grid-template-columns:repeat(2, minmax(0,1fr));
+  gap:.6rem;
+  width:100%;
+}
 .renk-oneri{
   display:flex;
-  flex-direction:column;
   align-items:center;
-  gap:2px;
-  min-height:36px;
-  padding:.3rem .6rem;
+  gap:.55rem;
+  min-width:0;
+  min-height:48px;
+  padding:.5rem .85rem;
   border-radius:999px;
   border:1px solid var(--cizgi);
   background:transparent;
-  color:var(--murekkep-acik);
+  color:var(--murekkep);
   cursor:pointer;
-  transition:background-color .2s ease, color .2s ease, border-color .2s ease, transform .2s ease;
+  font-family:var(--yazi-govde);
+  font-weight:700;
+  font-size:.78rem;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  text-align:left;
+  touch-action:manipulation;
+  transition:background .25s, color .25s, border-color .25s, transform .15s, box-shadow .25s;
 }
 .renk-oneri:hover{
   background:var(--murekkep);
   color:var(--kagit2);
   border-color:var(--murekkep);
-  transform:translateY(-1px);
+  transform:translateY(-2px);
+  box-shadow:0 4px 12px rgba(75,62,40,.15);
 }
 .renk-oneri:active{
   transform:translateY(0);
+}
+.renk-oneri:focus-visible{
+  outline:3px solid var(--odak);
+  outline-offset:3px;
 }
 .renk-oneri.sekili{
   background:var(--vurgu);
   border-color:var(--vurgu);
   color:#FFFDF6;
+  box-shadow:0 4px 12px -4px rgba(75,62,40,.4);
 }
 .renk-oneri input[type="color"]{
   -webkit-appearance:none;
   appearance:none;
-  width:20px;
-  height:20px;
-  border:none;
-  border-radius:3px;
-  cursor:pointer;
+  flex:0 0 auto;
+  width:22px;
+  height:22px;
   padding:0;
+  border:1px solid var(--cizgi-koyu);
+  border-radius:50%;
+  background:transparent;
+  cursor:pointer;
+  overflow:hidden;
 }
+.renk-oneri:hover input[type="color"]{
+  border-color:var(--kagit2);
+}
+.renk-oneri input[type="color"]::-webkit-color-swatch-wrapper{padding:0}
+.renk-oneri input[type="color"]::-webkit-color-swatch{border:none;border-radius:50%}
+.renk-oneri input[type="color"]::-moz-color-swatch{border:none;border-radius:50%}
 .renk-oneri label{
-  font-family:var(--yazi-govde);
-  font-size:.6rem;
-  color:var(--murekkep);
+  font:inherit;
+  color:inherit;
+  cursor:pointer;
+  min-width:0;
   white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
 }
 
 /* Gece & Neon Temalarda Form & Kart Kontrastı */
@@ -1784,43 +1824,43 @@ input[type="color"]{
           </div>
 
           
-          <!-- Şablon Renkleri -->
+          <!-- Şablon Renkleri (her sırada 2 buton) -->
           <div class="alan-group renk-paleti">
-            <span class="alan-etiket">Şablon Renkleri</span>
-            <div class="renk-secici">
+            <span class="alan-etiket" id="renkPaletiBaslik">Şablon Renkleri</span>
+            <div class="renk-secici" role="group" aria-labelledby="renkPaletiBaslik">
               <!-- Temalı varsayılan renkler -->
-              <div class="renk-oneri" data-renk="--tkgy-kahve" data-etiket="Kahve">
-                <input type="color" value="#8B4513">
-                <label>Kahve</label>
+              <div class="renk-oneri sekili" data-renk="--tkgy-kahve" data-etiket="Kahve" role="button" tabindex="0" aria-pressed="true">
+                <input type="color" id="renkKahve" value="#8B4513" aria-label="Kahve rengini seç">
+                <label for="renkKahve">Kahve</label>
               </div>
-              <div class="renk-oneri" data-renk="--tkgy-lacivert" data-etiket="Lacivert">
-                <input type="color" value="#191970">
-                <label>Lacivert</label>
+              <div class="renk-oneri" data-renk="--tkgy-lacivert" data-etiket="Lacivert" role="button" tabindex="0" aria-pressed="false">
+                <input type="color" id="renkLacivert" value="#191970" aria-label="Lacivert rengini seç">
+                <label for="renkLacivert">Lacivert</label>
               </div>
-              <div class="renk-oneri" data-renk="--tkgy-yesil" data-etiket="Yeşil">
-                <input type="color" value="#228B22">
-                <label>Yeşil</label>
+              <div class="renk-oneri" data-renk="--tkgy-yesil" data-etiket="Yeşil" role="button" tabindex="0" aria-pressed="false">
+                <input type="color" id="renkYesil" value="#228B22" aria-label="Yeşil rengini seç">
+                <label for="renkYesil">Yeşil</label>
               </div>
-              <div class="renk-oneri" data-renk="--tkgy-turuncu" data-etiket="Turuncu">
-                <input type="color" value="#FFA500">
-                <label>Turuncu</label>
+              <div class="renk-oneri" data-renk="--tkgy-turuncu" data-etiket="Turuncu" role="button" tabindex="0" aria-pressed="false">
+                <input type="color" id="renkTuruncu" value="#FFA500" aria-label="Turuncu rengini seç">
+                <label for="renkTuruncu">Turuncu</label>
               </div>
               <!-- Ekstra şablon renk temaları -->
-              <div class="renk-oneri" data-renk="--tkgy-pembe" data-etiket="Pembe">
-                <input type="color" value="#ff6b9d">
-                <label>Pembe</label>
+              <div class="renk-oneri" data-renk="--tkgy-pembe" data-etiket="Pembe" role="button" tabindex="0" aria-pressed="false">
+                <input type="color" id="renkPembe" value="#ff6b9d" aria-label="Pembe rengini seç">
+                <label for="renkPembe">Pembe</label>
               </div>
-              <div class="renk-oneri" data-renk="--tkgy-gul" data-etiket="Gül">
-                <input type="color" value="#ffd93d">
-                <label>Gül</label>
+              <div class="renk-oneri" data-renk="--tkgy-gul" data-etiket="Gül" role="button" tabindex="0" aria-pressed="false">
+                <input type="color" id="renkGul" value="#D98A94" aria-label="Gül rengini seç">
+                <label for="renkGul">Gül</label>
               </div>
-              <div class="renk-oneri" data-renk="--tkgy-mor" data-etiket="Mor">
-                <input type="color" value="#9d4edd">
-                <label>Mor</label>
+              <div class="renk-oneri" data-renk="--tkgy-mor" data-etiket="Mor" role="button" tabindex="0" aria-pressed="false">
+                <input type="color" id="renkMor" value="#9d4edd" aria-label="Mor rengini seç">
+                <label for="renkMor">Mor</label>
               </div>
-              <div class="renk-oneri" data-renk="--tkgy-altin" data-etiket="Altın">
-                <input type="color" value="#ffc700">
-                <label>Altın</label>
+              <div class="renk-oneri" data-renk="--tkgy-altin" data-etiket="Altın" role="button" tabindex="0" aria-pressed="false">
+                <input type="color" id="renkAltin" value="#ffc700" aria-label="Altın rengini seç">
+                <label for="renkAltin">Altın</label>
               </div>
             </div>
           </div>
@@ -2471,24 +2511,35 @@ async function qrOlustur() {
   }
   qrAlan.innerHTML = '';
   try {
-    // Ensure QR code is square by using the smaller dimension of its container
-    var container = qrAlan.parentElement; // .qr-kartu
-    var size = 125; // fallback
-    if (container) {
-      var w = container.clientWidth || 0;
-      var h = container.clientHeight || 0;
-      if (w > 0 && h > 0) {
-        size = Math.min(w, h);
-      }
-    }
+    // QR her zaman KARE: sabit kare çözünürlükte üretilir, CSS onu kare çerçeveye sığdırır.
+    // Yüksek çözünürlük → indirilen PNG net olur.
+    var qrCozunurluk = 512;
     new QRCode(qrAlan, {
       text: url,
-      width: size,
-      height: size,
+      width: qrCozunurluk,
+      height: qrCozunurluk,
       colorDark: '#000000',
       colorLight: '#ffffff',
       correctLevel: QRCode.CorrectLevel.H
     });
+    // Kütüphane QR görselini (img) ASENKRON üretir: hem canvas hem img eklenir.
+    // Veri adresi hazır olunca kanvas kopyasını gizle → yalnızca TEK kare QR görünür.
+    var qrImg = qrAlan.querySelector('img');
+    var qrCnv = qrAlan.querySelector('canvas');
+    function tekQr() {
+      if (qrImg && qrImg.getAttribute('src')) {
+        if (qrCnv) { qrCnv.style.display = 'none'; }
+        return true;
+      }
+      return false;
+    }
+    if (!tekQr()) {
+      if (qrImg) { qrImg.addEventListener('load', tekQr); }
+      var tekQrBekle = setInterval(function () {
+        if (tekQr()) { clearInterval(tekQrBekle); }
+      }, 150);
+      setTimeout(function () { clearInterval(tekQrBekle); }, 5000);
+    }
     qrAlan.classList.remove('bekliyor');
     qrKutu.classList.remove('hata');
     indirBtn.disabled = false;
@@ -3069,28 +3120,30 @@ if (temaBtn) {
 }
 bekleyipOlustur();
 
-// Şablon renk seçimi
+// Şablon renk seçimi (her sırada 2 buton)
 var seciliRenk = '--tkgy-kahve'; // varsayılan
 var renkOnleri = document.querySelectorAll('.renk-oneri');
 function renkSec(renkDegiskeni) {
   seciliRenk = renkDegiskeni;
   renkOnleri.forEach(function(el) {
-    el.classList.remove('sekili');
+    var buRenkMi = el.getAttribute('data-renk') === renkDegiskeni;
+    el.classList.toggle('sekili', buRenkMi);
+    el.setAttribute('aria-pressed', buRenkMi ? 'true' : 'false');
   });
-  // bu elementi bul ve sekili ekle
-  var secili = document.querySelector('.renk-oneri[data-renk="' + renkDegiskeni + '"]');
-  if (secili) {
-    secili.classList.add('sekili');
-  }
 }
-// başlangıçta ilk rengi seç
-renkSec('--tkgy-kahve');
-// tıklama olayları
+// başlangıçta varsayılan rengi seç
+renkSec(seciliRenk);
+// tıklama ve klavye olayları (Enter / Boşluk)
 renkOnleri.forEach(function(el) {
-  el.addEventListener('click', function() {
-    var renk = this.getAttribute('data-renk');
-    if (renk) {
-      renkSec(renk);
+  function buRengiSec() {
+    var renk = el.getAttribute('data-renk');
+    if (renk) { renkSec(renk); }
+  }
+  el.addEventListener('click', buRengiSec);
+  el.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') {
+      e.preventDefault();
+      buRengiSec();
     }
   });
 });

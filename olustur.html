@@ -3069,6 +3069,32 @@ if (temaBtn) {
 }
 bekleyipOlustur();
 
+// Şablon renk seçimi
+var seciliRenk = '--tkgy-kahve'; // varsayılan
+var renkOnleri = document.querySelectorAll('.renk-oneri');
+function renkSec(renkDegiskeni) {
+  seciliRenk = renkDegiskeni;
+  renkOnleri.forEach(function(el) {
+    el.classList.remove('sekili');
+  });
+  // bu elementi bul ve sekili ekle
+  var secili = document.querySelector('.renk-oneri[data-renk="' + renkDegiskeni + '"]');
+  if (secili) {
+    secili.classList.add('sekili');
+  }
+}
+// başlangıçta ilk rengi seç
+renkSec('--tkgy-kahve');
+// tıklama olayları
+renkOnleri.forEach(function(el) {
+  el.addEventListener('click', function() {
+    var renk = this.getAttribute('data-renk');
+    if (renk) {
+      renkSec(renk);
+    }
+  });
+});
+
 // QR Oluştur butonları
 var qrOlusturBtn = document.getElementById('qrOlusturBtn');
 if (qrOlusturBtn) {

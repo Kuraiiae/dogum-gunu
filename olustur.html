@@ -1503,6 +1503,18 @@ input::placeholder, textarea::placeholder{
   opacity:.75 !important;
 }
 
+/* Renk seçici inputlarını buton gibi göster */
+input[type="color"]{
+  -webkit-appearance:none;
+  appearance:none;
+  width:40px;
+  height:40px;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+  padding:0;
+}
+
 /* Gece & Neon Temalarda Form & Kart Kontrastı */
 [data-theme="gece"] .form-kart,
 [data-theme="neon"] .form-kart{

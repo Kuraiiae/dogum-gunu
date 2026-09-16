@@ -1521,22 +1521,38 @@ input[type="color"]{
   flex-direction:column;
   align-items:center;
   gap:4px;
-  cursor:pointer;
-  width:48px;
-  /* height will adjust based on content */
-  padding:4px;
+  min-height:42px;
+  padding:.5rem 1rem;
+  border-radius:999px;
   border:1px solid var(--cizgi);
-  border-radius:8px;
-  background-color:var(--kagit2);
-  transition:background-color .2s ease, border-color .2s ease, transform .2s ease;
+  background:transparent;
+  color:var(--murekkep-acik);
+  cursor:pointer;
+  transition:background-color .2s ease, color .2s ease, border-color .2s ease, transform .2s ease;
 }
 .renk-oneri:hover{
-  background-color:var(--kagit3);
-  border-color:var(--altin);
+  background:var(--murekkep);
+  color:var(--kagit2);
+  border-color:var(--murekkep);
   transform:translateY(-2px);
 }
 .renk-oneri:active{
   transform:translateY(0);
+}
+.renk-oneri.sekili{
+  background:var(--vurgu);
+  border-color:var(--vurgu);
+  color:#FFFDF6;
+}
+.renk-oneri input[type="color"]{
+  -webkit-appearance:none;
+  appearance:none;
+  width:24px;
+  height:24px;
+  border:none;
+  border-radius:4px;
+  cursor:pointer;
+  padding:0;
 }
 .renk-oneri label{
   font-family:var(--yazi-govde);
@@ -2469,8 +2485,8 @@ async function qrOlustur() {
       text: url,
       width: size,
       height: size,
-      colorDark: qrRengi(),
-      colorLight: qrRengiAclik(),
+      colorDark: '#000000',
+      colorLight: '#ffffff',
       correctLevel: QRCode.CorrectLevel.H
     });
     qrAlan.classList.remove('bekliyor');

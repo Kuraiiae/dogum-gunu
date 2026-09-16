@@ -1756,12 +1756,7 @@ input::placeholder, textarea::placeholder{
             <button class="cevir-buton" id="erkekBtn" type="button" aria-pressed="false">⚡ ERKEK</button>
           </div>
 
-          <!-- Seçilen Şablon Göstergesi -->
-          <div class="sablon-gosterge">
-            <span class="sg-etiket">Seçilen Şablon</span>
-            <span class="sg-ad" id="sablonGostAd">🎀 Pastel Balon</span>
-          </div>
-
+          
           <!-- Şablon Renkleri -->
           <div class="alan-group renk-paleti">
             <span class="alan-etiket">Şablon Renkleri</span>
@@ -2561,7 +2556,6 @@ function cinsiyetDegistir(yeni) {
   erkekBtn.setAttribute('aria-pressed', yeni === 'erkek');
   temaUygula();
   notKartlariniOlustur();
-  sablonSecimOlustur();
   onizlemeGuncelle();
   qrYenile(false);
 }

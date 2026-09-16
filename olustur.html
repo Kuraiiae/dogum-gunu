@@ -2392,10 +2392,20 @@ async function qrOlustur() {
   }
   qrAlan.innerHTML = '';
   try {
+    // Ensure QR code is square by using the smaller dimension of its container
+    var container = qrAlan.parentElement; // .qr-kartu
+    var size = 240; // fallback
+    if (container) {
+      var w = container.clientWidth || 0;
+      var h = container.clientHeight || 0;
+      if (w > 0 && h > 0) {
+        size = Math.min(w, h);
+      }
+    }
     new QRCode(qrAlan, {
       text: url,
-      width: 240,
-      height: 240,
+      width: size,
+      height: size,
       colorDark: qrRengi(),
       colorLight: qrRengiAclik(),
       correctLevel: QRCode.CorrectLevel.H

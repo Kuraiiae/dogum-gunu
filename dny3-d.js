@@ -17,9 +17,11 @@ function diziYap(metin){return String(metin||'').split(/\s+/).filter(Boolean);}
 /* mektup: kelime kelime yazılan metin */
 function mektupYazisi(metin){
   if(!notEl){return;}
-  var k=diziYap(metin),h='',i;
-  if(!k.length){notEl.innerHTML='<span class="harf" style="animation-delay:.15s">'+
-    E(EN?'With love…':'(Mektup notu girilmemiş)')+'</span>';return;}
+  var t=String(metin||'').trim();
+  /* 4.2: boş bırakılan not YOK sayılır — mektupta yer kaplamaz */
+  if(!t){notEl.innerHTML='';notEl.style.display='none';return;}
+  notEl.style.display='';
+  var k=diziYap(t),h='',i;
   for(i=0;i<k.length;i++){
     h+='<span class="harf" style="animation-delay:'+(0.25+i*0.055).toFixed(2)+'s">'+E(k[i])+'</span> ';
   }
@@ -27,27 +29,52 @@ function mektupYazisi(metin){
 }
 function imzaYaz(){
   if(!imzaEl){return;}
+  /* 4.2: isim girilmediyse imza da gösterilmez */
+  if(!D.ISIM){imzaEl.innerHTML='';imzaEl.style.display='none';return;}
+  imzaEl.style.display='';
   var em=(D.temaEmoji||[])[0]||'';
   imzaEl.innerHTML='— '+E(D.isimGoster)+' '+(AH?'':('<span class="harf" style="animation-delay:1.1s">'+em+'</span>'));
 }
 /* ---- zarf: kendiliğinden gelir, otomatik açılır ---- */
 function zarfBaslat(){
+  /* 4.2: zarf sayfa açılınca YERİNDE durur; AÇILIŞ SADECE TIKLAMAYLA olur.
+     Hediye yoksa (boş bırakıldıysa) zarf hiç gösterilmez (yok sayılır). */
   temizle();
   acikMi=false;
   if(mektup){mektup.classList.remove('mektup-acik');}
+  var zarfSahneEl=zarfEl?zarfEl.parentNode:null;
+  if(!D.hediyeVar){
+    if(zarfEl){zarfEl.style.display='none';}
+    if(zarfSahneEl&&zarfSahneEl.classList){zarfSahneEl.style.display='none';}
+    var ip=zarfEl?zarfEl.closest('.dny3-sayfa'):null;
+    var ipucu=ip?ip.querySelector('.dny3-zarf-ipucu'):document.querySelector('.dny3-zarf-ipucu');
+    if(ipucu){ipucu.style.display='none';}
+    var kapanis=document.querySelector('.dny3-bos-kapanis');
+    if(kapanis){kapanis.classList.add('gorundu');}
+    if(D.fisekPatlat){D.fisekPatlat(4);}
+    return;
+  }
   if(!zarfEl){mektupAc();return;}
-  zarfEl.classList.remove('acik','geldi');
+  zarfEl.style.display='';
+  if(zarfSahneEl&&zarfSahneEl.classList){zarfSahneEl.style.display='';}
+  zarfEl.classList.remove('acik');
+  /* 4.2: geri gelindiğinde ipucu yeniden görünür */
+  var ipucu0=document.querySelector('.dny3-zarf-ipucu');
+  if(ipucu0){ipucu0.style.display='';ipucu0.style.opacity='';}
   /* mektup metni + imza hazırlanır */
   mektupYazisi(D.NOT2||D.NOT);
   imzaYaz();
   sonra(function(){zarfEl.classList.add('geldi');},180);
-  sonra(function(){zarfiAc();},1900);
+  /* OTOMATİK AÇILIŞ YOK — kullanıcı zarfa dokununca zarfiAc() çağrılır */
 }
 function zarfiAc(){
   if(acikMi){return;}
   acikMi=true;
   if(!zarfEl){mektupAc();return;}
   zarfEl.classList.add('acik');
+  /* 4.2: zarf açıldı → "üstüne dokun" ipucu kaybolur */
+  var ip=document.querySelector('.dny3-zarf-ipucu');
+  if(ip){ip.style.opacity='0';}
   if(!AH&&D.fisekPatlat){D.fisekPatlat(2);}
   sonra(mektupAc,950);
 }
@@ -56,6 +83,7 @@ function mektupAc(){
   mektup.classList.add('mektup-acik');
   if(!AH&&D.fisekPatlat){D.fisekPatlat(2);}
   sonra(muzikDene,900);
+  sonra(videoDene,700);
 }
 D.zarfBaslat=zarfBaslat;D.zarfiAc=zarfiAc;D.mektupAc=mektupAc;
 
@@ -81,8 +109,29 @@ function hediyeKur(){
     hedEl.appendChild(sarmal);
     img.src=deger;
   } else if(tur==='link'){
-    hedEl.innerHTML='<a class="dny3-link-btn" href="'+E(deger)+'" target="_blank" rel="noopener noreferrer">'+
-      E(EN?'Open gift link':'Hediye bağlantısını aç')+' 🔗</a>';
+    /* 4.2: ONIZLEMELI LINK — video/GIF gomulu oynaticiyla otomatik oynar, digerleri kart onizlemesiyle */
+    var LK=String(deger||'').trim();
+    var guvenli=/^https?:\/\//i.test(LK);
+    var videoMu=/\.(mp4|webm|ogg|mov)(\?|#|$)/i.test(LK)||/^https?:\/\/(www\.)?(youtube\.com|youtu\.be|vimeo\.com)\//i.test(LK);
+    var gorselMu=/\.(gif|webp|png|jpe?g)(\?|#|$)/i.test(LK);
+    if(!guvenli){
+      hedEl.innerHTML='<div class="dny3-soz"><div class="dny3-medya-etiket">'+E(EN?'Note':'Not')+'</div>'+E(LK)+'</div>';
+    } else if(videoMu){
+      hedEl.innerHTML='<div class="dny3-onizleme-kart">'+medyaEtiket(EN?'Video gift — auto plays':'Videolu hediye — otomatik oynar')+
+        '<video class="dny3-medya-video" src="'+E(LK)+'" controls playsinline loop muted autoplay preload="metadata"></video>'+
+        '<a class="dny3-link-btn" style="margin-top:.6rem" href="'+E(LK)+'" target="_blank" rel="noopener noreferrer">'+
+        E(EN?'Open in new tab':'Yeni sekmede aç')+' &#128279;</a></div>';
+    } else if(gorselMu){
+      hedEl.innerHTML='<div class="dny3-onizleme-kart">'+medyaEtiket(EN?'Preview':'Önizleme')+
+        '<img src="'+E(LK)+'" alt="'+E(EN?'Gift preview':'Hediye önizleme')+'" loading="lazy">'+
+        '<a class="dny3-link-btn" style="margin-top:.6rem" href="'+E(LK)+'" target="_blank" rel="noopener noreferrer">'+
+        E(EN?'Open gift link':'Hediye bağlantısını aç')+' &#128279;</a></div>';
+    } else {
+      hedEl.innerHTML='<div class="dny3-onizleme-kart">'+medyaEtiket(EN?'Link preview':'Bağlantı önizleme')+
+        '<div class="dny3-link-adres">'+E(LK)+'</div>'+
+        '<a class="dny3-link-btn" style="margin-top:.6rem" href="'+E(LK)+'" target="_blank" rel="noopener noreferrer">'+
+        E(EN?'Open gift link':'Hediye bağlantısını aç')+' &#128279;</a></div>';
+    }
   } else if(tur==='soz'){
     hedEl.innerHTML='<div class="dny3-soz">'+E(deger)+'</div>';
   } else if(tur==='muzik'){
@@ -141,6 +190,18 @@ function sozTakip(){
   var i=Math.floor(an/sure*sozSatirlar.length);
   if(i>=sozSatirlar.length){i=sozSatirlar.length-1;}
   if(i!==sozSayac){sozSayac=i;sozVurgula(i);}
+}
+function videoDene(){
+  /* 4.2: mektuptaki video/GIF önizlemeleri kendiliğinden oynar (sessiz + döngü) */
+  var vids=document.querySelectorAll('#dny3Mektup video');
+  var vi;
+  for(vi=0;vi<vids.length;vi++){
+    try{
+      vids[vi].muted=true;
+      var pr=vids[vi].play();
+      if(pr&&pr.catch){pr.catch(function(){});}
+    }catch(e){}
+  }
 }
 function muzikDene(){
   if(!muzik){return;}

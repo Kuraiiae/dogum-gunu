@@ -10,10 +10,12 @@ var RENK=(qp('renk')||'').trim();
 var GIFT={tur:'none',deger:'',lyric:''};
 var raw=(qp('hediye')||'').trim();
 if(raw){try{var g=JSON.parse(raw);
-if(g&&typeof g==='object'){GIFT.tur=g.t||g.tur||'';GIFT.deger=g.v||g.deger||'';GIFT.lyric=g.l||g.lyric||'';}
+if(g&&typeof g==='object'){GIFT.tur=String(g.t||g.tur||'').toLowerCase();GIFT.deger=String(g.v||g.deger||'').trim();GIFT.lyric=String(g.l||g.lyric||'').trim();
+if(!GIFT.deger){GIFT.tur='none';}}
 }catch(e){var ik=raw.indexOf(':');
 if(ik>0){GIFT.tur=raw.slice(0,ik).toLowerCase();GIFT.deger=raw.slice(ik+1).trim();}
-else{GIFT.deger=raw;GIFT.tur='soz';}}}
+else{GIFT.deger=raw;GIFT.tur='soz';}}
+if(!String(GIFT.deger||'').trim()){GIFT.tur='none';GIFT.deger='';GIFT.lyric='';}}
 var DIL=(qp('dil')||'').toLowerCase();
 if(DIL!=='tr'&&DIL!=='en'){DIL=(navigator.language||'tr').toLowerCase().indexOf('en')===0?'en':'tr';}
 var EN=DIL==='en';
@@ -99,8 +101,9 @@ dizeHtml+='<div class="dny3-dize '+(di%2===0?'soldan':'sagdan')+'" data-i="'+di+
 var muzikSoz=GIFT.lyric||NOT2||'';var sozDizeler=[];
 var sd=muzikSoz.split('\n'),si;
 for(si=0;si<sd.length;si++){if(sd[si].trim()){sozDizeler.push(sd[si].trim());}}
+var hediyeVar=(GIFT.tur&&GIFT.tur!=='none'&&String(GIFT.deger||'').trim())?true:false;
 window.__dny3={ISIM:ISIM,NOT:NOT,NOT2:NOT2,YAS:YAS,RENK:RENK,GIFT:GIFT,EN:EN,dosya:dosya,
  vurgu:vurgu,parlama:parlama,zemin1:AY.z1,zemin2:AY.z2,tema:tema,temaAd:AY.ad,temaEmoji:AY.emoji,
  efekt:AY.efekt,selam:AY.selam,isimGoster:isimGoster,kutlama:kutlama,dizeler:dizeler,
- dizeHtml:dizeHtml,sozDizeler:sozDizeler,esc:esc,kelimele:kelimele,harfle:harfle};
+ dizeHtml:dizeHtml,sozDizeler:sozDizeler,hediyeVar:hediyeVar,esc:esc,kelimele:kelimele,harfle:harfle};
 })();

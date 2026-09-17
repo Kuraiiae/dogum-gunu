@@ -2027,7 +2027,7 @@ input[type="color"]{
             <span class="canli">Canlı</span>
             <div class="telefon-ekran">
               <div class="onizleme-yukle" id="onizlemeYukle"><span>Yükleniyor…</span></div>
-              <iframe class="onizleme-iframe" id="onizlemeIframe" title="Önizleme" loading="lazy"></iframe>
+              <iframe class="onizleme-iframe" id="onizlemeIframe" title="Önizleme" loading="eager"></iframe>
             </div>
             <span class="telefon-isim" id="onizlemeTelefonIsim" style="display:none"></span>
           </div>
@@ -2811,6 +2811,58 @@ function sablonSecimOlustur() {
     })(grup[ki]);
   }
 }
+// --- Önizleme perdesi (Yükleniyor…) — ASLA takılı kalmaz -------------------
+// load olayı kaçsa bile yoklama ile kapanır; iframe hiç yüklenemezse 4 sn sonra kapanır.
+var onizlemePerdeZaman = 0;
+function onizlemePerdeGoster() {
+  var y = document.getElementById('onizlemeYukle');
+  if (!y) { return; }
+  y.style.display = 'flex';
+  y.setAttribute('aria-busy', 'true');
+  onizlemePerdeZaman = Date.now();
+}
+function onizlemePerdeGizle() {
+  var y = document.getElementById('onizlemeYukle');
+  if (!y) { return; }
+  y.style.display = 'none';
+  y.removeAttribute('aria-busy');
+  onizlemePerdeZaman = 0;
+}
+function onizlemeHazirMi() {
+  var f = document.getElementById('onizlemeIframe');
+  if (!f) { return true; }
+  try {
+    var d = f.contentDocument;
+    return !!(d && d.readyState === 'complete' && d.body && d.body.children.length);
+  } catch (e) { return false; }
+}
+function onizlemePerdeBekci() {
+  var y = document.getElementById('onizlemeYukle');
+  if (!y || y.style.display === 'none') { return; }
+  var bitti = onizlemeHazirMi();
+  // Emniyet supabı: 4 sn içinde hazır olmazsa perdeyi kapat
+  if (!bitti && onizlemePerdeZaman && (Date.now() - onizlemePerdeZaman) > 4000) { bitti = true; }
+  if (bitti) { onizlemePerdeGizle(); }
+}
+// Perde gösterildikten hemen sonra çağrılır: anında dener, olmazsa bekçi devralır
+function onizlemePerdeBekle() { onizlemePerdeBekci(); }
+// Şablondaki isim yazısını formdaki güncel isimle eşitle
+function onizlemeIsimIsle() {
+  var f = document.getElementById('onizlemeIframe');
+  if (!f) { return; }
+  try {
+    var d = f.contentDocument || f.contentWindow.document;
+    var isimEl = d && d.getElementById('isimYazisi');
+    if (isimEl) { isimEl.textContent = isimInput.value.trim() || ''; }
+  } catch (e) {}
+}
+function onizlemePerdeKur() {
+  var f = document.getElementById('onizlemeIframe');
+  if (f) {
+    f.addEventListener('load', function () { onizlemePerdeGizle(); onizlemeIsimIsle(); });
+  }
+  setInterval(onizlemePerdeBekci, 300);
+}
 function onizlemeIframeKur(dosya) {
   var ifr = document.getElementById('onizlemeIframe');
   var st = sablonBul(dosya);
@@ -2827,23 +2879,12 @@ function onizlemeIframeKur(dosya) {
   if (typeof seciliRenkHex === 'function') { yeniSrc += '&renk=' + seciliRenkHex(); }
   var not2c = seciliIkinciNot();
   if (not2c) { yeniSrc += '&not2=' + encodeURIComponent(not2c); }
+  if (ifr.getAttribute('src') === yeniSrc) { onizlemePerdeGizle(); return; }
+  onizlemePerdeGoster();
   ifr.src = yeniSrc;
   ifr.title = st ? st.ad : 'Önizleme';
   onizleLinkiGuncelle();
-
-  // Wait for iframe to load and then set the name
-  ifr.onload = function() {
-    try {
-      var doc = ifr.contentDocument || ifr.contentWindow.document;
-      var isimEl = doc.getElementById('isimYazisi');
-      if (isimEl) {
-        // Set the name to the current input or empty if not provided
-        isimEl.textContent = curIsim || ''; // If empty, set to empty string
-      }
-    } catch (e) {
-      // Cross-origin error or other issue; ignore
-    }
-  };
+  onizlemePerdeBekle();
 }
 // Butona tıklanan şablonu AYRI OLUŞTURMA SAYFASINDA aç (seçili şablon + QR hedefiyle)
 function sablonButonTikla(buton) {
@@ -3185,6 +3226,7 @@ galeriyiGuncelle();
 notKartlariniOlustur();
 sablonParamUygula();
 onizlemeModuKur();
+onizlemePerdeKur();
 onizlemeIframeKur(seciliDosya || dosyaAdiBul(cinsiyet, suAnkiYas));
 sablonSecimOlustur();
 onizlemeGuncelle();

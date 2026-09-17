@@ -13,6 +13,10 @@
   -webkit-overflow-scrolling:touch;overscroll-behavior:contain}
 .dny3-sahne *{box-sizing:border-box}
 .dny3-sahne.dny3-serbest{scroll-snap-type:none}
+.dny3-sahne{scrollbar-width:none}
+.dny3-sahne::-webkit-scrollbar{display:none}
+.dny3-sahne.kilitli{overflow:hidden}
+.gizli-sayfa{display:none !important}
 .dny3-gokyuzu{position:fixed;inset:0;z-index:1;pointer-events:none;transition:opacity .8s ease}
 .dny3-emojiler{position:fixed;inset:0;z-index:2;pointer-events:none;overflow:hidden}
 .dny3-emojiler span{position:absolute;bottom:-12vh;font-size:1.5rem;opacity:0;
@@ -254,4 +258,93 @@
   .dny3-emojiler span,.dny3-kaydir .ok,.dny3-dalga span,.dny3-kalpbuyu,
   .dny3-final .buyuk,.dny3-oynat,.dny3-rozet i{animation:none}
   .dny3-sahne{scroll-behavior:auto}
+}
+
+/* 4.2: kaldirilanlar — adim rozeti, ust/alt bar, oto akis, final, eski kaydir gostergesi */
+.dny3-rozet,.dny3-ustbar,.dny3-altbar,.dny3-oto,.dny3-kaydir,.dny3-final,.dny3-tekrar,.dny3-sablon-link,.dny3-final-sus{display:none !important}
+
+/* ---- 4.2: ilk not kartı (1. sayfada isim + kutlamanın altında) ---- */
+.dny3-ilknot{margin-top:1rem;width:100%;background:linear-gradient(120deg,rgba(0,0,0,.34),rgba(255,255,255,.06));
+  border:1px solid rgba(255,255,255,.14);border-radius:18px;padding:1rem 1.1rem;
+  box-shadow:0 18px 40px -26px rgba(0,0,0,.9)}
+.dny3-ilknot .ilknot-baslik{display:block;font-size:.66rem;font-weight:800;letter-spacing:.24em;
+  text-transform:uppercase;color:var(--dny-vurgu,#FFD700);margin-bottom:.5rem}
+.dny3-ilknot p{font-family:'Playfair Display',Georgia,serif;font-style:italic;
+  font-size:clamp(1.02rem,4.2vw,1.3rem);line-height:1.7;color:#FFF6E2;margin:0}
+/* ---- 4.2: aşağı düğmesi — sayfalar arası TEK geçiş yolu ---- */
+.dny3-asagi{margin-top:1.15rem;display:inline-flex;flex-direction:column;align-items:center;gap:.15rem;
+  border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.07);color:#FFEBAF;
+  border-radius:999px;padding:.65rem 1.6rem;cursor:pointer;
+  font-size:.72rem;font-weight:800;letter-spacing:.26em;text-transform:uppercase;
+  transition:background .3s,transform .2s,box-shadow .3s;
+  animation:dnyAsagiNefes 2.2s ease-in-out infinite}
+.dny3-asagi:hover{background:rgba(255,255,255,.15);transform:translateY(2px)}
+.dny3-asagi .ok{font-size:1.35rem;line-height:1;animation:dnyOk 1.5s ease-in-out infinite}
+@keyframes dnyAsagiNefes{0%,100%{box-shadow:0 0 0 0 var(--dny-parlama,rgba(255,215,0,.35))}50%{box-shadow:0 0 0 9px transparent}}
+/* ---- 4.2: bağlantı önizleme adres satırı ---- */
+.dny3-link-adres{font-size:.8rem;color:#6C5A2E;word-break:break-all;background:#FFFDF4;
+  border:1px dashed rgba(120,92,40,.45);border-radius:10px;padding:.55rem .7rem;margin-bottom:.2rem}
+@media (max-width:420px){
+  .dny3-nokta{width:24px}
+}
+@media (min-width:900px){.dny3-sayfa-ic{max-width:680px}}
+@media (prefers-reduced-motion:reduce){
+  .dny3-isim .hk,.dny3-kutlama .hk,.dny3-dize .dk{opacity:1;transform:none;animation:none}
+  .dny3-kart,.dny3-dize,.dny3-zarf,.dny3-mektup,.dny3-mesaj-bos{opacity:1;transform:none;transition:none;max-height:none}
+  .dny3-emojiler span,.dny3-asagi,.dny3-asagi .ok,.dny3-dalga span,.dny3-kalpbuyu,
+  .dny3-oynat,.dny3-rozet i{animation:none}
+  .dny3-sahne{scroll-behavior:auto}
+}
+
+/* ---- 4.2: hediye boşsa kapanış (zarf yerine) ---- */
+.dny3-bos-kapanis{display:flex;flex-direction:column;align-items:center;gap:.7rem;
+  margin-top:1rem;opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease}
+.dny3-bos-kapanis.gorundu{opacity:1;transform:none}
+.dny3-bos-kapanis .buyuk{font-size:2.6rem;animation:dnyKalp 1.8s ease-in-out infinite}
+
+/* ============================================================
+   4.2 EKLERİ — müzik çalar, mektup ve zarf animasyon zenginleştirme
+   ============================================================ */
+/* Otomatik çalma tarayıcı tarafından engellenirse oynat düğmesi güçlü nabızla uyarır */
+.dny3-oynat.dny3-nabiz{animation:dnyNabiz .95s ease-in-out infinite,
+  dnyNabizGuclu 1.7s ease-out infinite}
+@keyframes dnyNabizGuclu{
+  0%{box-shadow:0 0 0 0 var(--dny-parlama,rgba(255,215,0,.5))}
+  70%{box-shadow:0 0 0 14px rgba(0,0,0,0)}
+  100%{box-shadow:0 0 0 0 rgba(0,0,0,0)}}
+
+/* Zarf mührü: açılmayı beklerken nabız atar (dokunma daveti) */
+.dny3-zarf.geldi:not(.acik) .dny3-zarf-muhur{animation:dnyNabiz 1.9s ease-in-out infinite}
+.dny3-zarf:not(.acik){cursor:pointer}
+.dny3-zarf:not(.acik):hover .dny3-zarf-govde{transform:translateY(-4px)}
+.dny3-zarf-govde{transition:transform .45s cubic-bezier(.2,1.2,.3,1)}
+
+/* Mektup imzası: harf harf belirir */
+.dny3-mektup-imza .harf{display:inline-block;opacity:0}
+.dny3-mektup.mektup-acik .dny3-mektup-imza .harf{
+  animation:dnyHarf .5s cubic-bezier(.2,1.25,.3,1) forwards}
+
+/* Mektup açılınca içerik sırayla yukarı süzülür */
+.dny3-mektup.mektup-acik .dny3-hediye>*{opacity:0;animation:dnySus .6s ease forwards}
+.dny3-mektup.mektup-acik .dny3-hediye>*:nth-child(1){animation-delay:.85s}
+.dny3-mektup.mektup-acik .dny3-hediye>*:nth-child(2){animation-delay:1.1s}
+.dny3-mektup.mektup-acik .dny3-hediye>*:nth-child(3){animation-delay:1.35s}
+.dny3-mektup.mektup-acik .dny3-hediye>*:nth-child(4){animation-delay:1.6s}
+
+/* Şarkı sözü satırı vurgusu biraz daha canlı */
+.dny3-soz-kutu{scroll-behavior:smooth}
+.dny3-soz-satir.aktif{animation:dnySozParla 1.6s ease-out 1}
+@keyframes dnySozParla{
+  0%{box-shadow:0 0 0 0 var(--dny-parlama,rgba(255,215,0,.35))}
+  100%{box-shadow:0 0 0 16px rgba(0,0,0,0)}}
+
+/* Aşağı düğmesi basılma geri bildirimi */
+.dny3-asagi:active{transform:translateY(4px) scale(.97)}
+
+/* Hareket azaltma tercihinde yeni animasyonlar da kapanır */
+@media (prefers-reduced-motion:reduce){
+  .dny3-mektup-imza .harf,
+  .dny3-mektup.mektup-acik .dny3-hediye>*{opacity:1;transform:none;animation:none}
+  .dny3-oynat.dny3-nabiz,
+  .dny3-zarf.geldi:not(.acik) .dny3-zarf-muhur{animation:none}
 }

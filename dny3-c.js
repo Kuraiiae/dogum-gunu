@@ -155,8 +155,8 @@ function animSifirla(kok){
   }
 }
 
-/* ---------- sayfa akışı ---------- */
-var aktif=-1,otoAcik=true,otoZaman=null,dizideZaman=[],sayfaFisekZaman=null;
+/* ---------- sayfa akışı (4.2: SADECE düğme; elle kaydırma kilitli) ---------- */
+var aktif=-1,otoAcik=false,otoZaman=null,dizideZaman=[],sayfaFisekZaman=null;
 function noktaGuncelle(){
   if(!noktalar){return;}
   var i;
@@ -205,15 +205,8 @@ function sureBul(i){
   if(i===2){return 14500;}
   return 0;
 }
-function otoZamanla(){
-  if(otoZaman){clearTimeout(otoZaman);otoZaman=null;}
-  if(!otoAcik||aktif<0||aktif>=sayfalar.length-1){return;}
-  var s=sureBul(aktif);
-  if(!s){return;}
-  otoZaman=setTimeout(function(){
-    if(otoAcik&&aktif<sayfalar.length-1){git(aktif+1);}
-  },s);
-}
+function otoZamanla(){/* 4.2: otomatik geÃ§iÅ YOK */
+  if(otoZaman){clearTimeout(otoZaman);otoZaman=null;}}
 function sayfaEtkinlestir(i){
   var j;
   for(j=0;j<sayfalar.length;j++){sayfalar[j].classList.toggle('gorunur',j===i);}
@@ -234,103 +227,56 @@ function sayfaEtkinlestir(i){
   else if(i===3){fisekPatlat(5);}
   otoZamanla();
 }
+function sonrakiHedef(i){
+  /* 4.2: boş sayfaları atla — 2. not yoksa 1. sayfadan direkt zarfa */
+  var j=i;
+  if(j===1&&!(D.dizeler&&D.dizeler.length)){j=2;}
+  if(j<0){j=0;}
+  if(j>=sayfalar.length){j=sayfalar.length-1;}
+  return j;
+}
 function git(i){
+  i=sonrakiHedef(i);
   if(i<0||i>=sayfalar.length){return;}
   var hedef=sayfalar[i];
   try{hedef.scrollIntoView({behavior:azHareket?'auto':'smooth',block:'start'});}
   catch(e){hedef.scrollIntoView();}
   if(i!==aktif){sayfaEtkinlestir(i);}
 }
-/* kaydırma ile aktif sayfayı algıla (geri besleme döngüsü olmaz) */
-var olcumZaman=null;
-function kaydirmaOldu(){
-  if(olcumZaman){return;}
-  olcumZaman=setTimeout(function(){
-    olcumZaman=null;
-    var idx=aktif,best=1e9,i,d;
-    for(i=0;i<sayfalar.length;i++){
-      d=Math.abs(sayfalar[i].getBoundingClientRect().top);
-      if(d<best){best=d;idx=i;}
-    }
-    if(idx!==aktif){sayfaEtkinlestir(idx);}
-  },120);
-}
-sahne.addEventListener('scroll',kaydirmaOldu,{passive:true});
-
-/* ---------- denetimler ---------- */
-var otoBtn=document.getElementById('dny3Oto');
-if(otoBtn){
-  otoBtn.addEventListener('click',function(){
-    otoAcik=!otoAcik;
-    otoBtn.textContent=otoAcik?(EN?'Auto flow: ON':'Oto akış: Açık'):(EN?'Auto flow: OFF':'Oto akış: Kapalı');
-    otoBtn.setAttribute('aria-pressed',otoAcik?'true':'false');
-    if(otoAcik){otoZamanla();}else if(otoZaman){clearTimeout(otoZaman);otoZaman=null;}
-  });
-}
-if(noktalar){
-  var ni;
-  for(ni=0;ni<noktalar.length;ni++){
-    (function(b){b.addEventListener('click',function(){git(parseInt(b.getAttribute('data-git'),10)||0);});})(noktalar[ni]);
+/* 4.2: scroll kilitli — geçiş SADECE .dny3-asagi düğmeleriyle.
+   (Dokunma/tekerlek/ok sayfa değiştirmez; zarf içindeki mektup kendi içinde kayar.) */
+function kaydirmaKilidi(ev){
+  var t=ev.target;
+  while(t&&t!==sahne){
+    if(t.classList&&(t.classList.contains('dny3-mektup')||t.classList.contains('dny3-soz-kutu'))){return;}
+    t=t.parentNode;
   }
+  ev.preventDefault();
 }
-/* zarf: elle tıklama da çalışır (otomatik açılış D bölümünde) */
+try{sahne.addEventListener('wheel',kaydirmaKilidi,{passive:false});}catch(e){sahne.addEventListener('wheel',kaydirmaKilidi);}
+try{sahne.addEventListener('touchmove',kaydirmaKilidi,{passive:false});}catch(e){sahne.addEventListener('touchmove',kaydirmaKilidi);}
+sahne.classList.add('kilitli');
+var asagiDugmeler=sahne.querySelectorAll('.dny3-asagi');
+var ai;
+for(ai=0;ai<asagiDugmeler.length;ai++){
+  (function(b){
+    b.addEventListener('click',function(){git(parseInt(b.getAttribute('data-git'),10)||0);});
+  })(asagiDugmeler[ai]);
+}
+/* zarf: TIKLA -> animasyonla açılır (açılış ve medya BÖLÜM D'de) */
 var zarfEl=document.getElementById('dny3Zarf');
 if(zarfEl){
   function zarfTik(){
+    if(zarfEl.classList.contains('acik')){return;}
     zarfEl.classList.add('acik');
-    if(typeof D.mektupAc==='function'){D.mektupAc();}
+    if(typeof D.zarfiAc==='function'){D.zarfiAc();}
+    else if(typeof D.mektupAc==='function'){D.mektupAc();}
   }
   zarfEl.addEventListener('click',zarfTik);
   zarfEl.addEventListener('keydown',function(ev){
     if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();zarfTik();}
   });
 }
-/* tekrar izle */
-var tekrarBtn=document.getElementById('dny3Tekrar');
-if(tekrarBtn){
-  tekrarBtn.addEventListener('click',function(){
-    if(typeof D.muzikDurdur==='function'){D.muzikDurdur();}
-    if(typeof D.zarfSifirla==='function'){D.zarfSifirla();}
-    var i;
-    for(i=0;i<sayfalar.length;i++){sayfalar[i].classList.remove('gorunur');animSifirla(sayfalar[i]);}
-    var dz=document.querySelectorAll('.dny3-dize');
-    for(i=0;i<dz.length;i++){dz[i].classList.remove('gorundu','vurgulu');}
-    var sayac=document.getElementById('dny3Sayac');
-    if(sayac){sayac.textContent='0/'+dz.length;}
-    aktif=-1;
-    try{sahne.scrollTo({top:0,behavior:azHareket?'auto':'smooth'});}catch(e){sahne.scrollTop=0;}
-    sayfaEtkinlestir(0);
-  });
-}
-/* bağlantıyı kopyala */
-var paylasBtn=document.getElementById('dny3Paylas');
-if(paylasBtn){
-  paylasBtn.addEventListener('click',function(ev){
-    ev.preventDefault();
-    var t=location.href;
-    function geriBildir(){paylasBtn.textContent=EN?'Link copied!':'Bağlantı kopyalandı!';}
-    try{
-      if(navigator.clipboard&&navigator.clipboard.writeText){
-        navigator.clipboard.writeText(t).then(geriBildir,function(){window.prompt(EN?'Copy this link':'Bu bağlantıyı kopyala',t);});
-      }else{window.prompt(EN?'Copy this link':'Bu bağlantıyı kopyala',t);}
-    }catch(e){window.prompt(EN?'Copy this link':'Bu bağlantıyı kopyala',t);}
-  });
-}
-/* şablon tasarımını gör: sahneyi kapatıp klasik şablona geç */
-var sablonLink=document.getElementById('dny3SablonLink');
-if(sablonLink){
-  var q=new URLSearchParams(location.search);
-  q.set('zarf','0');
-  sablonLink.href=location.pathname+'?'+q.toString();
-}
-/* klavye ile sayfa geçişi */
-document.addEventListener('keydown',function(ev){
-  if(ev.key==='ArrowDown'||ev.key==='PageDown'||ev.key===' '){
-    if(aktif<sayfalar.length-1){ev.preventDefault();git(aktif+1);}
-  }else if(ev.key==='ArrowUp'||ev.key==='PageUp'){
-    if(aktif>0){ev.preventDefault();git(aktif-1);}
-  }
-});
 document.addEventListener('visibilitychange',function(){
   if(document.hidden&&typeof D.muzikDuraklat==='function'&&D.caliyor){D.muzikDuraklat();}
 });

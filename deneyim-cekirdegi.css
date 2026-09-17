@@ -1,0 +1,127 @@
+/* DENEYİM ÇEKİRDEĞİ 3.0 — 4 ADIMLI ANİMASYONLU KARŞILAMA (1/2: sahne+adım1+adım2) */
+.dny3-sahne{position:fixed;inset:0;z-index:100000;overflow-y:auto;overflow-x:hidden;
+  background:radial-gradient(ellipse at 50% 12%,#1a2230 0%,#090c12 62%,#040507 100%);
+  color:#FFFDF4;font-family:'Karla',system-ui,sans-serif;
+  scroll-behavior:smooth;-webkit-overflow-scrolling:touch}
+.dny3-sahne *{box-sizing:border-box}
+.dny3-gokyuzu{position:fixed;inset:0;z-index:1;pointer-events:none}
+.dny3-icerik{position:relative;z-index:10;max-width:620px;margin:0 auto;
+  padding:1.2rem 1rem 6rem;display:flex;flex-direction:column;gap:2.6rem}
+.dny3-adim{display:flex;flex-direction:column;gap:.9rem;scroll-margin-top:1rem}
+.dny3-adim-kart{background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.12);
+  border-radius:26px;padding:1.7rem 1.3rem 1.9rem;box-shadow:0 24px 60px -30px rgba(0,0,0,.8);
+  opacity:0;transform:translateY(46px) scale(.985);
+  transition:opacity .7s ease,transform .7s cubic-bezier(.2,1.1,.3,1)}
+.dny3-adim.gorunur .dny3-adim-kart{opacity:1;transform:none}
+.dny3-adim-no{display:inline-flex;align-items:center;gap:.5rem;font-size:.72rem;font-weight:800;
+  letter-spacing:.28em;text-transform:uppercase;color:var(--dny-vurgu,#FFD700);
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);
+  padding:.4rem .9rem;border-radius:999px;margin-bottom:1rem}
+.dny3-ilerleme{display:flex;align-items:center;gap:.45rem;margin:0 auto}
+.dny3-ilerleme i{width:34px;height:5px;border-radius:999px;background:rgba(255,255,255,.16);
+  overflow:hidden;position:relative;display:block}
+.dny3-ilerleme i::after{content:'';position:absolute;inset:0;border-radius:999px;
+  background:linear-gradient(90deg,var(--dny-vurgu,#FFD700),#fff);
+  transform:scaleX(0);transform-origin:left;transition:transform .6s ease}
+.dny3-ilerleme i.dolu::after{transform:scaleX(1)}
+.dny3-havai-baslik{text-align:center;margin:.4rem 0 .2rem}
+.dny3-isim{font-family:'Playfair Display',Georgia,serif;font-weight:900;
+  font-size:clamp(2.6rem,11vw,4.4rem);line-height:1.04;margin:.4rem 0 .3rem;
+  background:linear-gradient(100deg,#FFF6D6 0%,var(--dny-vurgu,#FFD700) 45%,#fff 90%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 0 26px var(--dny-parlama,rgba(255,215,0,.55)))}
+.dny3-isim .kelime{display:inline-block;opacity:0;
+  transform:translateY(26px) rotate(2deg) scale(.9);
+  animation:kelimeGel .7s cubic-bezier(.2,1.3,.3,1) forwards}
+.dny3-kutlama{font-family:'Playfair Display',Georgia,serif;font-style:italic;font-weight:700;
+  font-size:clamp(1.3rem,5.4vw,2rem);color:#FFF3D6;margin-top:.35rem}
+.dny3-kutlama .kelime{display:inline-block;opacity:0;
+  transform:translateY(18px) scale(.94);
+  animation:kelimeGel .6s cubic-bezier(.2,1.3,.3,1) forwards}
+@keyframes kelimeGel{to{opacity:1;transform:none}}
+.dny3-alt-not{margin-top:.9rem;color:#E8DCC0;font-size:.95rem;
+  letter-spacing:.12em;text-transform:uppercase}
+.dny3-kaydir-isaret{margin:1.3rem auto 0;display:flex;flex-direction:column;
+  align-items:center;gap:.35rem;color:#FFE9A8;font-size:.78rem;
+  letter-spacing:.24em;text-transform:uppercase}
+.dny3-kaydir-isaret .ok{font-size:1.5rem;animation:okZipla 1.4s ease-in-out infinite}
+@keyframes okZipla{0%,100%{transform:translateY(0);opacity:.75}
+  50%{transform:translateY(9px);opacity:1}}
+.dny3-mesaj-liste{display:flex;flex-direction:column;gap:.7rem;margin-top:1rem}
+.dny3-dize{font-family:'Playfair Display',Georgia,serif;font-style:italic;
+  font-size:clamp(1.05rem,4.2vw,1.35rem);line-height:1.75;color:#F3E9CF;
+  background:rgba(0,0,0,.32);border:1px solid rgba(255,255,255,.1);
+  border-radius:14px;padding:.75rem 1.05rem;text-align:center;
+  opacity:0;transform:translateY(22px);
+  transition:opacity .55s ease,transform .55s ease,border-color .3s,color .3s}
+.dny3-adim.gorunur .dny3-dize{opacity:1;transform:none}
+.dny3-dize.vurgulu{color:#FFF;border-color:var(--dny-vurgu,#FFD700);
+  box-shadow:0 0 22px var(--dny-parlama,rgba(255,215,0,.35));transform:scale(1.02)}
+.dny3-mesaj-bos{color:#CBBFA2;font-style:italic;text-align:center}
+.dny3-zarf{position:relative;margin:1rem auto 0;width:min(320px,80vw);cursor:pointer;
+  filter:drop-shadow(0 18px 34px rgba(0,0,0,.55));transition:transform .25s ease}
+.dny3-zarf:hover{transform:translateY(-4px) scale(1.015)}
+.dny3-zarf-govde{position:relative;height:210px;border-radius:18px;overflow:hidden;
+  background:linear-gradient(160deg,#3a2c14 0%,#241a0c 60%,#171006 100%);
+  border:1px solid rgba(255,215,0,.4)}
+.dny3-zarf-kapak{position:absolute;inset:0;z-index:3;transform-origin:top center;
+  background:linear-gradient(165deg,#e9c86f 0%,#b78f35 55%,#7d5c1d 100%);
+  clip-path:polygon(0 0,100% 0,50% 58%);
+  transition:transform .9s cubic-bezier(.3,1.2,.3,1)}
+.dny3-zarf.acik .dny3-zarf-kapak{transform:rotateX(168deg)}
+.dny3-zarf-mektup{position:absolute;left:9%;right:9%;top:16%;bottom:8%;z-index:2;
+  background:linear-gradient(180deg,#FFFDF4,#F5E8C8);border-radius:10px;
+  display:flex;align-items:center;justify-content:center;text-align:center;
+  font-family:'Playfair Display',serif;font-style:italic;color:#5b4418;
+  font-size:1.02rem;line-height:1.6;padding:.9rem;
+  transform:translateY(26%);transition:transform .9s cubic-bezier(.3,1.2,.3,1) .18s}
+.dny3-zarf.acik .dny3-zarf-mektup{transform:translateY(-34%)}
+.dny3-zarf-muhur{position:absolute;left:50%;top:52%;transform:translate(-50%,-50%);
+  z-index:4;width:58px;height:58px;border-radius:50%;
+  background:radial-gradient(circle at 35% 30%,#FFE9A8,#C79A35 70%);
+  display:flex;align-items:center;justify-content:center;font-size:1.5rem;
+  box-shadow:0 6px 18px rgba(0,0,0,.5);transition:opacity .4s,transform .4s}
+.dny3-zarf.acik .dny3-zarf-muhur{opacity:0;transform:translate(-50%,-50%) scale(.4)}
+.dny3-hediye-icerik{margin-top:1.1rem;display:flex;flex-direction:column;gap:.9rem;
+  opacity:0;max-height:0;overflow:hidden;
+  transition:opacity .6s ease,max-height .8s ease}
+.dny3-zarf.acik + .dny3-hediye-icerik{opacity:1;max-height:1200px}
+.dny3-onizleme-kart{background:rgba(0,0,0,.4);border:1px solid rgba(255,255,255,.14);
+  border-radius:16px;padding:1rem;text-align:center}
+.dny3-onizleme-kart img{max-width:100%;border-radius:12px;display:block;margin:0 auto}
+.dny3-muzik-satir{display:flex;align-items:center;gap:.8rem;justify-content:center}
+.dny3-oynat{width:58px;height:58px;border-radius:50%;border:none;cursor:pointer;
+  font-size:1.4rem;background:linear-gradient(135deg,var(--dny-vurgu,#FFD700),#FFA500);
+  color:#241D12;box-shadow:0 8px 22px var(--dny-parlama,rgba(255,215,0,.4))}
+.dny3-dalga{display:flex;align-items:flex-end;gap:3px;height:20px}
+.dny3-dalga span{width:4px;border-radius:2px;background:var(--dny-vurgu,#FFD700);
+  animation:dnyDalga 1s ease-in-out infinite alternate}
+.dny3-dalga span:nth-child(2){animation-delay:.15s}
+.dny3-dalga span:nth-child(3){animation-delay:.3s}
+.dny3-dalga span:nth-child(4){animation-delay:.45s}
+@keyframes dnyDalga{from{height:5px}to{height:20px}}
+.dny3-link-btn{display:inline-block;padding:.95rem 2rem;border-radius:999px;
+  text-decoration:none;background:linear-gradient(135deg,var(--dny-vurgu,#FFD700),#FFA500);
+  color:#241D12;font-weight:800;letter-spacing:.06em}
+.dny3-soz{background:rgba(255,255,255,.92);color:#422F1D;border-radius:14px;
+  padding:1.1rem 1.3rem;font-family:'Playfair Display',serif;font-style:italic;
+  font-size:1.12rem;line-height:1.7}
+.dny3-kapanis{text-align:center;display:flex;flex-direction:column;
+  gap:.9rem;align-items:center}
+.dny3-kapanis .buyuk{font-size:2.6rem}
+.dny3-tekrar{border:1px solid rgba(255,255,255,.3);background:transparent;color:#FFF;
+  border-radius:999px;padding:.8rem 1.8rem;font-weight:800;letter-spacing:.1em;
+  text-transform:uppercase;cursor:pointer}
+.dny3-tekrar:hover{background:rgba(255,255,255,.12)}
+.dny3-sablon-link{color:#FFE9A8;font-size:.85rem}
+.dny3-altbar{position:fixed;left:0;right:0;bottom:0;z-index:20;display:flex;gap:.5rem;
+  justify-content:center;padding:.7rem calc(.8rem + env(safe-area-inset-bottom));
+  background:linear-gradient(0deg,rgba(0,0,0,.75),transparent);pointer-events:none}
+.dny3-altbar a{pointer-events:auto;font-size:.75rem;color:#FFE9A8;text-decoration:none;
+  border:1px solid rgba(255,233,168,.4);border-radius:999px;padding:.45rem .95rem;
+  background:rgba(0,0,0,.45)}
+@media (prefers-reduced-motion:reduce){
+  .dny3-isim .kelime,.dny3-kutlama .kelime{opacity:1;transform:none;animation:none}
+  .dny3-adim-kart{opacity:1;transform:none;transition:none}
+  .dny3-kaydir-isaret .ok,.dny3-dalga span{animation:none}
+}

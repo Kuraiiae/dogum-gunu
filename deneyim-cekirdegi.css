@@ -1,9 +1,10 @@
 /* ============================================================
-   DENEYİM ÇEKİRDEĞİ 4.1 — 4 SAYFALI ANİMASYONLU KARŞILAMA
-   1) Tema efektleri + havai fişek + isim (kelime kelime)
-   2) Kişisel mesaj / sözler (efektli geçişler)
-   3) Hediye zarfı (kendiliğinden gelir + otomatik açılır)
-   4) Final
+   DENEYİM ÇEKİRDEĞİ 4.3 — 3 SAYFALI ANİMASYONLU KARŞILAMA
+   1) Havai fişek + isim + kutlama + ilk not (aşağı düğmesi / ↓)
+   2) Kişisel özel not — boşsa atlanır (aşağı düğmesi / ↓)
+   3) Hediye zarfı (son sayfa da seçilen şablon rengini korur)
+   Geçiş: SADECE aşağı düğmeleri + klavye ok/PageDown-PageUp
+   (fare tekerleği ve dokunma kaydırması kilitli)
    ============================================================ */
 .dny3-sahne{
   position:fixed;inset:0;z-index:100000;overflow-y:auto;overflow-x:hidden;
@@ -52,7 +53,27 @@
   box-shadow:0 0 12px var(--dny-vurgu,#FFD700);animation:dnyNefes 1.7s ease-in-out infinite}
 @keyframes dnyNefes{0%,100%{transform:scale(1);opacity:.85}50%{transform:scale(1.5);opacity:1}}
 
-/* ---- 1. SAYFA: isim + kutlama (kelime kelime) ---- */
+/* ---- 4.3: yön bazlı sinematik kart girişi (ileri: sağdan-alttan, geri: soldan-üstten) ---- */
+.dny3-kart.giris-ileri{animation:dnyGirisIleri .85s cubic-bezier(.19,1.12,.28,1) both}
+.dny3-kart.giris-geri{animation:dnyGirisGeri .85s cubic-bezier(.19,1.12,.28,1) both}
+@keyframes dnyGirisIleri{
+  0%{opacity:0;transform:translate(90px,64px) rotate(1.6deg) scale(.94)}
+  55%{opacity:1;transform:translate(-10px,-7px) rotate(-.4deg) scale(1.012)}
+  100%{opacity:1;transform:none}}
+@keyframes dnyGirisGeri{
+  0%{opacity:0;transform:translate(-90px,-64px) rotate(-1.6deg) scale(.94)}
+  55%{opacity:1;transform:translate(10px,7px) rotate(.4deg) scale(1.012)}
+  100%{opacity:1;transform:none}}
+/* ---- 4.3: geçiş flaşı — sayfa değişiminde vurgu renginde ışık çakar ---- */
+.dny3-flas{position:fixed;inset:0;z-index:60;pointer-events:none;opacity:0;
+  background:radial-gradient(ellipse at 50% 42%,var(--dny-parlama,rgba(255,215,0,.4)) 0%,transparent 62%)}
+.dny3-flas.cak{animation:dnyFlas .55s ease-out 1}
+@keyframes dnyFlas{0%{opacity:0}18%{opacity:1}100%{opacity:0}}
+/* ---- 4.3: klavye ipucu (mobilde gizli) ---- */
+.klavye-ipucu{display:inline-block;margin-top:.55rem;font-size:.68rem;letter-spacing:.14em;
+  text-transform:uppercase;opacity:.55;color:#FFFDF4}
+@media (max-width:640px){.klavye-ipucu{display:none}}
+/* ---- 4.3: 1. sayfa girişi güçlendirme — isim zemini nabız + süs satırı dalgası ---- */
 .dny3-isim{font-family:'Playfair Display',Georgia,serif;font-weight:900;
   font-size:clamp(2.6rem,12vw,4.8rem);line-height:1.08;margin:.7rem 0 .45rem;
   padding:.12em .1em;color:#FFFDF4;

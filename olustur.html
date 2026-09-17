@@ -513,7 +513,7 @@ body{
   font-family:var(--yazi-govde);font-weight:700;font-size:.74rem;cursor:pointer}
 .uretici-sagbolme .sablon-sec.aktif{background:var(--vurgu);border-color:var(--vurgu);color:#FFFDF6}
 #sablonSecim{display:flex;flex-wrap:wrap;gap:.4rem;width:100%}
-/* Önizleme modu: Kart (zarf=0) veya Deneyim (zarf=1, 4 adımlı animasyon) */
+/* Önizleme modu: Kart (zarf=0) veya Deneyim (zarf=1, 3 sayfalık kutlama) */
 .onizleme-mod{display:flex;gap:.25rem;width:100%;padding:.22rem;border-radius:999px;
   background:var(--altin-soluk,rgba(156,122,60,.12));border:1px solid var(--cizgi)}
 .onizleme-mod .om-btn{flex:1 1 0;min-width:0;border:0;background:transparent;border-radius:999px;
@@ -1602,26 +1602,21 @@ input[type="color"]{
   color:#FFFDF6;
   box-shadow:0 4px 12px -4px rgba(75,62,40,.4);
 }
-.renk-oneri input[type="color"]{
-  -webkit-appearance:none;
-  appearance:none;
+/* Sabit renk rozeti — tarayıcı renk paleti YOK */
+.renk-rozet{
   flex:0 0 auto;
   width:22px;
   height:22px;
-  padding:0;
-  border:1px solid var(--cizgi-koyu);
   border-radius:50%;
-  background:transparent;
-  cursor:pointer;
-  overflow:hidden;
+  border:1px solid var(--cizgi-koyu);
+  box-shadow:inset 0 1px 2px rgba(255,255,255,.45), 0 1px 3px rgba(0,0,0,.2);
 }
-.renk-oneri:hover input[type="color"]{
-  border-color:var(--kagit2);
+.renk-oneri:hover .renk-rozet{border-color:var(--kagit2)}
+.renk-oneri.sekili .renk-rozet{
+  border-color:rgba(255,255,255,.8);
+  box-shadow:inset 0 1px 2px rgba(255,255,255,.5), 0 0 0 2px rgba(255,255,255,.35);
 }
-.renk-oneri input[type="color"]::-webkit-color-swatch-wrapper{padding:0}
-.renk-oneri input[type="color"]::-webkit-color-swatch{border:none;border-radius:50%}
-.renk-oneri input[type="color"]::-moz-color-swatch{border:none;border-radius:50%}
-.renk-oneri label{
+.renk-ad{
   font:inherit;
   color:inherit;
   cursor:pointer;
@@ -1861,41 +1856,41 @@ input[type="color"]{
             <span class="sg-ad" id="renkGostAd" style="font-size:.8rem;opacity:.8"></span>
           </div>
 
-          <!-- Şablon Renkleri (her sırada 2 buton; seçilen renk karta + QR bağlantısına işlenir) -->
+          <!-- Şablon Renkleri (her sırada 2 buton; sabit 8 renk — renk paleti açılmaz) -->
           <div class="alan-group renk-paleti">
             <span class="alan-etiket" id="renkPaletiBaslik">Şablon Renkleri</span>
             <div class="renk-secici" role="group" aria-labelledby="renkPaletiBaslik">
               <div class="renk-oneri sekili" data-renk="8B4513" data-etiket="Kahve" role="button" tabindex="0" aria-pressed="true">
-                <input type="color" id="renkKahve" value="#8B4513" aria-label="Kahve rengini seç" tabindex="-1">
-                <label for="renkKahve">Kahve</label>
+                <span class="renk-rozet" style="background:#8B4513" aria-hidden="true"></span>
+                <span class="renk-ad">Kahve</span>
               </div>
               <div class="renk-oneri" data-renk="191970" data-etiket="Lacivert" role="button" tabindex="0" aria-pressed="false">
-                <input type="color" id="renkLacivert" value="#191970" aria-label="Lacivert rengini seç" tabindex="-1">
-                <label for="renkLacivert">Lacivert</label>
+                <span class="renk-rozet" style="background:#191970" aria-hidden="true"></span>
+                <span class="renk-ad">Lacivert</span>
               </div>
               <div class="renk-oneri" data-renk="228B22" data-etiket="Yeşil" role="button" tabindex="0" aria-pressed="false">
-                <input type="color" id="renkYesil" value="#228B22" aria-label="Yeşil rengini seç" tabindex="-1">
-                <label for="renkYesil">Yeşil</label>
+                <span class="renk-rozet" style="background:#228B22" aria-hidden="true"></span>
+                <span class="renk-ad">Yeşil</span>
               </div>
               <div class="renk-oneri" data-renk="FFA500" data-etiket="Turuncu" role="button" tabindex="0" aria-pressed="false">
-                <input type="color" id="renkTuruncu" value="#FFA500" aria-label="Turuncu rengini seç" tabindex="-1">
-                <label for="renkTuruncu">Turuncu</label>
+                <span class="renk-rozet" style="background:#FFA500" aria-hidden="true"></span>
+                <span class="renk-ad">Turuncu</span>
               </div>
               <div class="renk-oneri" data-renk="FF6B9D" data-etiket="Pembe" role="button" tabindex="0" aria-pressed="false">
-                <input type="color" id="renkPembe" value="#ff6b9d" aria-label="Pembe rengini seç" tabindex="-1">
-                <label for="renkPembe">Pembe</label>
+                <span class="renk-rozet" style="background:#FF6B9D" aria-hidden="true"></span>
+                <span class="renk-ad">Pembe</span>
               </div>
               <div class="renk-oneri" data-renk="D98A94" data-etiket="Gül" role="button" tabindex="0" aria-pressed="false">
-                <input type="color" id="renkGul" value="#D98A94" aria-label="Gül rengini seç" tabindex="-1">
-                <label for="renkGul">Gül</label>
+                <span class="renk-rozet" style="background:#D98A94" aria-hidden="true"></span>
+                <span class="renk-ad">Gül</span>
               </div>
               <div class="renk-oneri" data-renk="9D4EDD" data-etiket="Mor" role="button" tabindex="0" aria-pressed="false">
-                <input type="color" id="renkMor" value="#9d4edd" aria-label="Mor rengini seç" tabindex="-1">
-                <label for="renkMor">Mor</label>
+                <span class="renk-rozet" style="background:#9D4EDD" aria-hidden="true"></span>
+                <span class="renk-ad">Mor</span>
               </div>
               <div class="renk-oneri" data-renk="FFC700" data-etiket="Altın" role="button" tabindex="0" aria-pressed="false">
-                <input type="color" id="renkAltin" value="#ffc700" aria-label="Altın rengini seç" tabindex="-1">
-                <label for="renkAltin">Altın</label>
+                <span class="renk-rozet" style="background:#FFC700" aria-hidden="true"></span>
+                <span class="renk-ad">Altın</span>
               </div>
             </div>
           </div>
@@ -2017,7 +2012,7 @@ input[type="color"]{
         <!-- Sağ bölme: telefon önizleme (üretici alanı içinde) -->
         <aside class="uretici-sagbolme" aria-label="Telefon önizleme">
           <span class="sagbolme-baslik">Canlı Önizleme</span>
-          <span class="sagbolme-sablon" id="onizlemeSablonAd">Şablon</span>
+          <span class="sagbolme-sablon" id="onizlemeSablonAd">🎀 Pastel Balon</span>
           <div class="onizleme-mod" role="group" aria-label="Önizleme modu">
             <button type="button" class="om-btn aktif" id="omKart" data-mod="kart" aria-pressed="true">Kart</button>
             <button type="button" class="om-btn" id="omDeneyim" data-mod="deneyim" aria-pressed="false">Deneyim</button>
@@ -2032,7 +2027,7 @@ input[type="color"]{
             <span class="telefon-isim" id="onizlemeTelefonIsim" style="display:none"></span>
           </div>
           <div id="sablonSecim" role="listbox" aria-label="Şablon seç"></div>
-          <p class="sagbolme-ipucu" id="onizlemeIpucu">Kart: şablon tasarımı. Deneyim: QR okutulduğunda açılan 4 adımlı animasyon.</p>
+          <p class="sagbolme-ipucu" id="onizlemeIpucu" data-i18n="onizlemeIpucu">Kart: şablon tasarımı. Deneyim: QR okutulduktan sonra açılan 3 sayfalık kutlama.</p>
           <a class="onizle-link" id="onizleLink" href="#" target="_blank" rel="noopener">Yeni Sekmede Önizle</a>
         </aside>
               </div><!-- /form-kart -->
@@ -2153,6 +2148,7 @@ var I18N = {
     pinEtiket:'🔒 PIN Kilidi (isteğe bağlı)', pinKucuk:'Kartı yalnızca PIN bilen açabilsin',
     pinPh:'4-6 rakam (örn: 2580)', pinYardim:'QR\'ı tarayan kişi kartı açmak için PIN girecek. PIN\'i ayrı kanaldan paylaş.',
     onizleme:'Canlı Önizleme', onizleYeniSekme:'👁️ Yeni Sekmede Önizle', qrOlustur:'🎉 QR Kodu Oluştur', kartOlustur:'Kart oluştur', qrIndir:'⬇️ QR\'ı İndir (PNG)', linkKopyala:'🔗 Linki Kopyala',
+    onizlemeIpucu:'Kart: şablon tasarımı. Deneyim: QR okutulduktan sonra açılan 3 sayfalık kutlama.',
     kartBaslik:'Mutlu Yıllar', dogumGunu:'Doğum Günün Kutlu Olsun', iyikiDogdun:'İyi ki doğdun',
     butonKutla:'🎉 Kutlamayı Başlat', butonTekrar:'🎊 Tekrar Kutla!',
     kopyalandi:'Kopyalandı ✓', qrIpucu:'QR\'ı telefonunla tarat, kartın zarf gibi açılır 🎉',
@@ -2176,6 +2172,7 @@ var I18N = {
     pinEtiket:'🔒 PIN Lock (optional)', pinKucuk:'Only someone with the PIN opens the card',
     pinPh:'4-6 digits (e.g. 2580)', pinYardim:'The person scanning the QR will enter the PIN to open. Share the PIN separately.',
     onizleme:'Live Preview', onizleYeniSekme:'👁️ Preview in New Tab', qrOlustur:'🎉 Generate QR Code', kartOlustur:'Create card', qrIndir:'⬇️ Download QR (PNG)', linkKopyala:'🔗 Copy Link',
+    onizlemeIpucu:'Card: template design. Experience: the 3-page celebration that opens after scanning the QR.',
     kartBaslik:'Happy Birthday', dogumGunu:'Happy Birthday', iyikiDogdun:'So glad you were born',
     butonKutla:'🎉 Start Celebration', butonTekrar:'🎊 Celebrate Again!',
     kopyalandi:'Copied ✓', qrIpucu:'Scan the QR with your phone — the card opens like an envelope 🎉',
@@ -2269,7 +2266,7 @@ var SABLONLAR = [
   {dosya:'dogum-gunu-erkek-genc-oyun.html', cinsiyet:'erkek',  yas:'genc',    ad:'Oyun Odası',     emoji:'🎮', aciklama:'Game over yok, kutlama var',            ozellik:['Retro oyun ikonları','Siber neon','Piksel dokunuşlar']},
   {dosya:'dogum-gunu-erkek-genc-sokak.html',cinsiyet:'erkek',  yas:'genc',    ad:'Sokak Sanatı',   emoji:'🛹', aciklama:'Kaykay ve graffiti kültürü',           ozellik:['Kaykay temaları','Grafiti renkleri','Sokak hızı']},
   // ---- KIZ YETİŞKİN ----
-  {dosya:'dogum-gunu-kiz-yetiskin.html',    cinsiyet:'kiz',    yas:'yetiskin', ad:'Krem & Altın',   emoji:'🌹', aciklama:'Sadelik ve zerafet bir arada',          ozellik:['Zarif krem + altın','Gül yaprakları','Sıcak ve olgun his']},
+  {dosya:'dogum-gunu-kiz-yetiskin.html',    cinsiyet:'kiz',    yas:'yetiskin', ad:'Krem & Altın',   emoji:'🌹', aciklama:'Sadelik ve zarafet bir arada',          ozellik:['Zarif krem + altın','Gül yaprakları','Sıcak ve olgun his']},
   {dosya:'dogum-gunu-kiz-yetiskin-rose.html',cinsiyet:'kiz',   yas:'yetiskin', ad:'Rose Gold',      emoji:'🌹', aciklama:'Pembe altının zarafeti',              ozellik:['Rose tonları','Yumuşak ışık oyunları','Şık tipografi']},
   {dosya:'dogum-gunu-kiz-yetiskin-zumrut.html',cinsiyet:'kiz', yas:'yetiskin', ad:'Zümrüt',        emoji:'💚', aciklama:'Derin yeşilin huzuru',                 ozellik:['Zümrüt yeşili','Altın detaylar','Sakin lüks']},
   {dosya:'dogum-gunu-kiz-yetiskin-gece.html',cinsiyet:'kiz',   yas:'yetiskin', ad:'Yıldızlı Gece',  emoji:'🌙', aciklama:'Gece ve ihtişam bir arada',            ozellik:['Lacivert - altın','Ay & yıldız','Göz alıcı parlaklık']},
@@ -2484,7 +2481,7 @@ function qrRengiAclik() {
 
 // ============ ÖNİZLEME ============
 var onizlemeZamanlayici = null;
-// Önizleme modu: 'kart' -> şablonun kendisi (zarf=0), 'deneyim' -> QR sonrası 4 adımlı sahne (zarf=1)
+// Önizleme modu: 'kart' -> şablonun kendisi (zarf=0), 'deneyim' -> QR sonrası 3 sayfalık sahne (zarf=1)
 var onizlemeModu = 'kart';
 function onizlemeZarfParam() { return onizlemeModu === 'deneyim' ? '1' : '0'; }
 function onizlemeModuKur() {
@@ -3251,12 +3248,17 @@ if (temaBtn) {
 }
 bekleyipOlustur();
 
-// Şablon renk seçimi (her sırada 2 buton; seçilen renk QR + önizlemeye işlenir)
-var seciliRenk = '8B4513'; // varsayılan: Kahve
+// Şablon renk seçimi (her sırada 2 buton; SABİT 8 renk — tarayıcı renk paleti AÇILMAZ)
+var RENK_ANAHTAR = 'dogumgunu-renk';
+var RENK_VARSAYILAN = '8B4513'; // Kahve
+var seciliRenk = RENK_VARSAYILAN;
 var renkOnleri = document.querySelectorAll('.renk-oneri');
-function seciliRenkHex() { return (seciliRenk || '8B4513').replace('#','').toUpperCase(); }
+function renkGecerliMi(hex) { return /^[0-9A-F]{6}$/.test(String(hex || '').replace('#', '').toUpperCase()); }
+function seciliRenkHex() { return (seciliRenk || RENK_VARSAYILAN).replace('#','').toUpperCase(); }
 function renkSec(renkDegiskeni) {
-  seciliRenk = (renkDegiskeni || '8B4513').replace('#','').toUpperCase();
+  var hex = String(renkDegiskeni || '').replace('#','').toUpperCase();
+  if (!renkGecerliMi(hex)) { hex = RENK_VARSAYILAN; }
+  seciliRenk = hex;
   var seciliEtiket = '';
   renkOnleri.forEach(function(el) {
     var buRenkMi = (el.getAttribute('data-renk') || '').toUpperCase() === seciliRenk;
@@ -3266,13 +3268,24 @@ function renkSec(renkDegiskeni) {
   });
   var renkGost = document.getElementById('renkGostAd');
   if (renkGost) { renkGost.textContent = seciliEtiket ? ('● ' + seciliEtiket) : ''; }
+  try { localStorage.setItem(RENK_ANAHTAR, seciliRenk); } catch (e) {}
   if (typeof onizlemeGuncelle === 'function') { onizlemeGuncelle(); }
   if (typeof onizleLinkiGuncelle === 'function') { onizleLinkiGuncelle(); }
   qrYenile(false);
 }
-// başlangıçta varsayılan rengi seç
-renkSec(seciliRenk);
-// tıklama ve klavye olayları (Enter / Boşluk); renk inputu değişince özel rengi al
+// Kayıtlı renk varsa onu, yoksa varsayılanı seç (renk cihazda sabit kalır)
+function renkBaslangicYukle() {
+  var kayitli = '';
+  try { kayitli = (localStorage.getItem(RENK_ANAHTAR) || '').replace('#','').toUpperCase(); } catch (e) {}
+  var listedeMi = false;
+  if (renkGecerliMi(kayitli)) {
+    renkOnleri.forEach(function(el) {
+      if ((el.getAttribute('data-renk') || '').toUpperCase() === kayitli) { listedeMi = true; }
+    });
+  }
+  renkSec(listedeMi ? kayitli : RENK_VARSAYILAN);
+}
+// tıklama + klavye (Enter / Boşluk) — palet açılmaz, seçilen renk sabit kalır
 renkOnleri.forEach(function(el) {
   function buRengiSec() {
     var renk = el.getAttribute('data-renk');
@@ -3285,16 +3298,8 @@ renkOnleri.forEach(function(el) {
       buRengiSec();
     }
   });
-  var picker = el.querySelector('input[type="color"]');
-  if (picker) {
-    picker.addEventListener('input', function() {
-      var hex = (picker.value || '').replace('#','').toUpperCase();
-      el.setAttribute('data-renk', hex);
-      renkSec(hex);
-    });
-    picker.addEventListener('click', function(e) { e.stopPropagation(); });
-  }
 });
+renkBaslangicYukle();
 
 // QR Oluştur butonları
 var qrOlusturBtn = document.getElementById('qrOlusturBtn');

@@ -1,4 +1,4 @@
-/* BÖLÜM A: veri + ŞABLON TEMASI + yardımcılar — Deneyim Çekirdeği 4.1 */
+/* BÖLÜM A: veri + ŞABLON TEMASI + yardımcılar — Deneyim Çekirdeği 4.3 (3 sayfa) */
 (function(){'use strict';
 var P=new URLSearchParams(location.search);
 function qp(k){try{return P.get(k)||'';}catch(e){return '';}}

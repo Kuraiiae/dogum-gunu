@@ -156,7 +156,7 @@ function animSifirla(kok){
 }
 
 /* ---------- sayfa akışı (4.2: SADECE düğme; elle kaydırma kilitli) ---------- */
-var aktif=-1,otoAcik=false,otoZaman=null,dizideZaman=[],sayfaFisekZaman=null;
+var aktif=-1,otoAcik=false,dizideZaman=[],sayfaFisekZaman=null;
 function noktaGuncelle(){
   if(!noktalar){return;}
   var i;
@@ -199,17 +199,23 @@ function dizeBaslat(){
     })(dz[i],i);
   }
 }
-function sureBul(i){
-  if(i===0){return 9600;}
-  if(i===1){return 3300+((D.dizeler.length||1)*1150)+2300;}
-  if(i===2){return 14500;}
-  return 0;
-}
-function otoZamanla(){/* 4.2: otomatik geÃ§iÅ YOK */
-  if(otoZaman){clearTimeout(otoZaman);otoZaman=null;}}
-function sayfaEtkinlestir(i){
+/* ---------- 4.3: olu kod temizligi (sureBul/otoZamanla kaldirildi: otomatik gecis YOK) ---------- */
+function sayfaEtkinlestir(i,yon){
   var j;
   for(j=0;j<sayfalar.length;j++){sayfalar[j].classList.toggle('gorunur',j===i);}
+  /* 4.3: hedef karta yön bazlı sinematik giriş (ileri: sağdan-alttan, geri: soldan-üstten) */
+  var hsayfa=sayfalar[i];
+  if(hsayfa){
+    var kart=hsayfa.querySelector('.dny3-kart');
+    if(kart){
+      kart.classList.remove('giris-ileri','giris-geri');
+      /* animasyonu yeniden tetiklemek için akışı zorla */
+      void kart.offsetWidth;
+      kart.classList.add(yon<0?'giris-geri':'giris-ileri');
+    }
+  }
+  /* 4.3: geçiş flaşı + fişek senkronu */
+  flasCak();
   aktif=i;
   noktaGuncelle();
   /* 1. sayfada ek kutlama: hem girişte hem beklerken fisek yağmuru */
@@ -224,8 +230,24 @@ function sayfaEtkinlestir(i){
   }
   else if(i===1){dizeBaslat();fisekPatlat(1);}
   else if(i===2){if(typeof D.zarfBaslat==='function'){D.zarfBaslat();}}
-  else if(i===3){fisekPatlat(5);}
-  otoZamanla();
+  /* (sayfa 3 dali + oto cagri kaldirildi: iskelet 3 sayfa) */
+}
+/* 4.3: geçiş flaşı — vurgu renginde kısa ışık çakar (hareket azaltmada kapalı) */
+function flasCak(){
+  if(azHareket){return;}
+  var f=document.getElementById('dny3Flas');
+  if(!f){return;}
+  f.classList.remove('cak');
+  void f.offsetWidth;
+  f.classList.add('cak');
+}
+function oncekiHedef(i){
+  /* 4.3: geri dönüşte de boş sayfaları atla — dizeler boşsa 2. sayfadan 0'a */
+  var j=i;
+  if(j===1&&!(D.dizeler&&D.dizeler.length)){j=0;}
+  if(j<0){j=0;}
+  if(j>=sayfalar.length){j=sayfalar.length-1;}
+  return j;
 }
 function sonrakiHedef(i){
   /* 4.2: boş sayfaları atla — 2. not yoksa 1. sayfadan direkt zarfa */
@@ -235,13 +257,23 @@ function sonrakiHedef(i){
   if(j>=sayfalar.length){j=sayfalar.length-1;}
   return j;
 }
-function git(i){
+function git(i,yon){
   i=sonrakiHedef(i);
   if(i<0||i>=sayfalar.length){return;}
   var hedef=sayfalar[i];
   try{hedef.scrollIntoView({behavior:azHareket?'auto':'smooth',block:'start'});}
   catch(e){hedef.scrollIntoView();}
-  if(i!==aktif){sayfaEtkinlestir(i);}
+  if(i!==aktif){sayfaEtkinlestir(i,yon||0);}
+}
+function geri(i){
+  /* 4.3: ↑ ile geri dönüş — boş sayfa atlanır; zarf sayfasından çıkınca müzik durur */
+  i=oncekiHedef(i);
+  if(i<0||i>=sayfalar.length){return;}
+  if(aktif===2&&i!==2&&typeof D.muzikDuraklat==='function'&&D.caliyor){D.muzikDuraklat();}
+  var hedef=sayfalar[i];
+  try{hedef.scrollIntoView({behavior:azHareket?'auto':'smooth',block:'start'});}
+  catch(e){hedef.scrollIntoView();}
+  if(i!==aktif){sayfaEtkinlestir(i,-1);}
 }
 /* 4.2: scroll kilitli — geçiş SADECE .dny3-asagi düğmeleriyle.
    (Dokunma/tekerlek/ok sayfa değiştirmez; zarf içindeki mektup kendi içinde kayar.) */
@@ -260,9 +292,32 @@ var asagiDugmeler=sahne.querySelectorAll('.dny3-asagi');
 var ai;
 for(ai=0;ai<asagiDugmeler.length;ai++){
   (function(b){
-    b.addEventListener('click',function(){git(parseInt(b.getAttribute('data-git'),10)||0);});
+    b.addEventListener('click',function(){git(parseInt(b.getAttribute('data-git'),10)||0,1);});
   })(asagiDugmeler[ai]);
 }
+/* 4.3: klavye ile sayfa geçişi — ↓/PageDown ileri, ↑/PageUp geri.
+   Tekerlek kilitli kalır; yazı alanlarındayken ve PIN ekranı açıkken çalışmaz. */
+function klavyeKur(){
+  document.addEventListener('keydown',function(ev){
+    if(!window.__dny3Aktif){return;}
+    if(window.__dny3PinAcik){return;}
+    var k=ev.key||'';
+    var ileri=(k==='ArrowDown'||k==='PageDown');
+    var gerik=(k==='ArrowUp'||k==='PageUp');
+    if(!ileri&&!gerik){return;}
+    var t=ev.target;
+    if(t&&(t.tagName==='INPUT'||t.tagName==='TEXTAREA'||t.tagName==='SELECT'||t.isContentEditable)){return;}
+    ev.preventDefault();
+    if(ileri){
+      if(aktif===0){git(1,1);}
+      else if(aktif===1){git(2,1);}
+    }else{
+      if(aktif===2){geri(1);}
+      else if(aktif===1){geri(0);}
+    }
+  });
+}
+klavyeKur();
 /* zarf: TIKLA -> animasyonla açılır (açılış ve medya BÖLÜM D'de) */
 var zarfEl=document.getElementById('dny3Zarf');
 if(zarfEl){

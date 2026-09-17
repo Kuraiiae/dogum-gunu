@@ -16,6 +16,7 @@ sahne.style.setProperty('--dny-zemin1',D.zemin1);
 sahne.style.setProperty('--dny-zemin2',D.zemin2);
 var i,h='';
 h+='<canvas class="dny3-gokyuzu" id="dny3Sky" aria-hidden="true"></canvas>';
+h+='<div class="dny3-flas" id="dny3Flas" aria-hidden="true"></div>';
 h+='<div class="dny3-emojiler" id="dny3Emoji" aria-hidden="true"></div>';
 
 /* ============ 1. SAYFA: fişek + isim + kutlama + İLK NOT ============ */
@@ -32,6 +33,7 @@ if(D.NOT){
   h+='<div class="dny3-altnot">'+E(D.selam||'')+'</div>';
 }
 h+='<button class="dny3-asagi" type="button" data-git="1" aria-label="'+(EN?'Go down':'Aşağı in')+'"><span class="asagi-met">'+(EN?'Down':'Aşağı')+'</span><span class="ok">&#8964;</span></button>';
+h+='<span class="klavye-ipucu" aria-hidden="true">'+(EN?'↓ ↑ keys work too':'↓ ↑ tuşlarıyla da geçebilirsin')+'</span>';
 h+='</div></div></section>';
 
 /* ============ 2. SAYFA: KİŞİSEL ÖZEL NOT (boşsa atlanır) ============ */
@@ -40,6 +42,7 @@ h+='<h2 class="dny3-baslik">'+(EN?'A Few Words Just For You':'Sana Özel Birkaç
 h+='<div class="dny3-mesaj" id="dny3Mesaj">'+D.dizeHtml+'</div>';
 h+='<div class="dny3-dize-sayac" aria-hidden="true"><span>'+(EN?'Lines':'Dize')+'</span><b id="dny3Sayac">0/'+D.dizeler.length+'</b></div>';
 h+='<button class="dny3-asagi" type="button" data-git="2" aria-label="'+(EN?'Go to the gift':'Hediyeye git')+'"><span class="asagi-met">'+(EN?'Your gift':'Hediyen')+'</span><span class="ok">&#8964;</span></button>';
+h+='<span class="klavye-ipucu" aria-hidden="true">'+(EN?'↓ ↑ keys work too':'↓ ↑ tuşlarıyla da geçebilirsin')+'</span>';
 h+='</div></div></section>';
 window.__dny3.__h=h;window.__dny3.__em=em;
 
@@ -60,7 +63,7 @@ h+='<div class="dny3-hediye" id="dny3Hediye"></div>';
 h+='</div>';
 if(!D.hediyeVar){
   h+='<div class="dny3-bos-kapanis"><div class="buyuk">&#127874;</div>';
-  h+='<div class="dny3-kutlama">'+D.kelimele(EN?'Happy Birthday!':'Nice mutlu yillara!',0.25,0.12)+'</div>';
+  h+='<div class="dny3-kutlama">'+D.kelimele(EN?'Happy Birthday!':'Nice mutlu yıllara!',0.25,0.12)+'</div>';
   h+='<div class="dny3-altnot">'+E(D.selam||'')+'</div></div>';
 }
 h+='</div></div></section>';

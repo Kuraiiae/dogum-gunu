@@ -400,16 +400,9 @@ body{
   .telefon{width:200px}
   .telefon iframe{transform:scale(.42)}
 }
-.hazirlaniyor{position:absolute;inset:0;z-index:1;display:flex;flex-direction:column;
-  align-items:center;justify-content:center;gap:.4rem;text-align:center;padding:.75rem;
-  background:linear-gradient(160deg,var(--kagit2) 0%,var(--kagit3) 100%);
-  opacity:0;transition:opacity .35s ease;pointer-events:none}
-.hazirlaniyor.aktif{opacity:1}
+/* Galeri kartı: iframe anında görünür (bekleme katmanı yok) */
+.hazirlaniyor{display:none !important}
 .telefon iframe{position:absolute;top:0;left:0;border:0;width:100%;height:100%;z-index:2;background:#fff}
-.hazirlaniyor .hz-sus{color:var(--altin);font-size:1.1rem;line-height:1}
-.hazirlaniyor .hz-metin{font-family:var(--yazi-vurgu);font-style:italic;font-size:.85rem;color:var(--murekkep-acik)}
-.hazirlaniyor .hz-kucuk{font-family:var(--yazi-govde);font-size:.68rem;letter-spacing:.08em;
-  color:var(--murekkep-acik);opacity:.75}
 .canli{position:absolute;top:.6rem;left:.6rem;z-index:2;display:flex;align-items:center;gap:.35rem;
   background:rgba(255,253,246,.94);color:#3E6B4B;border:1px solid rgba(62,107,75,.3);
   border-radius:999px;padding:.26rem .62rem;font-size:.62rem;font-weight:700;letter-spacing:.12em;
@@ -748,21 +741,8 @@ body{
   border-radius:18px;
 }
 
-/* Ekran Yükleniyor Göstergesi */
-.onizleme-yukle{
-  position:absolute;inset:0;z-index:8;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.5rem;
-  background:var(--kagit2);color:var(--murekkep-acik);font-family:var(--yazi-govde);
-  font-size:.75rem;font-weight:500;text-align:center;padding:.9rem;
-  border-radius:18px;
-}
-.onizleme-yukle::before{
-  content:"";width:24px;height:24px;border-radius:50%;
-  border:2px solid var(--altin-soluk);border-top-color:var(--altin);
-  animation:don 1s linear infinite;
-}
-.onizleme-yukle.gizli{display:none}
-.onizleme-yukle.hata::before{display:none}
+/* Üretici telefon önizlemesi: anında kart (perde/spinner yok) */
+.onizleme-yukle{display:none !important}
 .butonlar{display:grid;grid-template-columns:1fr 1fr;gap:.7rem}
 /* --- Butonlar --- */
 .buton,.buton-bir,.medya-btn,.hediye-btn,.yas-btn,.cevir-buton,.sablon-cta,.qr-olustur-btn,.qr-yenile-btn,.onizle-link{
@@ -916,13 +896,11 @@ body{
 .qr-yukleniyor{display:none;flex-direction:column;align-items:center;justify-content:center;gap:.55rem;
   padding:.8rem;color:var(--murekkep-acik);font-family:var(--yazi-govde);font-weight:500;
   font-size:.74rem;line-height:1.35;text-align:center;margin:0 auto}
-.qr-yukleniyor::before{content:"";width:24px;height:24px;border-radius:50%;
-  border:3px solid var(--altin-soluk);border-top-color:var(--altin);animation:don 1s linear infinite}
 [data-theme="gece"] .qr-yukleniyor,
 [data-theme="neon"] .qr-yukleniyor{color:#6B5744}
-.qr-yukleniyor::before{content:"";width:40px;height:40px;border-radius:50%;
-  border:4px solid var(--altin-soluk);border-top-color:var(--altin);animation:don 1s linear infinite}
-@keyframes don{to{transform:rotate(360deg)}}
+/* Dönen "yükleniyor" göstergesi kaldırıldı: statik QR bekleme çerçevesi */
+.qr-yukleniyor::before{content:"";width:44px;height:44px;border-radius:10px;
+  border:2px dashed var(--cizgi-koyu);background:repeating-linear-gradient(45deg,var(--kagit3) 0 6px,transparent 6px 12px)}
 .qr-hata{display:none;flex-direction:column;align-items:center;gap:.7rem;text-align:center;
   background:var(--kagit2);border:1px dashed var(--cizgi-koyu);border-radius:12px;padding:1.4rem 1rem;
   color:var(--murekkep);font-family:var(--yazi-govde);font-weight:500;font-size:.9rem;line-height:1.5;margin:0 auto}
@@ -2021,7 +1999,6 @@ input[type="color"]{
             <div class="telefon-centik" aria-hidden="true"></div>
             <span class="canli">Canlı</span>
             <div class="telefon-ekran">
-              <div class="onizleme-yukle" id="onizlemeYukle"><span>Yükleniyor…</span></div>
               <iframe class="onizleme-iframe" id="onizlemeIframe" title="Önizleme" loading="eager"></iframe>
             </div>
             <span class="telefon-isim" id="onizlemeTelefonIsim" style="display:none"></span>
@@ -2051,7 +2028,7 @@ input[type="color"]{
           <div class="qr-sahne">
             <div class="qr-cerceve">
               <div class="qr-kart bekliyor" id="qrAlan">
-                <div class="qr-yukleniyor">QR hazırlanıyor...</div>
+                <div class="qr-yukleniyor">QR kodun burada oluşacak — “QR Kodu Oluştur” butonuna bas</div>
               </div>
             </div>
           </div>
@@ -2808,41 +2785,8 @@ function sablonSecimOlustur() {
     })(grup[ki]);
   }
 }
-// --- Önizleme perdesi (Yükleniyor…) — ASLA takılı kalmaz -------------------
-// load olayı kaçsa bile yoklama ile kapanır; iframe hiç yüklenemezse 4 sn sonra kapanır.
-var onizlemePerdeZaman = 0;
-function onizlemePerdeGoster() {
-  var y = document.getElementById('onizlemeYukle');
-  if (!y) { return; }
-  y.style.display = 'flex';
-  y.setAttribute('aria-busy', 'true');
-  onizlemePerdeZaman = Date.now();
-}
-function onizlemePerdeGizle() {
-  var y = document.getElementById('onizlemeYukle');
-  if (!y) { return; }
-  y.style.display = 'none';
-  y.removeAttribute('aria-busy');
-  onizlemePerdeZaman = 0;
-}
-function onizlemeHazirMi() {
-  var f = document.getElementById('onizlemeIframe');
-  if (!f) { return true; }
-  try {
-    var d = f.contentDocument;
-    return !!(d && d.readyState === 'complete' && d.body && d.body.children.length);
-  } catch (e) { return false; }
-}
-function onizlemePerdeBekci() {
-  var y = document.getElementById('onizlemeYukle');
-  if (!y || y.style.display === 'none') { return; }
-  var bitti = onizlemeHazirMi();
-  // Emniyet supabı: 4 sn içinde hazır olmazsa perdeyi kapat
-  if (!bitti && onizlemePerdeZaman && (Date.now() - onizlemePerdeZaman) > 4000) { bitti = true; }
-  if (bitti) { onizlemePerdeGizle(); }
-}
-// Perde gösterildikten hemen sonra çağrılır: anında dener, olmazsa bekçi devralır
-function onizlemePerdeBekle() { onizlemePerdeBekci(); }
+// --- Önizleme: perde/spinner yok — iframe anında kartı gösterir ----------
+// (Eski "Yükleniyor" perdesi ve dönen göstergeler tamamen kaldırıldı.)
 // Şablondaki isim yazısını formdaki güncel isimle eşitle
 function onizlemeIsimIsle() {
   var f = document.getElementById('onizlemeIframe');
@@ -2853,12 +2797,12 @@ function onizlemeIsimIsle() {
     if (isimEl) { isimEl.textContent = isimInput.value.trim() || ''; }
   } catch (e) {}
 }
-function onizlemePerdeKur() {
+// Önizleme iframe'i her yüklendiğinde şablondaki isim yazısını forma eşitle
+function onizlemeHazirKur() {
   var f = document.getElementById('onizlemeIframe');
   if (f) {
-    f.addEventListener('load', function () { onizlemePerdeGizle(); onizlemeIsimIsle(); });
+    f.addEventListener('load', function () { onizlemeIsimIsle(); });
   }
-  setInterval(onizlemePerdeBekci, 300);
 }
 function onizlemeIframeKur(dosya) {
   var ifr = document.getElementById('onizlemeIframe');
@@ -2876,12 +2820,10 @@ function onizlemeIframeKur(dosya) {
   if (typeof seciliRenkHex === 'function') { yeniSrc += '&renk=' + seciliRenkHex(); }
   var not2c = seciliIkinciNot();
   if (not2c) { yeniSrc += '&not2=' + encodeURIComponent(not2c); }
-  if (ifr.getAttribute('src') === yeniSrc) { onizlemePerdeGizle(); return; }
-  onizlemePerdeGoster();
+  if (ifr.getAttribute('src') === yeniSrc) { return; }
   ifr.src = yeniSrc;
   ifr.title = st ? st.ad : 'Önizleme';
   onizleLinkiGuncelle();
-  onizlemePerdeBekle();
 }
 // Butona tıklanan şablonu AYRI OLUŞTURMA SAYFASINDA aç (seçili şablon + QR hedefiyle)
 function sablonButonTikla(buton) {
@@ -2943,7 +2885,6 @@ function galeriyiGuncelle() {
       '<div class="telefon">' +
         '<span class="canli">Canlı</span>' +
         '<iframe src="' + sb.dosya + '?not=' + encodeURIComponent('İyi ki doğdun!') + '&zarf=0" title="' + sb.ad + '" loading="lazy"></iframe>' +
-        '<div class="hazirlaniyor" aria-hidden="true"><span class="hz-sus">✦</span><span class="hz-metin">Yükleniyor…</span></div>' +
         '<span class="telefon-isim">' + sb.emoji + ' ' + sb.ad + '</span>' +
       '</div>' +
       '<div class="sablon-bilgi">' +
@@ -2954,21 +2895,6 @@ function galeriyiGuncelle() {
         '<button class="sablon-cta" type="button">Bu Tasarımı Seç ✨</button>' +
       '</div>';
 
-    // İframe yüklendiğinde 'hazırlanıyor' katmanını kesinlikle kaldır
-    var ifr = art.querySelector('iframe');
-    var hz = art.querySelector('.hazirlaniyor');
-    function hazirGizle() {
-      if (hz) {
-        hz.style.opacity = '0';
-        setTimeout(function () { hz.style.display = 'none'; }, 300);
-      }
-    }
-    if (ifr) {
-      ifr.addEventListener('load', hazirGizle);
-      ifr.addEventListener('error', hazirGizle);
-      setTimeout(hazirGizle, 3000);
-    }
-
     var secBtn = art.querySelector('.sablon-cta');
     secBtn.addEventListener('click', function () {
       sablonDurumuUygula(sb);
@@ -2978,24 +2904,6 @@ function galeriyiGuncelle() {
     izgara.appendChild(art);
   });
 }
-
-// Ana formdaki önizleme iframe'i yüklendiğinde de hazırlanıyor katmanını kaldır
-(function () {
-  var anaIfr = document.getElementById('onizlemeIframe');
-  var anaTelefon = anaIfr ? anaIfr.closest('.telefon-kasa') : null;
-  var anaHazir = anaTelefon ? anaTelefon.querySelector('.hazirlaniyor') : null;
-  function anaGizle() {
-    if (anaHazir) {
-      anaHazir.style.opacity = '0';
-      setTimeout(function () { anaHazir.style.display = 'none'; }, 300);
-    }
-  }
-  if (anaIfr) {
-    anaIfr.addEventListener('load', anaGizle);
-    anaIfr.addEventListener('error', anaGizle);
-    setTimeout(anaGizle, 2500);
-  }
-})();
 
 // --- Yaş input & İkinci not ---
 if (yasInput) {
@@ -3213,6 +3121,13 @@ setTimeout(function () {
   havaiFisekBaslat();
 }, 10000);
 
+// ============ ŞABLON RENGİ DURUMU ============
+// ÖNEMLİ: Önizleme init'ten önce seciliRenkHex() çağırır → bu tanımlar init'ten ÖNCE olmalı.
+var RENK_ANAHTAR = 'dogumgunu-renk';
+var RENK_VARSAYILAN = '8B4513'; // Kahve
+var seciliRenk = RENK_VARSAYILAN;
+var renkOnleri = document.querySelectorAll('.renk-oneri');
+
 // ============ BAŞLANGIÇ ============
 if (location.protocol === 'file:') {
   document.getElementById('qrIpucu').textContent = 'ℹ️ Kart sayfası da QR ile aynı sunucuda olmalı: bu klasörü bir sunucuya yükleyip oradan açmalısın.';
@@ -3223,7 +3138,7 @@ galeriyiGuncelle();
 notKartlariniOlustur();
 sablonParamUygula();
 onizlemeModuKur();
-onizlemePerdeKur();
+onizlemeHazirKur();
 onizlemeIframeKur(seciliDosya || dosyaAdiBul(cinsiyet, suAnkiYas));
 sablonSecimOlustur();
 onizlemeGuncelle();
@@ -3249,12 +3164,12 @@ if (temaBtn) {
 bekleyipOlustur();
 
 // Şablon renk seçimi (her sırada 2 buton; SABİT 8 renk — tarayıcı renk paleti AÇILMAZ)
-var RENK_ANAHTAR = 'dogumgunu-renk';
-var RENK_VARSAYILAN = '8B4513'; // Kahve
-var seciliRenk = RENK_VARSAYILAN;
-var renkOnleri = document.querySelectorAll('.renk-oneri');
+// (RENK_ANAHTAR / RENK_VARSAYILAN / seciliRenk / renkOnleri yukarıda tanımlandı)
 function renkGecerliMi(hex) { return /^[0-9A-F]{6}$/.test(String(hex || '').replace('#', '').toUpperCase()); }
-function seciliRenkHex() { return (seciliRenk || RENK_VARSAYILAN).replace('#','').toUpperCase(); }
+function seciliRenkHex() {
+  var h = String(seciliRenk || RENK_VARSAYILAN || '8B4513').replace('#', '').toUpperCase();
+  return renkGecerliMi(h) ? h : '8B4513';
+}
 function renkSec(renkDegiskeni) {
   var hex = String(renkDegiskeni || '').replace('#','').toUpperCase();
   if (!renkGecerliMi(hex)) { hex = RENK_VARSAYILAN; }

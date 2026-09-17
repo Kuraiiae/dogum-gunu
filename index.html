@@ -444,15 +444,11 @@ body{
   transition:box-shadow .32s ease;}
 .telefon iframe{position:absolute;top:0;left:0;border:0;width:480px;height:1035px;
   transform:scale(.54583);transform-origin:0 0;z-index:2;background:#fff}
-.hazirlaniyor{position:absolute;inset:0;z-index:1;display:flex;flex-direction:column;
-  align-items:center;justify-content:center;gap:.65rem;text-align:center;padding:1rem;
-  background:linear-gradient(160deg,var(--kagit2) 0%,var(--kagit3) 100%);
-  opacity:0;transition:opacity .35s ease;pointer-events:none}
-.hazirlaniyor.aktif{opacity:1}
-.hazirlaniyor .hz-sus{color:var(--altin);font-size:1.25rem;line-height:1}
-.hazirlaniyor .hz-metin{font-family:var(--yazi-vurgu);font-style:italic;font-size:.95rem;color:var(--murekkep-acik)}
-.hazirlaniyor .hz-kucuk{font-family:var(--yazi-govde);font-size:.72rem;letter-spacing:.08em;
-  color:var(--murekkep-acik);opacity:.75}
+/* Galeri kartları: "Yükleniyor…" katmanı tamamen kaldırıldı (iframe anında görünür) */
+.hazirlaniyor{display:none !important}
+/* index.html'de kart üretici formu bulunmaz; script'in çökmemesi için oluşturulan
+   görünmez yer tutucular (sayfa hatası giderme) */
+[data-yer-tutucu]{display:none !important}
 .canli{position:absolute;top:.6rem;left:.6rem;z-index:3;display:flex;align-items:center;gap:.35rem;
   background:rgba(255,253,246,.94);color:#3E6B4B;border:1px solid rgba(62,107,75,.3);
   border-radius:999px;padding:.26rem .62rem;font-size:.62rem;font-weight:700;letter-spacing:.12em;
@@ -648,11 +644,8 @@ body{
   font-family:var(--yazi-govde);font-size:.66rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--murekkep-acik)}
 .onizleme-baslik .ob-sablon{font-family:var(--yazi-vurgu);font-style:normal;font-weight:600;letter-spacing:.02em;
   text-transform:none;font-size:.82rem;color:var(--murekkep);text-align:right}
-.onizleme-yukle{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.6rem;
-  background:#fff;font-family:var(--yazi-govde);font-size:.78rem;color:var(--murekkep-acik);text-align:center;padding:1rem}
-.onizleme-yukle::before{content:"";width:34px;height:34px;border-radius:50%;border:3px solid var(--altin-soluk);border-top-color:var(--altin);animation:don 1s linear infinite}
-.onizleme-yukle.gizli{display:none}
-.onizleme-yukle.hata::before{display:none}
+/* Canlı önizleme perdesi kaldırıldı: dönen "yükleniyor" göstergesi yok */
+.onizleme-yukle{display:none !important}
 .butonlar{display:grid;grid-template-columns:1fr 1fr;gap:.7rem}
 .buton{min-height:56px;border-radius:10px;font-family:var(--yazi-govde);font-weight:700;
   font-size:.82rem;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;
@@ -674,8 +667,9 @@ body{
 .qr-kart canvas{display:block;width:100% !important;height:auto !important;border-radius:6px}
 .qr-yukleniyor{display:none;flex-direction:column;align-items:center;justify-content:center;gap:.9rem;
   padding:4.4rem 1rem;color:var(--murekkep-acik);font-family:var(--yazi-govde);font-weight:500;font-size:.9rem}
-.qr-yukleniyor::before{content:"";width:40px;height:40px;border-radius:50%;
-  border:4px solid var(--altin-soluk);border-top-color:var(--altin);animation:don 1s linear infinite}
+/* Dönen gösterge yok: statik QR bekleme çerçevesi */
+.qr-yukleniyor::before{content:"";width:44px;height:44px;border-radius:10px;
+  border:2px dashed var(--cizgi-koyu);background:repeating-linear-gradient(45deg,var(--kagit3) 0 6px,transparent 6px 12px)}
 @keyframes don{to{transform:rotate(360deg)}}
 .qr-hata{display:none;flex-direction:column;align-items:center;gap:.7rem;text-align:center;
   background:var(--kagit2);border:1px dashed var(--cizgi-koyu);border-radius:12px;padding:1.4rem 1rem;
@@ -997,7 +991,7 @@ var SABLONLAR = [
   {dosya:'dogum-gunu-erkek-genc-oyun.html', cinsiyet:'erkek',  yas:'genc',    ad:'Oyun Odası',     emoji:'🎮', aciklama:'Game over yok, kutlama var',            ozellik:['Retro oyun ikonları','Siber neon','Piksel dokunuşlar']},
   {dosya:'dogum-gunu-erkek-genc-sokak.html',cinsiyet:'erkek',  yas:'genc',    ad:'Sokak Sanatı',   emoji:'🛹', aciklama:'Kaykay ve graffiti kültürü',           ozellik:['Kaykay temaları','Grafiti renkleri','Sokak hızı']},
   // ---- KIZ YETİŞKİN ----
-  {dosya:'dogum-gunu-kiz-yetiskin.html',    cinsiyet:'kiz',    yas:'yetiskin', ad:'Krem & Altın',   emoji:'🌹', aciklama:'Sadelik ve zerafet bir arada',          ozellik:['Zarif krem + altın','Gül yaprakları','Sıcak ve olgun his']},
+  {dosya:'dogum-gunu-kiz-yetiskin.html',    cinsiyet:'kiz',    yas:'yetiskin', ad:'Krem & Altın',   emoji:'🌹', aciklama:'Sadelik ve zarafet bir arada',          ozellik:['Zarif krem + altın','Gül yaprakları','Sıcak ve olgun his']},
   {dosya:'dogum-gunu-kiz-yetiskin-rose.html',cinsiyet:'kiz',   yas:'yetiskin', ad:'Rose Gold',      emoji:'🌹', aciklama:'Pembe altının zarafeti',              ozellik:['Rose tonları','Yumuşak ışık oyunları','Şık tipografi']},
   {dosya:'dogum-gunu-kiz-yetiskin-zumrut.html',cinsiyet:'kiz', yas:'yetiskin', ad:'Zümrüt',        emoji:'💚', aciklama:'Derin yeşilin huzuru',                 ozellik:['Zümrüt yeşili','Altın detaylar','Sakin lüks']},
   {dosya:'dogum-gunu-kiz-yetiskin-gece.html',cinsiyet:'kiz',   yas:'yetiskin', ad:'Yıldızlı Gece',  emoji:'🌙', aciklama:'Gece ve ihtişam bir arada',            ozellik:['Lacivert - altın','Ay & yıldız','Göz alıcı parlaklık']},
@@ -1007,6 +1001,26 @@ var SABLONLAR = [
   {dosya:'dogum-gunu-erkek-yetiskin-orman.html',cinsiyet:'erkek', yas:'yetiskin', ad:'Orman',       emoji:'🌲', aciklama:'Doğanın sade asaleti',                ozellik:['Orman yeşili','Odunsu tonlar','Huzurlu minimalizm']},
   {dosya:'dogum-gunu-erkek-yetiskin-modern.html',cinsiyet:'erkek', yas:'yetiskin', ad:'Modern Siyah',emoji:'🖤', aciklama:'Kontrast ve cesaret',                   ozellik:['Siyah - gri - altın','Geometrik şıklık','Minimal duruş']},
 ];
+
+// ============ GÜVENLİK KATMANI ============
+// index.html bir açılış (galeri) sayfasıdır: kart üretici formu burada YOK.
+// Ortak script form öğelerine bağlanırken çökmesin diye eksik öğeler için
+// görünmez yer tutucular oluşturulur (sessizce çalışır, sayfada görünmez).
+(function () {
+  var IDLER = ['isimInput', 'yasInput', 'ozelNot', 'ozelKutu', 'notKartlari', 'karSayac',
+    'qrAlan', 'qrKutu', 'qrHata', 'qrHataAdres', 'qrIpucu', 'indirBtn', 'kopyalaBtn',
+    'pinAcik', 'pinAlan', 'pinKodu', 'hediyeDeger', 'hediyeYardim',
+    'kizBtn', 'erkekBtn', 'cevir', 'sablonSecim'];
+  for (var i = 0; i < IDLER.length; i++) {
+    if (document.getElementById(IDLER[i])) { continue; }
+    var el = document.createElement('div');
+    el.id = IDLER[i];
+    el.setAttribute('data-yer-tutucu', '');
+    el.setAttribute('aria-hidden', 'true');
+    el.value = '';
+    document.body.appendChild(el);
+  }
+})();
 
 var isimInput  = document.getElementById('isimInput');
 var notKartlari = document.getElementById('notKartlari');
@@ -1168,6 +1182,7 @@ function qrRengi() {
 // ============ ÖNİZLEME ============
 var onizlemeZamanlayici = null;
 function onizlemeGuncelle() {
+  if (!onizleme) { return; } // index.html'de canlı önizleme alanı yok
   var isim = isimInput.value.trim();
   var secilen = sablonBul(seciliDosya) ||
     (function () { for (var x = 0; x < SABLONLAR.length; x++) { if (SABLONLAR[x].cinsiyet === cinsiyet && SABLONLAR[x].yas === suAnkiYas) { return SABLONLAR[x]; } } return null; })();
@@ -1186,8 +1201,6 @@ function onizlemeGuncelle() {
     onizlemeZamanlayici = setTimeout(function () {
       var canli = document.querySelector('#onizleme iframe.onizleme-iframe');
       if (canli && canli.getAttribute('src') !== yeniSrc) {
-        var y = document.querySelector('#onizleme .onizleme-yukle');
-        if (y) { y.classList.remove('gizli'); y.classList.remove('hata'); }
         canli.setAttribute('src', yeniSrc);
       }
     }, 450);
@@ -1333,6 +1346,7 @@ function sablonDurumuUygula(st) {
 }
 function ureticiyeKaydir() {
   var uretici = document.getElementById('uretici');
+  if (!uretici) { return; } // index.html'de üretici bölmesi yok
   var yK = uretici.getBoundingClientRect().top + (window.pageYOffset || document.documentElement.scrollTop) - 66;
   window.scrollTo({ top: Math.max(0, yK), behavior: 'smooth' });
 }
@@ -1408,29 +1422,8 @@ function onizlemeIframeKur(dosya) {
     ifr.className = 'onizleme-iframe';
     ifr.src = dosya + '?isim=' + encodeURIComponent(isimInput.value.trim() || 'İSİM') + '&not=' + encodeURIComponent(seciliNot()) + '&zarf=0&dil=' + (navigator.language.indexOf('en') === 0 ? 'en' : 'tr');
     ifr.title = st ? st.ad : 'Önizleme';
-    var yukle = document.createElement('div');
-    yukle.className = 'onizleme-yukle';
-    yukle.textContent = en ? 'Loading preview…' : 'Önizleme yükleniyor…';
     phone.appendChild(ifr);
-    phone.appendChild(yukle);
     ozn.appendChild(phone);
-
-    ifr.addEventListener('load', (function (iFrame, yElement) {
-      return function () {
-        setTimeout(function () {
-          var gercek = true;
-          try {
-            var belge = iFrame.contentDocument;
-            gercek = !!(belge && belge.body && belge.body.innerHTML.length > 1500);
-          } catch (e) { gercek = true; }
-          if (gercek) { yElement.classList.add('gizli'); }
-          else {
-            yElement.classList.add('hata');
-            yElement.textContent = en ? 'Preview could not load. Check the template file.' : 'Önizleme yüklenemedi. Şablon dosyasını kontrol et.';
-          }
-        }, 150);
-      };
-    })(ifr, yukle));
   }
 }
 // Butona tıklanan şablonu AYRI OLUŞTURMA SAYFASINDA aç (seçili şablon + QR hedefiyle)
@@ -1497,7 +1490,6 @@ function galeriyiGuncelle() {
       '<div class="telefon">' +
         '<span class="canli">Yeni</span>' +
         '<iframe src="' + sb.dosya + '?not=' + encodeURIComponent('Bu kart tamamen animasyonlu! İyi ki doğdun!') + '&zarf=0" title="' + sb.ad + '" loading="lazy"></iframe>' +
-        '<div class="hazirlaniyor" aria-hidden="true"><span class="hz-sus">✦</span><span class="hz-metin">Yükleniyor…</span></div>' +
         '<span class="telefon-isim">' + sb.emoji + ' ' + sb.ad + '</span>' +
       '</div>' +
       '<div class="sablon-bilgi">' +
@@ -1552,45 +1544,7 @@ function galeriLazyBaslat() {
 // Aynı cinsiyet+yaş seçilirse durum değişmez ama üreticiye yine de kaydırılır
 // (cinsiyetDegistir / yasDegistir erken döner, kaydırma her zaman çalışır)
 
-// --- Şablon önizleme: yüklenmeyen (henüz hazır olmayan) dosyalar için yer tutucu ---
-// Not: Chrome, iframe 404'lerinde 'error' değil 'load' olayı fırlatır ve kendi
-// hata sayfasını içeriğe basar. Bu yüzden içeriğin gerçekten kart olup olmadığına
-// bakılır (kart gövdesi binlerce karakter, hata sayfası birkaç yüz).
-var telefonlar = document.querySelectorAll('.telefon');
-for (var t = 0; t < telefonlar.length; t++) {
-  (function (telefon) {
-    var hazir = telefon.querySelector('.hazirlaniyor');
-    var cerceve = telefon.querySelector('iframe');
-    var yuklendiMi = false;
-    function gizle() { yuklendiMi = true; hazir.classList.remove('aktif'); }
-    function goster() { if (!yuklendiMi) { hazir.classList.add('aktif'); } }
-    // Gerçek kart içeriği mi? true=evet, false=hayır(hata sayfası), null=erişilemiyor(file://)
-    function icerikGercekMi() {
-      try {
-        var belge = cerceve.contentDocument;
-        if (!belge || !belge.body) { return false; }
-        return belge.body.innerHTML.length > 1500;
-      } catch (e) { return null; }
-    }
-    function loadSonrasi() {
-      var durum = icerikGercekMi();
-      if (durum === true) { gizle(); }
-      else if (durum === null && location.protocol === 'file:') { gizle(); } // file:// içinde doğrulanamaz, olaya güven
-      else { goster(); } // 404/hata sayfası: "hazırlanıyor" yerinde kalsın
-    }
-    cerceve.addEventListener('load', function () { setTimeout(loadSonrasi, 120); });
-    cerceve.addEventListener('error', goster); // 'error' fırlatan tarayıcılar için
-    // Ne load ne error olduysa bir de süreli kontrolle karar ver
-    setTimeout(function () {
-      if (yuklendiMi) { return; }
-      var durum = icerikGercekMi();
-      if (durum === true) { gizle(); }
-      else if (durum === false) { goster(); }
-    }, 2500);
-    // 400ms sonra hâlâ bilinmiyorsa "hazırlanıyor" görünsün (yüklendiyse loadSonrasi gizler)
-    setTimeout(goster, 400);
-  })(telefonlar[t]);
-}
+// Not: Kart önizlemeleri "Yükleniyor" katmanı olmadan anında gösterilir.
 
 // --- Yaş input & hediye ---
 if (yasInput) {
@@ -1735,7 +1689,6 @@ function galeriyiGuncelle() {
       '<div class="telefon">' +
         '<span class="canli">Canlı</span>' +
         '<iframe src="' + sb.dosya + '?not=' + encodeURIComponent('İyi ki doğdun!') + '&zarf=0" title="' + sb.ad + '" loading="lazy"></iframe>' +
-        '<div class="hazirlaniyor" aria-hidden="true"><span class="hz-sus">✦</span><span class="hz-metin">Yükleniyor…</span></div>' +
         '<span class="telefon-isim">' + sb.emoji + ' ' + sb.ad + '</span>' +
       '</div>' +
       '<div class="sablon-bilgi">' +
@@ -1745,21 +1698,6 @@ function galeriyiGuncelle() {
         '<ul class="ozellikler">' + ozell + '</ul>' +
         '<a class="sablon-cta" href="olustur.html?sablon=' + encodeURIComponent(sb.dosya) + '">Bu Tasarımı Seç ✨</a>' +
       '</div>';
-
-    // İframe yüklendiğinde 'hazırlanıyor' katmanını kesinlikle kaldır
-    var ifr = art.querySelector('iframe');
-    var hz = art.querySelector('.hazirlaniyor');
-    function hazirGizle() {
-      if (hz) {
-        hz.style.opacity = '0';
-        setTimeout(function () { hz.style.display = 'none'; }, 300);
-      }
-    }
-    if (ifr) {
-      ifr.addEventListener('load', hazirGizle);
-      ifr.addEventListener('error', hazirGizle);
-      setTimeout(hazirGizle, 3000);
-    }
 
     izgara.appendChild(art);
   });

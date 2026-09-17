@@ -513,6 +513,17 @@ body{
   font-family:var(--yazi-govde);font-weight:700;font-size:.74rem;cursor:pointer}
 .uretici-sagbolme .sablon-sec.aktif{background:var(--vurgu);border-color:var(--vurgu);color:#FFFDF6}
 #sablonSecim{display:flex;flex-wrap:wrap;gap:.4rem;width:100%}
+/* Önizleme modu: Kart (zarf=0) veya Deneyim (zarf=1, 4 adımlı animasyon) */
+.onizleme-mod{display:flex;gap:.25rem;width:100%;padding:.22rem;border-radius:999px;
+  background:var(--altin-soluk,rgba(156,122,60,.12));border:1px solid var(--cizgi)}
+.onizleme-mod .om-btn{flex:1 1 0;min-width:0;border:0;background:transparent;border-radius:999px;
+  padding:.45rem .35rem;cursor:pointer;color:var(--murekkep-acik);
+  font-family:var(--yazi-govde);font-weight:700;font-size:.66rem;
+  letter-spacing:.1em;text-transform:uppercase;transition:background .25s,color .25s}
+.onizleme-mod .om-btn.aktif{background:var(--vurgu);color:#FFFDF6}
+.onizleme-mod .om-btn:focus-visible{outline:2px solid var(--vurgu);outline-offset:2px}
+.sagbolme-ipucu{font-size:.68rem;line-height:1.5;color:var(--murekkep-acik);text-align:center;
+  font-family:var(--yazi-govde)}
 @media (min-width:900px){
   .form-kart{flex-wrap:nowrap}
   .form-kart > form{flex:1 1 auto}
@@ -2007,6 +2018,10 @@ input[type="color"]{
         <aside class="uretici-sagbolme" aria-label="Telefon önizleme">
           <span class="sagbolme-baslik">Canlı Önizleme</span>
           <span class="sagbolme-sablon" id="onizlemeSablonAd">Şablon</span>
+          <div class="onizleme-mod" role="group" aria-label="Önizleme modu">
+            <button type="button" class="om-btn aktif" id="omKart" data-mod="kart" aria-pressed="true">Kart</button>
+            <button type="button" class="om-btn" id="omDeneyim" data-mod="deneyim" aria-pressed="false">Deneyim</button>
+          </div>
           <div class="telefon-kasa">
             <div class="telefon-centik" aria-hidden="true"></div>
             <span class="canli">Canlı</span>
@@ -2017,6 +2032,7 @@ input[type="color"]{
             <span class="telefon-isim" id="onizlemeTelefonIsim" style="display:none"></span>
           </div>
           <div id="sablonSecim" role="listbox" aria-label="Şablon seç"></div>
+          <p class="sagbolme-ipucu" id="onizlemeIpucu">Kart: şablon tasarımı. Deneyim: QR okutulduğunda açılan 4 adımlı animasyon.</p>
           <a class="onizle-link" id="onizleLink" href="#" target="_blank" rel="noopener">Yeni Sekmede Önizle</a>
         </aside>
               </div><!-- /form-kart -->
@@ -2468,6 +2484,23 @@ function qrRengiAclik() {
 
 // ============ ÖNİZLEME ============
 var onizlemeZamanlayici = null;
+// Önizleme modu: 'kart' -> şablonun kendisi (zarf=0), 'deneyim' -> QR sonrası 4 adımlı sahne (zarf=1)
+var onizlemeModu = 'kart';
+function onizlemeZarfParam() { return onizlemeModu === 'deneyim' ? '1' : '0'; }
+function onizlemeModuKur() {
+  var btnK = document.getElementById('omKart');
+  var btnD = document.getElementById('omDeneyim');
+  function uygula(mod) {
+    if (mod === onizlemeModu) { return; }
+    onizlemeModu = mod;
+    if (btnK) { btnK.classList.toggle('aktif', mod === 'kart'); btnK.setAttribute('aria-pressed', mod === 'kart' ? 'true' : 'false'); }
+    if (btnD) { btnD.classList.toggle('aktif', mod === 'deneyim'); btnD.setAttribute('aria-pressed', mod === 'deneyim' ? 'true' : 'false'); }
+    onizleLinkiGuncelle();
+    onizlemeIframeKur(seciliDosya || dosyaAdiBul(cinsiyet, suAnkiYas));
+  }
+  if (btnK) { btnK.addEventListener('click', function () { uygula('kart'); }); }
+  if (btnD) { btnD.addEventListener('click', function () { uygula('deneyim'); }); }
+}
 
 // "Yeni Sekmede Önizle" linkini güncelle (renk dahil)
 function onizleLinkiGuncelle() {
@@ -2480,7 +2513,7 @@ function onizleLinkiGuncelle() {
   var src = dosya +
     '?isim=' + encodeURIComponent(isim) +
     '&not=' + encodeURIComponent(seciliNot()) +
-    '&zarf=0&dil=' + dil;
+    '&zarf=' + onizlemeZarfParam() + '&dil=' + dil;
   var not2 = seciliIkinciNot();
   if (not2) { src += '&not2=' + encodeURIComponent(not2); }
   if (typeof seciliRenkHex === 'function') { src += '&renk=' + seciliRenkHex(); }
@@ -2521,7 +2554,7 @@ function onizlemeGuncelle() {
   var canli = document.getElementById('onizlemeIframe');
   if (canli) {
     var yeniSrc = dosyaAd + '?not=' + encodeURIComponent(seciliNot()) +
-      '&zarf=0&dil=' + (navigator.language.indexOf('en') === 0 ? 'en' : 'tr');
+      '&zarf=' + onizlemeZarfParam() + '&dil=' + (navigator.language.indexOf('en') === 0 ? 'en' : 'tr');
     if (isim) {
       yeniSrc += '&isim=' + encodeURIComponent(isim);
     }
@@ -2787,7 +2820,7 @@ function onizlemeIframeKur(dosya) {
   }
   if (!ifr) { return; }
   var curIsim = isimInput.value.trim();
-  var yeniSrc = dosya + '?not=' + encodeURIComponent(seciliNot()) + '&zarf=0&dil=' + (navigator.language.indexOf('en') === 0 ? 'en' : 'tr');
+  var yeniSrc = dosya + '?not=' + encodeURIComponent(seciliNot()) + '&zarf=' + onizlemeZarfParam() + '&dil=' + (navigator.language.indexOf('en') === 0 ? 'en' : 'tr');
   if (curIsim) { yeniSrc += '&isim=' + encodeURIComponent(curIsim); }
   var yas = seciliYas();
   if (yas) { yeniSrc += '&yas=' + encodeURIComponent(yas); }
@@ -3151,6 +3184,7 @@ temaUygula();
 galeriyiGuncelle();
 notKartlariniOlustur();
 sablonParamUygula();
+onizlemeModuKur();
 onizlemeIframeKur(seciliDosya || dosyaAdiBul(cinsiyet, suAnkiYas));
 sablonSecimOlustur();
 onizlemeGuncelle();

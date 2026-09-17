@@ -6,6 +6,9 @@
 (function () {
   'use strict';
 
+  // Yeni deneyim çekirdeği (4.1) etkinse eski akış devre dışı kalır
+  if (window.__dny3Aktif) { return; }
+
   var P = new URLSearchParams(location.search);
   function p(key) { try { return P.get(key) || ''; } catch (e) { return ''; } }
 
@@ -62,6 +65,12 @@
   var zarfParam = p('zarf');
   if (zarfParam === '0') {
     return; // Şablonun doğrudan kendisini göster
+  }
+
+  // YENİ NESİL DENEYİM ÇEKİRDEĞİ (dny3-a..d) yüklüyse eski motor devre dışı kalır.
+  // dny3 dosyaları yüklenemezse burası atlanmaz ve eski akış yedek olarak çalışır.
+  if (window.__dny3) {
+    return;
   }
 
   // ====== HAVAİ FİŞEK MOTORU (CANVAS) ======

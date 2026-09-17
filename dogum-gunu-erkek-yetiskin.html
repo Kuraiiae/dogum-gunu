@@ -4,13 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0a1220">
-<title>Doğum Günün Kutlu Olsun</title>
+<title>DoÄŸum GÃ¼nÃ¼n Kutlu Olsun</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8E%82%3C/text%3E%3C/svg%3E">
 <link rel="stylesheet" href="zarf-motoru.css">
 <link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-/* ============ BURAYA RENKLERİ DEĞİŞTİREBİLİRSİN ============ */
+/* ============ BURAYA RENKLERÄ° DEÄÄ°ÅTÄ°REBÄ°LÄ°RSÄ°N ============ */
 :root{
   --gece:#0a1220;
   --gece-2:#0d1830;
@@ -37,7 +38,7 @@ body{
   user-select:none;-webkit-user-select:none;touch-action:manipulation;
 }
 
-/* --- Yıldızlar ve altın toz zerrecikleri --- */
+/* --- YÄ±ldÄ±zlar ve altÄ±n toz zerrecikleri --- */
 #ortam{position:fixed;inset:0;z-index:1;pointer-events:none;overflow:hidden}
 .yildiz{position:absolute;border-radius:50%;background:#dfe8f5;opacity:0;animation-name:isilti;animation-timing-function:ease-in-out;animation-iteration-count:infinite}
 @keyframes isilti{0%,100%{opacity:.08;transform:scale(.7)}50%{opacity:.6;transform:scale(1.15)}}
@@ -54,7 +55,7 @@ body{
   100%{transform:translate3d(-14px,-108vh,0) scale(.55);opacity:.15}
 }
 
-/* --- Pusula halkaları (arkada yavaş döner) --- */
+/* --- Pusula halkalarÄ± (arkada yavaÅŸ dÃ¶ner) --- */
 .pusula{position:fixed;left:50%;top:52%;width:min(96vw,560px);transform:translate(-50%,-50%);z-index:0;pointer-events:none;opacity:.85}
 .pusula svg{width:100%;height:auto;display:block}
 .halka-yavas{transform-box:fill-box;transform-origin:center;animation:cevirA 90s linear infinite}
@@ -83,18 +84,18 @@ main{position:relative;z-index:10;max-width:480px;margin:0 auto;padding:calc(2.1
 .kose-elmas.ke1{top:7px;left:7px}
 .kose-elmas.ke2{bottom:7px;right:7px}
 
-/* --- Amblem: ince pusula çemberi --- */
+/* --- Amblem: ince pusula Ã§emberi --- */
 .amblem{position:relative;width:74px;height:74px;margin:0 auto 1.1rem}
 .amblem .statik{position:absolute;inset:0;border:1px solid rgba(198,161,91,.4);border-radius:50%}
 .amblem .statik::before{content:"";position:absolute;left:50%;top:4px;bottom:4px;width:1px;background:linear-gradient(180deg,var(--altin),transparent 60%);transform:translateX(-50%) rotate(40deg)}
-.amblem .statik::after{content:"◆";position:absolute;top:-9px;left:50%;transform:translateX(-50%);color:var(--altin);font-size:.55rem}
+.amblem .statik::after{content:"â—†";position:absolute;top:-9px;left:50%;transform:translateX(-50%);color:var(--altin);font-size:.55rem}
 .amblem .cevir{
   position:absolute;inset:8px;border:1px dashed rgba(198,161,91,.28);border-radius:50%;
   animation:cevirA 26s linear infinite;
 }
 .amblem .nokta{position:absolute;left:50%;top:50%;width:5px;height:5px;background:var(--altin);border-radius:50%;transform:translate(-50%,-50%)}
 
-/* --- Üst satır --- */
+/* --- Ãœst satÄ±r --- */
 .rozet{
   display:flex;align-items:center;justify-content:center;gap:.6rem;margin-bottom:1.05rem;
   font-weight:400;font-size:.74rem;letter-spacing:.42em;text-transform:uppercase;color:var(--altin);
@@ -114,7 +115,7 @@ main{position:relative;z-index:10;max-width:480px;margin:0 auto;padding:calc(2.1
 .ayrac::before{margin-right:.6rem}
 .ayrac::after{margin-left:.6rem}
 
-/* --- İsim: altın zeminde yavaş parıltı --- */
+/* --- Ä°sim: altÄ±n zeminde yavaÅŸ parÄ±ltÄ± --- */
 .isim{
   font-family:'Marcellus',Georgia,serif;font-weight:400;
   font-size:clamp(2.3rem,12.5vw,3.6rem);line-height:1.14;letter-spacing:.05em;
@@ -135,7 +136,7 @@ main{position:relative;z-index:10;max-width:480px;margin:0 auto;padding:calc(2.1
   box-shadow:inset 0 0 0 1px rgba(198,161,91,.14), 0 14px 34px -18px rgba(0,0,0,.8);
 }
 .not::before{
-  content:"—";position:absolute;top:-.75rem;left:1.2rem;
+  content:"â€”";position:absolute;top:-.75rem;left:1.2rem;
   color:var(--altin);background:#0e1a2c;font-size:1rem;padding:0 .45rem;
 }
 
@@ -153,7 +154,7 @@ main{position:relative;z-index:10;max-width:480px;margin:0 auto;padding:calc(2.1
 .btn:active{background:var(--altin);color:#0a1220;box-shadow:0 0 30px -6px rgba(198,161,91,.7)}
 @keyframes btnGel{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
 
-/* --- Giriş animasyonu (kademeli, sakin) --- */
+/* --- GiriÅŸ animasyonu (kademeli, sakin) --- */
 .ent{opacity:0;animation:entGel .95s cubic-bezier(.25,1,.4,1) backwards}
 .ent-0{animation-delay:.2s}
 .ent-1{animation-delay:.4s}
@@ -216,26 +217,26 @@ main{position:relative;z-index:10;max-width:480px;margin:0 auto;padding:calc(2.1
       <span class="nokta"></span>
     </div>
 
-    <div class="rozet ent ent-1">İyi ki doğdun</div>
+    <div class="rozet ent ent-1">Ä°yi ki doÄŸdun</div>
 
-    <h1 class="baslik ent ent-2">DOĞUM GÜNÜN<br>KUTLU OLSUN</h1>
-    <div class="ayrac ent ent-3" aria-hidden="true"><span>◆</span></div>
+    <h1 class="baslik ent ent-2">DOÄUM GÃœNÃœN<br>KUTLU OLSUN</h1>
+    <div class="ayrac ent ent-3" aria-hidden="true"><span>â—†</span></div>
 
-    <h2 class="isim" id="isimYazisi">İSİM</h2>
+    <h2 class="isim" id="isimYazisi">Ä°SÄ°M</h2>
 
     <div class="not ent ent-4">
-      <p id="notYazisi">Senin için en güzel dileklerimle...</p>
+      <p id="notYazisi">Senin iÃ§in en gÃ¼zel dileklerimle...</p>
     </div>
 
-    <button class="btn" id="buton" type="button">🎉 Kutlamayı Başlat</button>
+    <button class="btn" id="buton" type="button">ğŸ‰ KutlamayÄ± BaÅŸlat</button>
 
   </section>
 </main>
 
-<footer class="altnot"><span class="kalpAt" aria-hidden="true">❤️</span> QR ile gönderildi</footer>
+<footer class="altnot"><span class="kalpAt" aria-hidden="true">â¤ï¸</span> QR ile gÃ¶nderildi</footer>
 
 <script>
-// === GİZLİLİK KATMANI: Kilit ekranı ===
+// === GÄ°ZLÄ°LÄ°K KATMANI: Kilit ekranÄ± ===
 (function(){
 var _p=new URLSearchParams(location.search),_a=_p.get('anahtar'),_sH=_p.get('sifre'),_sD=_p.get('sifreDuz');
 if(!_a||!_sH){return}
@@ -258,22 +259,22 @@ _btn.addEventListener('click',_ac);
 _pinI.addEventListener('keydown',function(e){if(e.key==='Enter')_ac()});
 })();
 
-// ==================== BURAYA İSMİ VE NOTU YAZ ====================
-const VARSAYILAN_ISIM = "İSİM";
-const VARSAYILAN_NOT  = "Senin için en güzel dileklerimle...";
+// ==================== BURAYA Ä°SMÄ° VE NOTU YAZ ====================
+const VARSAYILAN_ISIM = "Ä°SÄ°M";
+const VARSAYILAN_NOT  = "Senin iÃ§in en gÃ¼zel dileklerimle...";
 // =================================================================
 
-// --- URL parametrelerinden isim ve notu oku (yoksa varsayılan) ---
+// --- URL parametrelerinden isim ve notu oku (yoksa varsayÄ±lan) ---
 var params = new URLSearchParams(location.search);
 var ISIM = (params.get('isim') || '').trim() || VARSAYILAN_ISIM;
 var NOT  = (params.get('not')  || '').trim() || VARSAYILAN_NOT;
 
-// --- İsim ve notu yazdır ---
+// --- Ä°sim ve notu yazdÄ±r ---
 document.getElementById('isimYazisi').textContent = ISIM;
 document.getElementById('notYazisi').textContent  = NOT;
-document.title = 'Doğum günün kutlu olsun, ' + ISIM + '!';
+document.title = 'DoÄŸum gÃ¼nÃ¼n kutlu olsun, ' + ISIM + '!';
 
-// --- Yıldızlar ve altın toz zerrecikleri ---
+// --- YÄ±ldÄ±zlar ve altÄ±n toz zerrecikleri ---
 var ortam = document.getElementById('ortam');
 var i;
 for (i = 0; i < 24; i++) {
@@ -378,20 +379,20 @@ function dongu(zaman) {
 }
 requestAnimationFrame(dongu);
 
-// --- Açılışta sakin kutlama patlaması ---
+// --- AÃ§Ä±lÄ±ÅŸta sakin kutlama patlamasÄ± ---
 setTimeout(function () {
   patlat(innerWidth * 0.5, innerHeight * 0.5, 70);
   setTimeout(function () { patlat(innerWidth * 0.25, innerHeight * 0.64, 40); }, 240);
   setTimeout(function () { patlat(innerWidth * 0.75, innerHeight * 0.58, 40); }, 480);
 }, 500);
 
-// --- Buton: büyük kutlama ---
+// --- Buton: bÃ¼yÃ¼k kutlama ---
 var buton = document.getElementById('buton');
 buton.addEventListener('click', function () {
   patlat(innerWidth * 0.5, innerHeight * 0.45, 120);
   setTimeout(function () { patlat(innerWidth * 0.2, innerHeight * 0.62, 65); }, 160);
   setTimeout(function () { patlat(innerWidth * 0.8, innerHeight * 0.5, 65); }, 320);
-  buton.textContent = '🎊 Tekrar Kutla!';
+  buton.textContent = 'ğŸŠ Tekrar Kutla!';
 });
 </script>
 <link rel="stylesheet" href="deneyim-cekirdegi.css"><script src="dny3-a.js"></script><script src="dny3-b.js"></script><script src="dny3-c.js"></script><script src="dny3-d.js"></script><script src="zarf-motoru.js"></script>
